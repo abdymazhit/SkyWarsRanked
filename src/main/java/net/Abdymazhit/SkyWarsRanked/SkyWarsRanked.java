@@ -1,5 +1,6 @@
 package net.Abdymazhit.SkyWarsRanked;
 
+import net.Abdymazhit.SkyWarsRanked.managers.GameManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -13,6 +14,9 @@ public class SkyWarsRanked extends JavaPlugin {
     /** Экземпляр плагина */
     private static SkyWarsRanked instance;
 
+    /** Менеджер игры, отвечает за работу игры */
+    private GameManager gameManager;
+
     /**
      * Событие включения плагина
      * <p>
@@ -23,6 +27,8 @@ public class SkyWarsRanked extends JavaPlugin {
         super.onEnable();
         instance = this;
         Config.load();
+
+        gameManager = new GameManager();
     }
 
     /**
@@ -39,5 +45,13 @@ public class SkyWarsRanked extends JavaPlugin {
      */
     public static SkyWarsRanked getInstance() {
         return instance;
+    }
+
+    /**
+     * Получает менеджер игры
+     * @return Менеджер игры
+     */
+    public GameManager getGameManager() {
+        return gameManager;
     }
 }
