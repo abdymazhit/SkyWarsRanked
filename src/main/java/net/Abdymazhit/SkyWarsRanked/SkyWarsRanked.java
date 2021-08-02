@@ -22,6 +22,7 @@ public class SkyWarsRanked extends JavaPlugin {
     public void onEnable() {
         super.onEnable();
         instance = this;
+        Config.load();
     }
 
     /**
