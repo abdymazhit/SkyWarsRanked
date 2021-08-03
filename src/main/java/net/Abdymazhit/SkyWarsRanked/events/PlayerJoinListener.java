@@ -51,7 +51,10 @@ public class PlayerJoinListener implements Listener {
 
             // Добавить игрока в список зрителей игры, так как стадия игры не является WAITING или STARTING
             event.setJoinMessage(null);
-            SkyWarsRanked.getGameManager().getSpectators().add(player);
+            SkyWarsRanked.getGameManager().addSpectator(player);
+
+            // Обновить количество зрителей в scoreboard'е игры
+            SkyWarsRanked.getGameBoard().updateSpectatorsCount();
         }
     }
 }

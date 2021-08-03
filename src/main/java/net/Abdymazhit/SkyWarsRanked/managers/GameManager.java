@@ -1,10 +1,12 @@
 package net.Abdymazhit.SkyWarsRanked.managers;
 
 import net.Abdymazhit.SkyWarsRanked.Config;
+import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.customs.PlayerInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +32,9 @@ public class GameManager {
 
     /** Хранит {@link PlayerInfo информацию} о игроке */
     private final Map<Player, PlayerInfo> playersInfo;
+
+    /** Таймер обратного отсчета */
+    private BukkitTask task;
 
     /**
      * Инициализирует нужные объекты
@@ -75,6 +80,9 @@ public class GameManager {
         players.add(player);
 
         playersInfo.put(player, new PlayerInfo(player));
+
+        // Попытаться начать игру
+        SkyWarsRanked.getGameStageManager().tryStartStartingStage();
     }
 
     /**
@@ -136,5 +144,13 @@ public class GameManager {
      */
     public PlayerInfo getPlayerInfo(Player player) {
         return playersInfo.get(player);
+    }
+
+    /**
+     * Установить таймер обратного отсчета
+     * @param task Таймер обратного отсчета
+     */
+    public void setTask(BukkitTask task) {
+        this.task = task;
     }
 }
