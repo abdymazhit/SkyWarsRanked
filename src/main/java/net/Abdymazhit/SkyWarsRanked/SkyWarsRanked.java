@@ -3,6 +3,7 @@ package net.Abdymazhit.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.events.PlayerJoinListener;
 import net.Abdymazhit.SkyWarsRanked.events.PlayerQuitListener;
 import net.Abdymazhit.SkyWarsRanked.events.cancelled.*;
+import net.Abdymazhit.SkyWarsRanked.items.GameItems;
 import net.Abdymazhit.SkyWarsRanked.managers.GameEventsManager;
 import net.Abdymazhit.SkyWarsRanked.managers.GameManager;
 import net.Abdymazhit.SkyWarsRanked.managers.GameStageManager;
@@ -30,11 +31,14 @@ public class SkyWarsRanked extends JavaPlugin {
     /** Менеджер игровые событий, отвечает за игровые события */
     private static GameEventsManager gameEventsManager;
 
-    /** Scoreboard лобби */
+    /** Объект, отвечающий за scoreboard лобби */
     private static LobbyBoard lobbyBoard;
 
-    /** Scoreboard игры */
+    /** Объект, отвечающий за scoreboard игры */
     private static GameBoard gameBoard;
+
+    /** Объект, отвечающий за игровые предметы */
+    private static GameItems gameItems;
 
     /**
      * Событие включения плагина
@@ -52,6 +56,7 @@ public class SkyWarsRanked extends JavaPlugin {
         gameEventsManager = new GameEventsManager();
         lobbyBoard = new LobbyBoard();
         gameBoard = new GameBoard();
+        gameItems = new GameItems();
 
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(), this);
@@ -106,18 +111,26 @@ public class SkyWarsRanked extends JavaPlugin {
     }
 
     /**
-     * Получает scoreboard лобби
-     * @return Scoreboard лобби
+     * Получает объект, отвечающий за scoreboard лобби
+     * @return Объект, отвечающий за scoreboard лобби
      */
     public static LobbyBoard getLobbyBoard() {
         return lobbyBoard;
     }
 
     /**
-     * Получает scoreboard игры
-     * @return Scoreboard игры
+     * Получает объект, отвечающий за scoreboard игры
+     * @return Объект, отвечающий за scoreboard игры
      */
     public static GameBoard getGameBoard() {
         return gameBoard;
+    }
+
+    /**
+     * Возвращает объект, отвечающий за игровые предметы
+     * @return Объект, отвечающий за игровые предметы
+     */
+    public static GameItems getGameItems() {
+        return gameItems;
     }
 }

@@ -66,11 +66,16 @@ public class GameManager {
      * @param player Игрок
      */
     public void addPlayer(Player player) {
+        playersInfo.put(player, new PlayerInfo(player));
+
         player.setFireTicks(0);
         player.setMaxHealth(20.0);
         player.setHealth(20.0);
         player.setFoodLevel(20);
         player.setSaturation(10);
+
+        // Выдать игроку предметы лобби
+        SkyWarsRanked.getGameItems().giveLobbyItems(player);
 
         player.setGameMode(GameMode.ADVENTURE);
 
@@ -78,8 +83,6 @@ public class GameManager {
 
         spectators.remove(player);
         players.add(player);
-
-        playersInfo.put(player, new PlayerInfo(player));
 
         // Попытаться начать игру
         SkyWarsRanked.getGameStageManager().tryStartStartingStage();
@@ -110,6 +113,9 @@ public class GameManager {
         player.setHealth(20.0);
         player.setFoodLevel(20);
         player.setSaturation(10);
+
+        // Выдать зрителю предметы зрителя
+        SkyWarsRanked.getGameItems().giveSpectatorItems(player);
 
         player.setGameMode(GameMode.ADVENTURE);
 
@@ -152,5 +158,13 @@ public class GameManager {
      */
     public void setTask(BukkitTask task) {
         this.task = task;
+    }
+
+    /**
+     * Получает таймер обратного отсчета
+     * @return Таймер обратного отсчета
+     */
+    public BukkitTask getTask() {
+        return task;
     }
 }
