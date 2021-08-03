@@ -70,7 +70,7 @@ public class GameBoard {
     /**
      * Обновить всем игрокам количество живых игроков в scoreboard'е лобби
      */
-    public void updateLivePlayers() {
+    public void updateLivePlayersCount() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.getScoreboard().getTeam("livePlayers").setSuffix(String.valueOf(SkyWarsRanked.getGameManager().getPlayers().size()));
         }
@@ -80,14 +80,14 @@ public class GameBoard {
      * Обновить игроку количество убийств в scoreboard'е лобби
      * @param player Игрок
      */
-    public void updateKills(Player player) {
+    public void updateKillsCount(Player player) {
         player.getScoreboard().getTeam("kills").setSuffix(String.valueOf(SkyWarsRanked.getGameManager().getPlayerInfo(player).getKills()));
     }
 
     /**
      * Обновить всем игрокам количество зрителей в scoreboard'е игры
      */
-    public void updateSpectators() {
+    public void updateSpectatorsCount() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.getScoreboard().getTeam("spectators").setSuffix(String.valueOf(SkyWarsRanked.getGameManager().getSpectators().size()));
         }

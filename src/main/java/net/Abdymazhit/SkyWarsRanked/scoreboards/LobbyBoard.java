@@ -44,7 +44,7 @@ public class LobbyBoard {
     }
 
     /**
-     * Установить всем игрокам статус scoreboard'а лобби на ожидание
+     * Установить всем игрокам статус scoreboard'а лобби на WAITING
      */
     public void setWaitingStatus() {
         for(Player player : Bukkit.getOnlinePlayers()) {
@@ -53,7 +53,7 @@ public class LobbyBoard {
     }
 
     /**
-     * Установить игроку статус scoreboard'а лобби на ожидание
+     * Установить игроку статус scoreboard'а лобби на WAITING
      * @param player Игрок
      */
     public void setWaitingStatus(Player player) {

@@ -23,17 +23,17 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        // Проверка стадии игры на WAITING и STARTING
+        // Проверка стадии игры на WAITING или STARTING
         if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
             // Установить игроку scoreboard лобби
             SkyWarsRanked.getLobbyBoard().setScoreboard(player);
 
-            // Установить игроку статус scoreboard'а лобби на ожидание
+            // Установить игроку статус scoreboard'а лобби на WAITING
             SkyWarsRanked.getLobbyBoard().setWaitingStatus(player);
 
             // Проверка, не набрано ли максимальное количество игроков
             if(SkyWarsRanked.getGameManager().getPlayers().size() < Config.islands.size()) {
-                // Добавить игрока в игру
+                // Добавить игрока в список игроков игры
                 SkyWarsRanked.getGameManager().addPlayer(player);
                 event.setJoinMessage("[" + SkyWarsRanked.getGameManager().getPlayers().size() + "/" + Config.islands.size() + "] " +
                         "§e=> §fИгрок " + player.getDisplayName() + " подключился");
@@ -41,7 +41,7 @@ public class PlayerJoinListener implements Listener {
                 // Обновить количество игроков в scoreboard'е лобби
                 SkyWarsRanked.getLobbyBoard().updatePlayersCount();
             } else {
-                // Добавить зрителя в игру, так как набрано максимальное количество игроков
+                // Добавить игрока в список зрителей игры, так как набрано максимальное количество игроков
                 event.setJoinMessage(null);
                 SkyWarsRanked.getGameManager().addSpectator(player);
             }
@@ -49,7 +49,7 @@ public class PlayerJoinListener implements Listener {
             // Установить игроку scoreboard игры
             SkyWarsRanked.getGameBoard().setScoreboard(player);
 
-            // Добавить зрителя в игру, так как стадия игры не является WAITING или STARTING
+            // Добавить игрока в список зрителей игры, так как стадия игры не является WAITING или STARTING
             event.setJoinMessage(null);
             SkyWarsRanked.getGameManager().getSpectators().add(player);
         }

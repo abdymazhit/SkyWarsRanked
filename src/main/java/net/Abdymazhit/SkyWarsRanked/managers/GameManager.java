@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public class GameManager {
 
-    /** Стадия игры */
+    /** {@link GameStage Стадия игры} */
     private GameStage gameStage;
 
     /** Список игроков игры */
@@ -42,15 +42,15 @@ public class GameManager {
     }
 
     /**
-     * Устанавливает стадию игры
-     * @param gameStage Стадия игры
+     * Устанавливает {@link GameStage стадию игры}
+     * @param gameStage {@link GameStage Стадия игры}
      */
     public void setGameStage(GameStage gameStage) {
         this.gameStage = gameStage;
     }
 
-    /** Получает стадию игры
-     * @return Стадия игры
+    /** Получает {@link GameStage стадию игры}
+     * @return {@link GameStage Стадия игры}
      */
     public GameStage getGameStage() {
         return gameStage;

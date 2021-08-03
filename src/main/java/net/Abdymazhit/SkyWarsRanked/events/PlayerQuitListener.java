@@ -28,7 +28,7 @@ public class PlayerQuitListener implements Listener {
         if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
             // Проверка, является ли игрок игроком игры
             if(SkyWarsRanked.getGameManager().getPlayers().contains(player)) {
-                // Очистить игрока из острова
+                // Убрать игрока из острова
                 for(Island island : Config.islands) {
                     if(island.getPlayer() != null) {
                         if(island.getPlayer().equals(player)) {
@@ -61,7 +61,7 @@ public class PlayerQuitListener implements Listener {
                 event.setQuitMessage("Игрок " + player.getDisplayName() + " вышел из игры и тем самым был самоубит");
 
                 // Обновить количество живых игроков в scoreboard'е игры
-                SkyWarsRanked.getGameBoard().updateLivePlayers();
+                SkyWarsRanked.getGameBoard().updateLivePlayersCount();
             }
             // Проверка, является ли игрок зрителем игры
             else if(SkyWarsRanked.getGameManager().getSpectators().contains(player)) {
@@ -70,7 +70,7 @@ public class PlayerQuitListener implements Listener {
                 SkyWarsRanked.getGameManager().removeSpectator(player);
 
                 // Обновить количество зрителей в scoreboard'е игры
-                SkyWarsRanked.getGameBoard().updateSpectators();
+                SkyWarsRanked.getGameBoard().updateSpectatorsCount();
             }
         }
         // Проверка стадии игры на ENDING
