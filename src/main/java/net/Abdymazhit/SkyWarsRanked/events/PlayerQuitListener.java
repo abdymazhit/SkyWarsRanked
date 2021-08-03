@@ -41,6 +41,9 @@ public class PlayerQuitListener implements Listener {
                 SkyWarsRanked.getGameManager().removePlayer(player);
                 event.setQuitMessage("[" + SkyWarsRanked.getGameManager().getPlayers().size() + "/" + Config.islands.size() + "] " +
                         "§e=> §fИгрок " + player.getDisplayName() + " отключился");
+
+                // Обновить количество игроков в scoreboard'е лобби
+                SkyWarsRanked.getLobbyBoard().updatePlayersCount();
             }
             // Проверка, является ли игрок зрителем игры
             else if(SkyWarsRanked.getGameManager().getSpectators().contains(player)) {

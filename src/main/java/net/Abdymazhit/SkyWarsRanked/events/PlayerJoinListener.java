@@ -25,12 +25,19 @@ public class PlayerJoinListener implements Listener {
 
         // Проверка стадии игры на WAITING и STARTING
         if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
-            // Проверка, набрано ли максимальное количество игроков
+            // Установить для игрока scoreboard лобби
+            SkyWarsRanked.getLobbyBoard().setScoreboard(player);
+            SkyWarsRanked.getLobbyBoard().setWaitingStatus(player);
+
+            // Проверка, не набрано ли максимальное количество игроков
             if(SkyWarsRanked.getGameManager().getPlayers().size() < Config.islands.size()) {
                 // Добавить игрока в игру
                 SkyWarsRanked.getGameManager().addPlayer(player);
                 event.setJoinMessage("[" + SkyWarsRanked.getGameManager().getPlayers().size() + "/" + Config.islands.size() + "] " +
                         "§e=> §fИгрок " + player.getDisplayName() + " подключился");
+
+                // Обновить количество игроков в scoreboard'е лобби
+                SkyWarsRanked.getLobbyBoard().updatePlayersCount();
             } else {
                 // Добавить зрителя в игру, так как набрано максимальное количество игроков
                 event.setJoinMessage(null);
