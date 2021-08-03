@@ -2,6 +2,7 @@ package net.Abdymazhit.SkyWarsRanked;
 
 import net.Abdymazhit.SkyWarsRanked.events.PlayerJoinListener;
 import net.Abdymazhit.SkyWarsRanked.events.PlayerQuitListener;
+import net.Abdymazhit.SkyWarsRanked.events.cancelled.*;
 import net.Abdymazhit.SkyWarsRanked.managers.GameEventsManager;
 import net.Abdymazhit.SkyWarsRanked.managers.GameManager;
 import net.Abdymazhit.SkyWarsRanked.managers.GameStageManager;
@@ -54,6 +55,14 @@ public class SkyWarsRanked extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(), this);
+
+        getServer().getPluginManager().registerEvents(new BlockEventsListener(), this);
+        getServer().getPluginManager().registerEvents(new EntityEventsListener(), this);
+        getServer().getPluginManager().registerEvents(new InventoryEventsListener(), this);
+        getServer().getPluginManager().registerEvents(new PaintingEventsListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerEventsListener(), this);
+        getServer().getPluginManager().registerEvents(new WeatherEventsListener(), this);
+        getServer().getPluginManager().registerEvents(new WorldEventsListener(), this);
     }
 
     /**
