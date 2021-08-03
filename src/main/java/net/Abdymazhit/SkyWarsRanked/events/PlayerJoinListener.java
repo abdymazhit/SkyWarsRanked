@@ -25,8 +25,10 @@ public class PlayerJoinListener implements Listener {
 
         // Проверка стадии игры на WAITING и STARTING
         if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
-            // Установить для игрока scoreboard лобби
+            // Установить игроку scoreboard лобби
             SkyWarsRanked.getLobbyBoard().setScoreboard(player);
+
+            // Установить игроку статус scoreboard'а лобби на ожидание
             SkyWarsRanked.getLobbyBoard().setWaitingStatus(player);
 
             // Проверка, не набрано ли максимальное количество игроков
@@ -44,6 +46,9 @@ public class PlayerJoinListener implements Listener {
                 SkyWarsRanked.getGameManager().addSpectator(player);
             }
         } else {
+            // Установить игроку scoreboard игры
+            SkyWarsRanked.getGameBoard().setScoreboard(player);
+
             // Добавить зрителя в игру, так как стадия игры не является WAITING или STARTING
             event.setJoinMessage(null);
             SkyWarsRanked.getGameManager().getSpectators().add(player);

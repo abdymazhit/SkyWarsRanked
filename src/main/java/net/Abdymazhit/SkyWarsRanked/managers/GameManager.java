@@ -1,12 +1,15 @@
 package net.Abdymazhit.SkyWarsRanked.managers;
 
 import net.Abdymazhit.SkyWarsRanked.Config;
+import net.Abdymazhit.SkyWarsRanked.customs.PlayerInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Менеджер игры, отвечает за работу игры
@@ -20,10 +23,13 @@ public class GameManager {
     private GameStage gameStage;
 
     /** Список игроков игры */
-    private List<Player> players;
+    private final List<Player> players;
 
     /** Список зрителей игры */
-    private List<Player> spectators;
+    private final List<Player> spectators;
+
+    /** Хранит {@link PlayerInfo информацию} о игроке */
+    private final Map<Player, PlayerInfo> playersInfo;
 
     /**
      * Инициализирует нужные объекты
@@ -32,6 +38,7 @@ public class GameManager {
         gameStage = GameStage.WAITING;
         players = new ArrayList<>();
         spectators = new ArrayList<>();
+        playersInfo = new HashMap<>();
     }
 
     /**
@@ -66,6 +73,8 @@ public class GameManager {
 
         spectators.remove(player);
         players.add(player);
+
+        playersInfo.put(player, new PlayerInfo(player));
     }
 
     /**
@@ -120,5 +129,12 @@ public class GameManager {
      */
     public List<Player> getSpectators() {
         return spectators;
+    }
+
+    /** Получает {@link PlayerInfo информацию} о игроке
+     * @return {@link PlayerInfo Информация} о игроке
+     */
+    public PlayerInfo getPlayerInfo(Player player) {
+        return playersInfo.get(player);
     }
 }

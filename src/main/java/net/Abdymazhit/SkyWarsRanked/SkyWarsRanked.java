@@ -3,6 +3,7 @@ package net.Abdymazhit.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.events.PlayerJoinListener;
 import net.Abdymazhit.SkyWarsRanked.events.PlayerQuitListener;
 import net.Abdymazhit.SkyWarsRanked.managers.GameManager;
+import net.Abdymazhit.SkyWarsRanked.scoreboards.GameBoard;
 import net.Abdymazhit.SkyWarsRanked.scoreboards.LobbyBoard;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,8 +21,11 @@ public class SkyWarsRanked extends JavaPlugin {
     /** Менеджер игры, отвечает за работу игры */
     private static GameManager gameManager;
 
-    /** Scoreboard стадии лобби игры */
+    /** Scoreboard лобби */
     private static LobbyBoard lobbyBoard;
+
+    /** Scoreboard игры */
+    private static GameBoard gameBoard;
 
     /**
      * Событие включения плагина
@@ -36,6 +40,7 @@ public class SkyWarsRanked extends JavaPlugin {
 
         gameManager = new GameManager();
         lobbyBoard = new LobbyBoard();
+        gameBoard = new GameBoard();
 
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(), this);
@@ -66,10 +71,18 @@ public class SkyWarsRanked extends JavaPlugin {
     }
 
     /**
-     * Получает scoreboard стадии лобби игры
-     * @return Scoreboard стадии лобби игры
+     * Получает scoreboard лобби
+     * @return Scoreboard лобби
      */
     public static LobbyBoard getLobbyBoard() {
         return lobbyBoard;
+    }
+
+    /**
+     * Получает scoreboard игры
+     * @return Scoreboard игры
+     */
+    public static GameBoard getGameBoard() {
+        return gameBoard;
     }
 }

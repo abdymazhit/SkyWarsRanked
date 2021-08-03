@@ -59,12 +59,18 @@ public class PlayerQuitListener implements Listener {
                 // Удалить игрока из списка игроков игры
                 SkyWarsRanked.getGameManager().removePlayer(player);
                 event.setQuitMessage("Игрок " + player.getDisplayName() + " вышел из игры и тем самым был самоубит");
+
+                // Обновить количество живых игроков в scoreboard'е игры
+                SkyWarsRanked.getGameBoard().updateLivePlayers();
             }
             // Проверка, является ли игрок зрителем игры
             else if(SkyWarsRanked.getGameManager().getSpectators().contains(player)) {
                 // Удалить игрока из списка зрителей игры
                 event.setQuitMessage(null);
                 SkyWarsRanked.getGameManager().removeSpectator(player);
+
+                // Обновить количество зрителей в scoreboard'е игры
+                SkyWarsRanked.getGameBoard().updateSpectators();
             }
         }
         // Проверка стадии игры на ENDING
