@@ -1,13 +1,14 @@
 package net.Abdymazhit.SkyWarsRanked.customs;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 
 /**
  * Представляет собой остров
  *
- * @version   02.08.2021
+ * @version   03.08.2021
  * @author    Islam Abdymazhit
  */
 public class Island {
@@ -21,8 +22,8 @@ public class Island {
     /** Список местоположений сундуков острова */
     private final List<Location> chests;
 
-    /** {@link PlayerInfo Информация о игроке} острова */
-    private PlayerInfo playerInfo;
+    /** Игрок острова */
+    private Player player;
 
     /**
      * Создает новый остров с заданными параметрами
@@ -34,15 +35,7 @@ public class Island {
         this.id = id;
         this.spawn = spawn;
         this.chests = chests;
-        this.playerInfo = null;
-    }
-
-    /**
-     * Устанавливает {@link PlayerInfo информацию о игроке} острова
-     * @param playerInfo {@link PlayerInfo Информация о игроке} острова
-     */
-    public void setPlayerInfo(PlayerInfo playerInfo) {
-        this.playerInfo = playerInfo;
+        this.player = null;
     }
 
     /** Получает id острова
@@ -66,10 +59,18 @@ public class Island {
         return chests;
     }
 
-    /** Получает {@link PlayerInfo информацию о игроке} острова
-     * @return {@link PlayerInfo Информация о игроке} острова
+    /**
+     * Устанавливает игрока острова
+     * @param player Игрок острова
      */
-    public PlayerInfo getPlayerInfo() {
-        return playerInfo;
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    /** Получает игрока острова
+     * @return Игрок острова
+     */
+    public Player getPlayer() {
+        return player;
     }
 }

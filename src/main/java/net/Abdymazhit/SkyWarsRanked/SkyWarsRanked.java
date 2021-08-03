@@ -6,7 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 /**
  * Главный класс, отвечает за весь плагин
  *
- * @version   02.08.2021
+ * @version   03.08.2021
  * @author    Islam Abdymazhit
  */
 public class SkyWarsRanked extends JavaPlugin {
@@ -15,7 +15,7 @@ public class SkyWarsRanked extends JavaPlugin {
     private static SkyWarsRanked instance;
 
     /** Менеджер игры, отвечает за работу игры */
-    private GameManager gameManager;
+    private static GameManager gameManager;
 
     /**
      * Событие включения плагина
@@ -51,7 +51,7 @@ public class SkyWarsRanked extends JavaPlugin {
      * Получает менеджер игры
      * @return Менеджер игры
      */
-    public GameManager getGameManager() {
+    public static GameManager getGameManager() {
         return gameManager;
     }
 }
