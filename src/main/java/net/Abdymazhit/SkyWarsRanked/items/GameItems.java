@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Отвечает за игровые предметы
  *
- * @version   03.08.2021
+ * @version   04.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameItems {
@@ -111,7 +111,7 @@ public class GameItems {
 
         ItemStack meItem = player.getInventory().getItem(7);
         ItemMeta meItemMeta = meItem.getItemMeta();
-        meItemMeta.setDisplayName("§r>> §e§l" + player.getDisplayName() + " §r<<");
+        meItemMeta.setDisplayName("§r>> §e§l" + player.getName() + " §r<<");
         meItem.setItemMeta(meItemMeta);
     }
 
@@ -128,7 +128,7 @@ public class GameItems {
 
         ItemStack meItem = player.getInventory().getItem(7);
         ItemMeta meItemMeta = meItem.getItemMeta();
-        meItemMeta.setDisplayName("§r>> §e§l" + player.getDisplayName() + " §r<<");
+        meItemMeta.setDisplayName("§r>> §e§l" + player.getName() + " §r<<");
         meItem.setItemMeta(meItemMeta);
     }
 }

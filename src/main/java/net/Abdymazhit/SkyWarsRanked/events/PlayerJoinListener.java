@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 /**
  * Отвечает за событие входа игрока в сервер
  *
- * @version   03.08.2021
+ * @version   04.08.2021
  * @author    Islam Abdymazhit
  */
 public class PlayerJoinListener implements Listener {
@@ -36,7 +36,7 @@ public class PlayerJoinListener implements Listener {
                 // Добавить игрока в список игроков игры
                 SkyWarsRanked.getGameManager().addPlayer(player);
                 event.setJoinMessage("[" + SkyWarsRanked.getGameManager().getPlayers().size() + "/" + Config.islands.size() + "] " +
-                        "§e=> §fИгрок " + player.getDisplayName() + " подключился");
+                        "§e=> §fИгрок " + player.getName() + " подключился");
 
                 // Обновить количество игроков в scoreboard'е лобби
                 SkyWarsRanked.getLobbyBoard().updatePlayersCount();

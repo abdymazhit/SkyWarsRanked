@@ -4,6 +4,7 @@ import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.customs.Island;
 import net.Abdymazhit.SkyWarsRanked.managers.GameStage;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -39,46 +40,79 @@ public class PlayerQuitListener implements Listener {
 
                 // Удалить игрока из списка игроков игры
                 SkyWarsRanked.getGameManager().removePlayer(player);
-                event.setQuitMessage("[" + SkyWarsRanked.getGameManager().getPlayers().size() + "/" + Config.islands.size() + "] " +
-                        "§e=> §fИгрок " + player.getDisplayName() + " отключился");
 
                 // Обновить количество игроков в scoreboard'е лобби
                 SkyWarsRanked.getLobbyBoard().updatePlayersCount();
+
+                // Отправить сообщение о выходе игрока
+                event.setQuitMessage("[" + SkyWarsRanked.getGameManager().getPlayers().size() + "/" + Config.islands.size() + "] " +
+                        "§e=> §fИгрок " + player.getName() + " отключился");
             }
             // Проверка, является ли игрок зрителем игры
             else if(SkyWarsRanked.getGameManager().getSpectators().contains(player)) {
                 // Удалить игрока из списка зрителей игры
-                event.setQuitMessage(null);
                 SkyWarsRanked.getGameManager().removeSpectator(player);
+
+                // Не отображать сообщение о выходе, так как игрок является зрителем
+                event.setQuitMessage(null);
             }
         }
         // Проверка стадии игры на GAME
         else if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.GAME)) {
             // Проверка, является ли игрок игроком игры
             if (SkyWarsRanked.getGameManager().getPlayers().contains(player)) {
-                // Удалить игрока из списка игроков игры
+                // Удалить игрока из списка живых игроков и обновить количество живых игроков в scoreboard'е игры
                 SkyWarsRanked.getGameManager().removePlayer(player);
-                event.setQuitMessage("Игрок " + player.getDisplayName() + " вышел из игры и тем самым был самоубит");
-
-                // Обновить количество живых игроков в scoreboard'е игры
                 SkyWarsRanked.getGameBoard().updateLivePlayersCount();
+                
+                // Получить последнего нанесшего урон по игроку
+                Player killer = SkyWarsRanked.getGameManager().getPlayerInfo(player).getLastDamager();
+
+                // Проверить, существует ли последний нанесший урон
+                if(killer != null) {
+                    // Отправить сообщения о убийстве
+                    event.setQuitMessage("Игрок " + player.getName() + " убит игроком " + killer.getName());
+                } else {
+                    // Отправить сообщения о убийстве
+                    event.setQuitMessage("Игрок " + player.getName() + " вышел из игры и тем самым был самоубит");
+                }
+
+                // Проверить, есть ли победитель игры
+                if(SkyWarsRanked.getGameManager().getPlayers().size() == 1) {
+                    Player winner = SkyWarsRanked.getGameManager().getPlayers().get(0);
+
+                    // Отправить сообщение о победителе
+                    for(Player p : Bukkit.getOnlinePlayers()) {
+                        p.sendMessage("§7####################################");
+                        p.sendMessage("§7# §fПобедитель:");
+                        p.sendMessage("§7#     §f" + winner.getName());
+                        p.sendMessage("§7####################################");
+                    }
+
+                    // Начать стадию конца игры
+                    SkyWarsRanked.getGameStageManager().startEndingStage();
+                }
             }
             // Проверка, является ли игрок зрителем игры
             else if(SkyWarsRanked.getGameManager().getSpectators().contains(player)) {
                 // Удалить игрока из списка зрителей игры
-                event.setQuitMessage(null);
                 SkyWarsRanked.getGameManager().removeSpectator(player);
 
                 // Обновить количество зрителей в scoreboard'е игры
                 SkyWarsRanked.getGameBoard().updateSpectatorsCount();
+
+                // Не отображать сообщение о выходе, так как игрок является зрителем
+                event.setQuitMessage(null);
             }
         }
         // Проверка стадии игры на ENDING
         else if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.ENDING)) {
             // Удалить игрока из списка игроков и зрителей игры
-            event.setQuitMessage(null);
             SkyWarsRanked.getGameManager().removePlayer(player);
             SkyWarsRanked.getGameManager().removeSpectator(player);
+
+            // Не отображать сообщение о выходе, так как стадия игры ENDING
+            event.setQuitMessage(null);
         }
 
         // Удаляет информацию о игроке, полученную от API VimeWorld.ru
