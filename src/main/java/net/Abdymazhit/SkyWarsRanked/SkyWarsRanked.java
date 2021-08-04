@@ -1,8 +1,6 @@
 package net.Abdymazhit.SkyWarsRanked;
 
-import net.Abdymazhit.SkyWarsRanked.events.PlayerJoinListener;
-import net.Abdymazhit.SkyWarsRanked.events.PlayerLoginListener;
-import net.Abdymazhit.SkyWarsRanked.events.PlayerQuitListener;
+import net.Abdymazhit.SkyWarsRanked.events.*;
 import net.Abdymazhit.SkyWarsRanked.events.cancelled.*;
 import net.Abdymazhit.SkyWarsRanked.items.GameItems;
 import net.Abdymazhit.SkyWarsRanked.managers.GameEventsManager;
@@ -63,8 +61,14 @@ public class SkyWarsRanked extends JavaPlugin {
         gameBoard = new GameBoard();
         gameItems = new GameItems();
 
-        getServer().getPluginManager().registerEvents(new PlayerLoginListener(), this);
+        getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
+        getServer().getPluginManager().registerEvents(new BlockPlaceListener(), this);
+        getServer().getPluginManager().registerEvents(new EntityDamageByEntityListener(), this);
+        getServer().getPluginManager().registerEvents(new EntityDamageListener(), this);
+        getServer().getPluginManager().registerEvents(new EntityShootBowListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerLoginListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(), this);
 
         getServer().getPluginManager().registerEvents(new BlockEventsListener(), this);

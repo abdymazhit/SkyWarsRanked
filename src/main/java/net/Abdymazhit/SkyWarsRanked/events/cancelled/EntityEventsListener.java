@@ -5,12 +5,14 @@ import net.Abdymazhit.SkyWarsRanked.managers.GameStage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.*;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityCombustEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 
 /**
  * Отменяет события связанные с entity
  *
- * @version   03.08.2021
+ * @version   04.08.2021
  * @author    Islam Abdymazhit
  */
 public class EntityEventsListener implements Listener {
@@ -41,23 +43,6 @@ public class EntityEventsListener implements Listener {
     }
 
     /**
-     * Событие стрельбы из лука entity
-     */
-    @EventHandler
-    public void onEntityShootBow(EntityShootBowEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
-            event.setCancelled(true);
-        }
-
-        if(event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
-            if(SkyWarsRanked.getGameManager().getSpectators().contains(player)) {
-                event.setCancelled(true);
-            }
-        }
-    }
-
-    /**
      * Событие изменения уровня голода
      */
     @EventHandler
@@ -72,14 +57,5 @@ public class EntityEventsListener implements Listener {
                 event.setCancelled(true);
             }
         }
-    }
-
-    /**
-     * Событие смерти игрока
-     */
-    @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent event) {
-        event.setDeathMessage(null);
-        event.getEntity().setHealth(20);
     }
 }

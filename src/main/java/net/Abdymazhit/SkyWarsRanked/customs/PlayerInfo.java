@@ -1,5 +1,7 @@
 package net.Abdymazhit.SkyWarsRanked.customs;
 
+import org.bukkit.entity.Player;
+
 /**
  * Представляет собой информацию о игроке
  *
@@ -26,6 +28,9 @@ public class PlayerInfo {
     /** Количество поставленных блоков игрока в этом матче */
     private int blocksPlaced;
 
+    /** Последний нанесший урон по игроку */
+    private Player lastDamager;
+
     /**
      * Создает информацию о игроке
      * @param playerVimeInfo Глобальная информация о игроке
@@ -35,9 +40,10 @@ public class PlayerInfo {
         this.playerVimeInfo = playerVimeInfo;
         this.playerStats = playerStats;
         this.kills = 0;
-        arrowsFired = 0;
-        blocksBroken = 0;
-        blocksPlaced = 0;
+        this.arrowsFired = 0;
+        this.blocksBroken = 0;
+        this.blocksPlaced = 0;
+        this.lastDamager = null;
     }
 
     /**
@@ -114,5 +120,21 @@ public class PlayerInfo {
      */
     public int getBlocksPlaced() {
         return blocksPlaced;
+    }
+
+    /**
+     * Установить последнего нанесшего урон по игроку
+     * @param lastDamager Последний нанесший урон по игроку
+     */
+    public void setLastDamager(Player lastDamager) {
+        this.lastDamager = lastDamager;
+    }
+
+    /**
+     * Получает последнего нанесшего урон по игроку
+     * @return Последний нанесший урон по игроку
+     */
+    public Player getLastDamager() {
+        return lastDamager;
     }
 }

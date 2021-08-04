@@ -9,24 +9,10 @@ import org.bukkit.event.block.*;
 /**
  * Отменяет события связанные с блоками
  *
- * @version   03.08.2021
+ * @version   04.08.2021
  * @author    Islam Abdymazhit
  */
 public class BlockEventsListener implements Listener {
-
-    /**
-     * Событие ломания блока игроком
-     */
-    @EventHandler
-    public void onBlockBreak(BlockBreakEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
-            event.setCancelled(true);
-        }
-
-        if(SkyWarsRanked.getGameManager().getSpectators().contains(event.getPlayer())) {
-            event.setCancelled(true);
-        }
-    }
 
     /**
      * Событие разрушения блока в результате сожжения огнем
@@ -182,20 +168,6 @@ public class BlockEventsListener implements Listener {
     @EventHandler
     public void onBlockPistonRetract(BlockPistonRetractEvent event) {
         if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
-            event.setCancelled(true);
-        }
-    }
-
-    /**
-     * Событие поставки блока игроком
-     */
-    @EventHandler
-    public void onBlockPlace(BlockPlaceEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
-            event.setCancelled(true);
-        }
-
-        if(SkyWarsRanked.getGameManager().getSpectators().contains(event.getPlayer())) {
             event.setCancelled(true);
         }
     }
