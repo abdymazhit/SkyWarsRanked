@@ -66,8 +66,6 @@ public class GameManager {
      * @param player Игрок
      */
     public void addPlayer(Player player) {
-        playersInfo.put(player, new PlayerInfo(player));
-
         player.setFireTicks(0);
         player.setMaxHealth(20.0);
         player.setHealth(20.0);
@@ -143,6 +141,23 @@ public class GameManager {
      */
     public List<Player> getSpectators() {
         return spectators;
+    }
+
+    /**
+     * Добавляет информацию о игроке
+     * @param player Игрок
+     * @param playerInfo Информация о игроке
+     */
+    public void addPlayerInfo(Player player, PlayerInfo playerInfo) {
+        playersInfo.put(player, playerInfo);
+    }
+
+    /**
+     * Удаляет информацию о игроке
+     * @param player Игрок
+     */
+    public void removePlayerInfo(Player player) {
+        playersInfo.remove(player);
     }
 
     /** Получает {@link PlayerInfo информацию} о игроке

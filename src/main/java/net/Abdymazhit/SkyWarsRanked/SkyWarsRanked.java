@@ -1,6 +1,7 @@
 package net.Abdymazhit.SkyWarsRanked;
 
 import net.Abdymazhit.SkyWarsRanked.events.PlayerJoinListener;
+import net.Abdymazhit.SkyWarsRanked.events.PlayerLoginListener;
 import net.Abdymazhit.SkyWarsRanked.events.PlayerQuitListener;
 import net.Abdymazhit.SkyWarsRanked.events.cancelled.*;
 import net.Abdymazhit.SkyWarsRanked.items.GameItems;
@@ -14,13 +15,16 @@ import org.bukkit.plugin.java.JavaPlugin;
 /**
  * Главный класс, отвечает за весь плагин
  *
- * @version   03.08.2021
+ * @version   04.08.2021
  * @author    Islam Abdymazhit
  */
 public class SkyWarsRanked extends JavaPlugin {
 
     /** Экземпляр плагина */
     private static SkyWarsRanked instance;
+
+    /** Объект, отвечает за работу с API */
+    private static API api;
 
     /** Менеджер игры, отвечает за работу игры */
     private static GameManager gameManager;
@@ -51,6 +55,7 @@ public class SkyWarsRanked extends JavaPlugin {
         instance = this;
         Config.load();
 
+        api = new API();
         gameManager = new GameManager();
         gameStageManager = new GameStageManager();
         gameEventsManager = new GameEventsManager();
@@ -58,6 +63,7 @@ public class SkyWarsRanked extends JavaPlugin {
         gameBoard = new GameBoard();
         gameItems = new GameItems();
 
+        getServer().getPluginManager().registerEvents(new PlayerLoginListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(), this);
 
@@ -84,6 +90,14 @@ public class SkyWarsRanked extends JavaPlugin {
      */
     public static SkyWarsRanked getInstance() {
         return instance;
+    }
+
+    /**
+     * Получает объект, отвечающий за работы с API
+     * @return Объект, отвечающий за работы с API
+     */
+    public static API getApi() {
+        return api;
     }
 
     /**

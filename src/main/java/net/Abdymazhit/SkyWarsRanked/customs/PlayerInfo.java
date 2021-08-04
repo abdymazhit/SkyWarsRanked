@@ -1,71 +1,118 @@
 package net.Abdymazhit.SkyWarsRanked.customs;
 
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-
 /**
  * Представляет собой информацию о игроке
  *
- * @version   02.08.2021
+ * @version   04.08.2021
  * @author    Islam Abdymazhit
  */
 public class PlayerInfo {
 
-    /** Игрок, чья информация */
-    private final Player player;
+    /** Глобальная информация о игроке */
+    private final PlayerVimeInfo playerVimeInfo;
 
-    /** Количество убийств игрока */
+    /** Информация о статистике игрока */
+    private final PlayerStats playerStats;
+
+    /** Количество убийств игрока в этом матче */
     private int kills;
 
-    /** Местоположение смерти игрока */
-    private Location deathLocation;
+    /** Количество выпущенных стрел игрока в этом матче */
+    private int arrowsFired;
+
+    /** Количество сломанных блоков игрока в этом матче */
+    private int blocksBroken;
+
+    /** Количество поставленных блоков игрока в этом матче */
+    private int blocksPlaced;
 
     /**
      * Создает информацию о игроке
-     * @param player Игрок, чья информация
+     * @param playerVimeInfo Глобальная информация о игроке
+     * @param playerStats Информация о статистике игрока
      */
-    public PlayerInfo(Player player) {
-        this.player = player;
+    public PlayerInfo(PlayerVimeInfo playerVimeInfo, PlayerStats playerStats) {
+        this.playerVimeInfo = playerVimeInfo;
+        this.playerStats = playerStats;
         this.kills = 0;
-        deathLocation = null;
+        arrowsFired = 0;
+        blocksBroken = 0;
+        blocksPlaced = 0;
     }
 
     /**
-     * Получает игрока, чья информация
-     * @return Игрока, чья информация
+     * Получает глобальную информацию о игроке
+     * @return Глобальная информация о игроке
      */
-    public Player getPlayer() {
-        return player;
+    public PlayerVimeInfo getPlayerVimeInfo() {
+        return playerVimeInfo;
     }
 
     /**
-     * Увеличивает количество убийств игрока
+     * Получает информацию о статистике игрока
+     * @return Информация о статистике игрока
+     */
+    public PlayerStats getPlayerStats() {
+        return playerStats;
+    }
+
+    /**
+     * Увеличивает количество убийств игрока в этом матче
      */
     public void addKills() {
         kills++;
     }
 
     /**
-     * Получает количество убийств игрока
-     * @return Количество убийств игрока
+     * Получает количество убийств игрока в этом матче
+     * @return Количество убийств игрока в этом матче
      */
     public int getKills() {
         return kills;
     }
 
     /**
-     * Устанавливает местоположение смерти игрока
-     * @param deathLocation Местоположение смерти игрока
+     * Увеличивает количество выпущенных стрел игрока в этом матче
      */
-    public void setDeathLocation(Location deathLocation) {
-        this.deathLocation = deathLocation;
+    public void addArrowsFired() {
+        arrowsFired++;
     }
 
     /**
-     * Получает местоположение смерти игрока
-     * @return Местоположение смерти игрока
+     * Получает количество выпущенных стрел игрока в этом матче
+     * @return Количество выпущенных стрел игрока в этом матче
      */
-    public Location getDeathLocation() {
-        return deathLocation;
+    public int getArrowsFired() {
+        return arrowsFired;
+    }
+
+    /**
+     * Увеличивает количество сломанных блоков игрока в этом матче
+     */
+    public void addBlocksBroken() {
+        blocksBroken++;
+    }
+
+    /**
+     * Получает количество сломанных блоков игрока в этом матче
+     * @return Количество сломанных блоков игрока в этом матче
+     */
+    public int getBlocksBroken() {
+        return blocksBroken;
+    }
+
+    /**
+     * Увеличивает количество поставленных блоков игрока в этом матче
+     */
+    public void addBlocksPlaced() {
+        blocksPlaced++;
+    }
+
+    /**
+     * Получает количество поставленных блоков игрока в этом матче
+     * @return Количество поставленных блоков игрока в этом матче
+     */
+    public int getBlocksPlaced() {
+        return blocksPlaced;
     }
 }

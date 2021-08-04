@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 /**
  * Отвечает за событие выхода игрока из сервера
  *
- * @version   03.08.2021
+ * @version   04.08.2021
  * @author    Islam Abdymazhit
  */
 public class PlayerQuitListener implements Listener {
@@ -80,5 +80,8 @@ public class PlayerQuitListener implements Listener {
             SkyWarsRanked.getGameManager().removePlayer(player);
             SkyWarsRanked.getGameManager().removeSpectator(player);
         }
+
+        // Удаляет информацию о игроке, полученную от API VimeWorld.ru
+        SkyWarsRanked.getGameManager().removePlayerInfo(player);
     }
 }
