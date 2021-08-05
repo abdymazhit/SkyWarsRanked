@@ -95,6 +95,9 @@ public class GameManager {
      */
     public void removePlayer(Player player) {
         players.remove(player);
+
+        // Обновить меню телепортации к игрокам
+        SkyWarsRanked.getGameItems().getTeleportMenu().update();
     }
 
     /** Получает список игроков игры

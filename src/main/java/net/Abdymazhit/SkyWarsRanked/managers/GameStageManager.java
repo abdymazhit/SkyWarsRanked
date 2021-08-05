@@ -135,6 +135,9 @@ public class GameStageManager extends GameEventsManager {
             SkyWarsRanked.getGameBoard().updateKillsCount(player);
         }
 
+        // Обновить меню телепортации к игрокам
+        SkyWarsRanked.getGameItems().getTeleportMenu().update();
+
         // Обновить количество живых игроков в scoreboard'е игры
         SkyWarsRanked.getGameBoard().updateLivePlayersCount();
 

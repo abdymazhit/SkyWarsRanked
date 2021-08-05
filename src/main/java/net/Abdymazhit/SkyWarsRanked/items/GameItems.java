@@ -1,12 +1,15 @@
 package net.Abdymazhit.SkyWarsRanked.items;
 
+import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.items.menu.IslandSelectMenu;
 import net.Abdymazhit.SkyWarsRanked.items.menu.Menu;
+import net.Abdymazhit.SkyWarsRanked.items.menu.TeleportMenu;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -33,6 +36,9 @@ public class GameItems {
     /** Хранит информацию о меню предмета */
     private final Map<ItemStack, Menu> itemMenu;
 
+    /** Меню телепортации к игрокам */
+    private final TeleportMenu teleportMenu;
+
     /**
      * Инициализирует игровые предметы
      */
@@ -50,6 +56,8 @@ public class GameItems {
         teleportItemMeta.setLore(lore);
         teleportItem.setItemMeta(teleportItemMeta);
         spectatorItems.put(teleportItem, 0);
+        itemMenu.put(teleportItem, teleportMenu = new TeleportMenu());
+        itemUsage.put(teleportItem, player -> itemMenu.get(teleportItem).open(player));
 
         ItemStack islandsItem = new ItemStack(Material.NAME_TAG);
         ItemMeta islandsItemMeta = islandsItem.getItemMeta();
@@ -127,17 +135,24 @@ public class GameItems {
      * @param player Зритель
      */
     public void giveSpectatorItems(Player player) {
-        player.getInventory().clear();
+        // Выдать предметы после 1 тика
+        // Если выдавать сразу, предметы не выдадутся, потому что событие PlayerDeathEvent очищает инвентарь после выдачи
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                player.getInventory().clear();
 
-        for(ItemStack itemStack : spectatorItems.keySet()) {
-            int slot = spectatorItems.get(itemStack);
-            player.getInventory().setItem(slot, itemStack);
-        }
+                for(ItemStack itemStack : spectatorItems.keySet()) {
+                    int slot = spectatorItems.get(itemStack);
+                    player.getInventory().setItem(slot, itemStack);
+                }
 
-        ItemStack meItem = player.getInventory().getItem(7);
-        ItemMeta meItemMeta = meItem.getItemMeta();
-        meItemMeta.setDisplayName("§r>> §e§l" + player.getName() + " §r<<");
-        meItem.setItemMeta(meItemMeta);
+                ItemStack meItem = player.getInventory().getItem(7);
+                ItemMeta meItemMeta = meItem.getItemMeta();
+                meItemMeta.setDisplayName("§r>> §e§l" + player.getName() + " §r<<");
+                meItem.setItemMeta(meItemMeta);
+            }
+        }.runTaskLater(SkyWarsRanked.getInstance(), 1L);
     }
 
     /**
@@ -163,5 +178,13 @@ public class GameItems {
                 menu.clickSlot(player, slot);
             }
         }
+    }
+
+    /**
+     * Получает меню телепортации к игрокам
+     * @return Меню телепортации к игрокам
+     */
+    public TeleportMenu getTeleportMenu() {
+        return teleportMenu;
     }
 }
