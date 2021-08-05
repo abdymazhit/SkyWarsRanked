@@ -1,6 +1,8 @@
 package net.Abdymazhit.SkyWarsRanked.managers;
 
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
+import org.bukkit.Bukkit;
+import org.bukkit.WorldBorder;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -52,6 +54,10 @@ public class GameEventsManager {
                 SkyWarsRanked.getGameBoard().updateEvent("Начало суж. зоны " + timeToString(time));
 
                 if (time-- <= 0) {
+                    // Начать сужение зоны
+                    WorldBorder worldBorder = Bukkit.getWorld("world").getWorldBorder();
+                    worldBorder.setSize(20, 180);
+
                     // Начать следующее игровое событие
                     startMysteryChestOpenEvent();
                     cancel();

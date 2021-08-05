@@ -5,6 +5,7 @@ import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.customs.PlayerInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.WorldBorder;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -40,6 +41,12 @@ public class GameManager {
         players = new ArrayList<>();
         spectators = new ArrayList<>();
         playersInfo = new HashMap<>();
+
+        // Установить зону
+        WorldBorder worldBorder = Bukkit.getWorld("world").getWorldBorder();
+        worldBorder.reset();
+        worldBorder.setCenter(Config.mysteryChest);
+        worldBorder.setSize(200);
     }
 
     /**
