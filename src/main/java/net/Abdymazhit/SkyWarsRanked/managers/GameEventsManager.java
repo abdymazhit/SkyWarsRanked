@@ -224,6 +224,21 @@ public class GameEventsManager {
                 SkyWarsRanked.getGameBoard().updateEvent("Сниж. здор. игроков " + timeToString(time));
 
                 if (time-- <= 0) {
+                    // Начать снижение здоровья игроков
+                    // Каждую секунду здоровье будет уменьшаться на 2 хп
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            for(Player player : SkyWarsRanked.getGameManager().getPlayers()) {
+                                player.damage(2);
+                            }
+
+                            if(SkyWarsRanked.getGameManager().getPlayers().isEmpty()) {
+                                cancel();
+                            }
+                        }
+                    }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L);
+
                     cancel();
                 }
             }
