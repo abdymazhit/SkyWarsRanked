@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Отвечает за работу с конфиг файлом
  *
- * @version   02.08.2021
+ * @version   05.08.2021
  * @author    Islam Abdymazhit
  */
 public class Config {
@@ -27,8 +27,8 @@ public class Config {
     /** Название карты */
     public static String mapName;
 
-    /** Местоположение, где будут появляться зрители */
-    public static Location spectatorLocation;
+    /** Высота на которой будут появляться зрители */
+    public static int respawnY;
 
     /** Список местоположений обычных сундуков */
     public static List<Location> basicChests;
@@ -60,7 +60,7 @@ public class Config {
         lobbyLocation = getLocation(config.getString("lobby"));
         mapName = config.getString("map");
 
-        spectatorLocation = getLocation(config.getString("spectator"));
+        respawnY = config.getInt("respawnY");
 
         basicChests = new ArrayList<>();
         for (Object chestLocation : config.getList("basicChests")) {

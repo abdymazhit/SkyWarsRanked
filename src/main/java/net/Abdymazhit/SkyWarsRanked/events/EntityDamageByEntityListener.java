@@ -10,7 +10,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 /**
  * Отвечает за событие нанесения урона по entity от другого entity
  *
- * @version   04.08.2021
+ * @version   05.08.2021
  * @author    Islam Abdymazhit
  */
 public class EntityDamageByEntityListener implements Listener {
@@ -24,10 +24,16 @@ public class EntityDamageByEntityListener implements Listener {
             if(event.getEntity() instanceof Player) {
                 Player player = (Player) event.getEntity();
 
-                // Установить игроку последнего нанесшего урон по нему игрока
                 if(event.getDamager() instanceof Player) {
-                    Player damager = (Player) event.getDamager();
-                    SkyWarsRanked.getGameManager().getPlayerInfo(player).setLastDamager(damager);
+                    // Отменить событие, если событие начала битвы не началось
+                    if(!SkyWarsRanked.getGameSettingsManager().isEnabledPvP()) {
+                        event.setCancelled(true);
+                    }
+                    // Установить игроку последнего нанесшего урон по нему игрока
+                    else {
+                        Player damager = (Player) event.getDamager();
+                        SkyWarsRanked.getGameManager().getPlayerInfo(player).setLastDamager(damager);
+                    }
                 }
             }
         }

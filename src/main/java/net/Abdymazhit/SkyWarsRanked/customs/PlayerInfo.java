@@ -1,11 +1,12 @@
 package net.Abdymazhit.SkyWarsRanked.customs;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 /**
  * Представляет собой информацию о игроке
  *
- * @version   04.08.2021
+ * @version   05.08.2021
  * @author    Islam Abdymazhit
  */
 public class PlayerInfo {
@@ -31,6 +32,9 @@ public class PlayerInfo {
     /** Последний нанесший урон по игроку */
     private Player lastDamager;
 
+    /** Местоположение смерти игрока */
+    private Location deathLocation;
+
     /**
      * Создает информацию о игроке
      * @param playerVimeInfo Глобальная информация о игроке
@@ -44,6 +48,7 @@ public class PlayerInfo {
         this.blocksBroken = 0;
         this.blocksPlaced = 0;
         this.lastDamager = null;
+        this.deathLocation = null;
     }
 
     /**
@@ -136,5 +141,21 @@ public class PlayerInfo {
      */
     public Player getLastDamager() {
         return lastDamager;
+    }
+
+    /**
+     * Устанавливает местоположение смерти игрока
+     * @param deathLocation Местоположение смерти игрока
+     */
+    public void setDeathLocation(Location deathLocation) {
+        this.deathLocation = deathLocation;
+    }
+
+    /**
+     * Получает местоположение смерти игрока
+     * @return Местоположение смерти игрока
+     */
+    public Location getDeathLocation() {
+        return deathLocation;
     }
 }

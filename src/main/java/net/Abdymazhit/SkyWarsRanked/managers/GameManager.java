@@ -6,7 +6,6 @@ import net.Abdymazhit.SkyWarsRanked.customs.PlayerInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +15,7 @@ import java.util.Map;
 /**
  * Менеджер игры, отвечает за работу игры
  *
- * @version   03.08.2021
+ * @version   05.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameManager {
@@ -32,9 +31,6 @@ public class GameManager {
 
     /** Хранит {@link PlayerInfo информацию} о игроке */
     private final Map<Player, PlayerInfo> playersInfo;
-
-    /** Таймер обратного отсчета */
-    private BukkitTask task;
 
     /**
      * Инициализирует нужные объекты
@@ -165,21 +161,5 @@ public class GameManager {
      */
     public PlayerInfo getPlayerInfo(Player player) {
         return playersInfo.get(player);
-    }
-
-    /**
-     * Установить таймер обратного отсчета
-     * @param task Таймер обратного отсчета
-     */
-    public void setTask(BukkitTask task) {
-        this.task = task;
-    }
-
-    /**
-     * Получает таймер обратного отсчета
-     * @return Таймер обратного отсчета
-     */
-    public BukkitTask getTask() {
-        return task;
     }
 }

@@ -11,10 +11,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 /**
  * Менеджер {@link GameStage стадии игры}, отвечает за изменение {@link GameStage стадии игры}
  *
- * @version   03.08.2021
+ * @version   05.08.2021
  * @author    Islam Abdymazhit
  */
-public class GameStageManager {
+public class GameStageManager extends GameEventsManager {
 
     /**
      * Начать {@link GameStage стадию игры} WAITING
@@ -45,30 +45,28 @@ public class GameStageManager {
         SkyWarsRanked.getGameManager().setGameStage(GameStage.STARTING);
 
         // Начать обратный отсчет начала игры
-        SkyWarsRanked.getGameManager().setTask(
-                new BukkitRunnable() {
-                    int time = 15;
+        task = new BukkitRunnable() {
+            int time = 15;
 
-                    @Override
-                    public void run() {
-                        // Проверить, не вышли ли игроки с игры
-                        if (SkyWarsRanked.getGameManager().getPlayers().size() < 2) {
-                            // Установить игру на WAITING, так как игроки вышли из игры
-                            startWaitingStage();
-                            cancel();
-                        } else {
-                            // Изменить таймер начала игры в scoreboard'е лобби
-                            SkyWarsRanked.getLobbyBoard().setStartingStatus("До начала: §a" + timeToString(time));
+            @Override
+            public void run() {
+                // Проверить, не вышли ли игроки с игры
+                if (SkyWarsRanked.getGameManager().getPlayers().size() < 2) {
+                    // Установить игру на WAITING, так как игроки вышли из игры
+                    startWaitingStage();
+                    cancel();
+                } else {
+                    // Изменить таймер начала игры в scoreboard'е лобби
+                    SkyWarsRanked.getLobbyBoard().setStartingStatus("До начала: §a" + timeToString(time));
 
-                            // Начать стадию игры GAME
-                            if (time-- <= 0) {
-                                startGameStage();
-                                cancel();
-                            }
-                        }
+                    // Начать стадию игры GAME
+                    if (time-- <= 0) {
+                        startGameStage();
+                        cancel();
                     }
-                }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L)
-        );
+                }
+            }
+        }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L);
     }
 
     /**
@@ -135,9 +133,6 @@ public class GameStageManager {
 
             // Установить зрителям количество их убийств в scoreboard'е игры
             SkyWarsRanked.getGameBoard().updateKillsCount(player);
-
-            // Телепортировать зрителей в место спавна зрителей
-            player.teleport(Config.spectatorLocation);
         }
 
         // Обновить количество живых игроков в scoreboard'е игры
@@ -147,7 +142,7 @@ public class GameStageManager {
         SkyWarsRanked.getGameBoard().updateSpectatorsCount();
 
         // Начать игровое событие начала битвы
-        SkyWarsRanked.getGameEventsManager().startBattleStartEvent();
+        startBattleStartEvent();
     }
 
     /**
@@ -158,40 +153,26 @@ public class GameStageManager {
         SkyWarsRanked.getGameManager().setGameStage(GameStage.ENDING);
 
         // Начать обратный отсчет конца игры
-        SkyWarsRanked.getGameManager().setTask(
-                new BukkitRunnable() {
-                    int time = 15;
+        task = new BukkitRunnable() {
+            int time = 15;
 
-                    @Override
-                    public void run() {
-                        // Обновить таймер конца игры в scoreboard'е игры
-                        SkyWarsRanked.getGameBoard().updateEvent("Конец игры " + timeToString(time));
+            @Override
+            public void run() {
+                // Обновить таймер конца игры в scoreboard'е игры
+                SkyWarsRanked.getGameBoard().updateEvent("Конец игры " + timeToString(time));
 
-                        // Завершить игру
-                        if (time-- <= 0) {
-                            for(Player player : Bukkit.getOnlinePlayers()) {
-                                player.kickPlayer("Игра завершена");
-                            }
-
-                            Bukkit.getServer().unloadWorld("world", true);
-                            Bukkit.shutdown();
-
-                            cancel();
-                        }
+                // Завершить игру
+                if (time-- <= 0) {
+                    for(Player player : Bukkit.getOnlinePlayers()) {
+                        player.kickPlayer("Игра завершена");
                     }
-                }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L)
-        );
-    }
 
-    /**
-     * Конвертировать время типа Integer в тип String
-     * @param time Время типа Integer
-     * @return Время в типе String
-     */
-    private String timeToString(int time) {
-        int min = time / 60 % 60;
-        int sec = time % 60;
+                    Bukkit.getServer().unloadWorld("world", true);
+                    Bukkit.shutdown();
 
-        return String.format("%02d:%02d", min, sec);
+                    cancel();
+                }
+            }
+        }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L);
     }
 }

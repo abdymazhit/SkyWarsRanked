@@ -3,6 +3,7 @@ package net.Abdymazhit.SkyWarsRanked.events;
 import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,7 +12,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 /**
  * Отвечает за событие смерти игрока
  *
- * @version   04.08.2021
+ * @version   05.08.2021
  * @author    Islam Abdymazhit
  */
 public class PlayerDeathListener implements Listener {
@@ -25,8 +26,13 @@ public class PlayerDeathListener implements Listener {
 
         player.setHealth(20);
 
-        // Телепортировать игрока в местоположение спавна зрителей
-        player.teleport(Config.spectatorLocation);
+        // Установить местоположение смерти игрока
+        Location deathLocation = player.getLocation();
+        deathLocation.setY(Config.respawnY);
+        SkyWarsRanked.getGameManager().getPlayerInfo(player).setDeathLocation(deathLocation);
+
+        // Телепортировать игрока в местоположение смерти
+        player.teleport(SkyWarsRanked.getGameManager().getPlayerInfo(player).getDeathLocation());
 
         // Удалить игрока из списка живых игроков и обновить количество живых игроков в scoreboard'е игры
         SkyWarsRanked.getGameManager().removePlayer(player);

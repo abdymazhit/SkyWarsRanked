@@ -11,7 +11,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 /**
  * Отвечает за событие нанесения урона по entity
  *
- * @version   04.08.2021
+ * @version   05.08.2021
  * @author    Islam Abdymazhit
  */
 public class EntityDamageListener implements Listener {
@@ -40,7 +40,7 @@ public class EntityDamageListener implements Listener {
                     // Проверка причины урона на VOID (пустоту)
                     if(event.getCause() == EntityDamageEvent.DamageCause.VOID) {
                         // Телепортировать игрока в местоположение спавна зрителей
-                        player.teleport(Config.spectatorLocation);
+                        player.teleport(SkyWarsRanked.getGameManager().getPlayerInfo(player).getDeathLocation());
                     }
                     // Отменить урон, так как игрок является зрителем
                     event.setCancelled(true);
@@ -53,7 +53,7 @@ public class EntityDamageListener implements Listener {
                     // Проверка причины урона на VOID (пустоту)
                     if(event.getCause() == EntityDamageEvent.DamageCause.VOID) {
                         // Телепортировать игрока в местоположение спавна зрителей
-                        player.teleport(Config.spectatorLocation);
+                        player.teleport(SkyWarsRanked.getGameManager().getPlayerInfo(player).getDeathLocation());
                     }
                 }
                 // Отменить урон, так как стадия игры ENDING

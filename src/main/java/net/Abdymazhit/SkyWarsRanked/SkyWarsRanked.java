@@ -3,8 +3,8 @@ package net.Abdymazhit.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.events.*;
 import net.Abdymazhit.SkyWarsRanked.events.cancelled.*;
 import net.Abdymazhit.SkyWarsRanked.items.GameItems;
-import net.Abdymazhit.SkyWarsRanked.managers.GameEventsManager;
 import net.Abdymazhit.SkyWarsRanked.managers.GameManager;
+import net.Abdymazhit.SkyWarsRanked.managers.GameSettingsManager;
 import net.Abdymazhit.SkyWarsRanked.managers.GameStageManager;
 import net.Abdymazhit.SkyWarsRanked.scoreboards.GameBoard;
 import net.Abdymazhit.SkyWarsRanked.scoreboards.LobbyBoard;
@@ -13,7 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 /**
  * Главный класс, отвечает за весь плагин
  *
- * @version   04.08.2021
+ * @version   05.08.2021
  * @author    Islam Abdymazhit
  */
 public class SkyWarsRanked extends JavaPlugin {
@@ -27,11 +27,11 @@ public class SkyWarsRanked extends JavaPlugin {
     /** Менеджер игры, отвечает за работу игры */
     private static GameManager gameManager;
 
+    /** Менеджер настроек игры, отвечает за настройки игры */
+    private static GameSettingsManager gameSettingsManager;
+
     /** Менеджер стадии игры, отвечает за стадии игры */
     private static GameStageManager gameStageManager;
-
-    /** Менеджер игровые событий, отвечает за игровые события */
-    private static GameEventsManager gameEventsManager;
 
     /** Объект, отвечающий за scoreboard лобби */
     private static LobbyBoard lobbyBoard;
@@ -55,8 +55,8 @@ public class SkyWarsRanked extends JavaPlugin {
 
         api = new API();
         gameManager = new GameManager();
+        gameSettingsManager = new GameSettingsManager();
         gameStageManager = new GameStageManager();
-        gameEventsManager = new GameEventsManager();
         lobbyBoard = new LobbyBoard();
         gameBoard = new GameBoard();
         gameItems = new GameItems();
@@ -113,19 +113,19 @@ public class SkyWarsRanked extends JavaPlugin {
     }
 
     /**
+     * Получает менеджер настроек игры
+     * @return Менеджер настроек игры
+     */
+    public static GameSettingsManager getGameSettingsManager() {
+        return gameSettingsManager;
+    }
+
+    /**
      * Получает менеджер стадии игры
      * @return Менеджер стадии игры
      */
     public static GameStageManager getGameStageManager() {
         return gameStageManager;
-    }
-
-    /**
-     * Получает менеджер игровых событий
-     * @return Менеджер игровых событий
-     */
-    public static GameEventsManager getGameEventsManager() {
-        return gameEventsManager;
     }
 
     /**

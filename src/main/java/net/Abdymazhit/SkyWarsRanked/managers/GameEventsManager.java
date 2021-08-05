@@ -2,37 +2,62 @@ package net.Abdymazhit.SkyWarsRanked.managers;
 
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 /**
  * Менеджер игровых событий, отвечает за изменение игровых событий
  *
- * @version   03.08.2021
+ * @version   05.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameEventsManager {
+
+    /** Таймер обратного отсчета */
+    public BukkitTask task;
 
     /**
      * Начать игровое событие начала битвы
      */
     public void startBattleStartEvent() {
         // Начать обратный отсчет
-        SkyWarsRanked.getGameManager().setTask(
-                new BukkitRunnable() {
-                    int time = 10; // Время до начала битвы
+        task = new BukkitRunnable() {
+            int time = 10; // Время до начала битвы
 
-                    @Override
-                    public void run() {
-                        // Изменить таймер в scoreboard'е игры
-                        SkyWarsRanked.getGameBoard().updateEvent("Начало битвы " + timeToString(time));
+            @Override
+            public void run() {
+                // Изменить таймер в scoreboard'е игры
+                SkyWarsRanked.getGameBoard().updateEvent("Начало битвы " + timeToString(time));
 
-                        // Начать следующее игровое событие
-                        if (time-- <= 0) {
-                            startMysteryChestOpenEvent();
-                            cancel();
-                        }
-                    }
-                }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L)
-        );
+                if (time-- <= 0) {
+                    // Разрешить PvP между игроками
+                    SkyWarsRanked.getGameSettingsManager().setEnabledPvP(true);
+
+                    // Начать следующее игровое событие
+                    startNarrowingGameZoneEvent();
+                    cancel();
+                }
+            }
+        }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L);
+    }
+
+    /** Начать игровое событие начала сужения зоны */
+    private void startNarrowingGameZoneEvent() {
+        // Начать обратный отсчет
+        task = new BukkitRunnable() {
+            int time = 50; // Время до начала сужения зоны
+
+            @Override
+            public void run() {
+                // Изменить таймер в scoreboard'е игры
+                SkyWarsRanked.getGameBoard().updateEvent("Начало суж. зоны " + timeToString(time));
+
+                if (time-- <= 0) {
+                    // Начать следующее игровое событие
+                    startMysteryChestOpenEvent();
+                    cancel();
+                }
+            }
+        }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L);
     }
 
     /**
@@ -40,23 +65,24 @@ public class GameEventsManager {
      */
     private void startMysteryChestOpenEvent() {
         // Начать обратный отсчет
-        SkyWarsRanked.getGameManager().setTask(
-                new BukkitRunnable() {
-                    int time = 140; // Время до открытия мистического сундука
+        task = new BukkitRunnable() {
+            int time = 60; // Время до открытия мистического сундука
 
-                    @Override
-                    public void run() {
-                        // Изменить таймер в scoreboard'е игры
-                        SkyWarsRanked.getGameBoard().updateEvent("Отк. Мист. сундука " + timeToString(time));
+            @Override
+            public void run() {
+                // Изменить таймер в scoreboard'е игры
+                SkyWarsRanked.getGameBoard().updateEvent("Отк. Мист. сундука " + timeToString(time));
 
-                        // Начать следующее игровое событие
-                        if (time-- <= 0) {
-                            startMysteryChestCloseEvent();
-                            cancel();
-                        }
-                    }
-                }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L)
-        );
+                if (time-- <= 0) {
+                    // Открыть мистический сундук
+                    SkyWarsRanked.getGameSettingsManager().setMysteryChestOpened(true);
+
+                    // Начать следующее игровое событие
+                    startMysteryChestCloseEvent();
+                    cancel();
+                }
+            }
+        }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L);
     }
 
     /**
@@ -64,23 +90,24 @@ public class GameEventsManager {
      */
     private void startMysteryChestCloseEvent() {
         // Начать обратный отсчет
-        SkyWarsRanked.getGameManager().setTask(
-                new BukkitRunnable() {
-                    int time = 30; // Время до закрытия мистического сундука
+        task = new BukkitRunnable() {
+            int time = 30; // Время до закрытия мистического сундука
 
-                    @Override
-                    public void run() {
-                        // Изменить таймер в scoreboard'е игры
-                        SkyWarsRanked.getGameBoard().updateEvent("Закр. Мист. сундука " + timeToString(time));
+            @Override
+            public void run() {
+                // Изменить таймер в scoreboard'е игры
+                SkyWarsRanked.getGameBoard().updateEvent("Закр. Мист. сундука " + timeToString(time));
 
-                        // Начать следующее игровое событие
-                        if (time-- <= 0) {
-                            startRefillChestsEvent();
-                            cancel();
-                        }
-                    }
-                }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L)
-        );
+                if (time-- <= 0) {
+                    // Закрыть мистический сундук
+                    SkyWarsRanked.getGameSettingsManager().setMysteryChestOpened(false);
+
+                    // Начать следующее игровое событие
+                    startRefillChestsEvent();
+                    cancel();
+                }
+            }
+        }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L);
     }
 
     /**
@@ -88,71 +115,41 @@ public class GameEventsManager {
      */
     private void startRefillChestsEvent() {
         // Начать обратный отсчет
-        SkyWarsRanked.getGameManager().setTask(
-                new BukkitRunnable() {
-                    int time = 120; // Время до перезаполнения сундуков
+        task = new BukkitRunnable() {
+            int time = 60; // Время до перезаполнения сундуков
 
-                    @Override
-                    public void run() {
-                        // Изменить таймер в scoreboard'е игры
-                        SkyWarsRanked.getGameBoard().updateEvent("Перезап. сундуков " + timeToString(time));
+            @Override
+            public void run() {
+                // Изменить таймер в scoreboard'е игры
+                SkyWarsRanked.getGameBoard().updateEvent("Перезап. сундуков " + timeToString(time));
 
-                        // Начать следующее игровое событие
-                        if (time-- <= 0) {
-                            startMysteryChestOpenEventV2();
-                            cancel();
-                        }
-                    }
-                }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L)
-        );
+                if (time-- <= 0) {
+                    // Начать следующее игровое событие
+                    startEndNarrowingGameZoneEvent();
+                    cancel();
+                }
+            }
+        }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L);
     }
 
-    /**
-     * Начать игровое событие открытия мистического сундука
-     */
-    private void startMysteryChestOpenEventV2() {
+    /** Начать игровое событие конца сужения зоны */
+    private void startEndNarrowingGameZoneEvent() {
         // Начать обратный отсчет
-        SkyWarsRanked.getGameManager().setTask(
-                new BukkitRunnable() {
-                    int time = 150; // Время до открытия мистического сундука
+        task = new BukkitRunnable() {
+            int time = 30; // Время до конца сужения зоны
 
-                    @Override
-                    public void run() {
-                        // Изменить таймер в scoreboard'е игры
-                        SkyWarsRanked.getGameBoard().updateEvent("Отк. Мист. сундука " + timeToString(time));
+            @Override
+            public void run() {
+                // Изменить таймер в scoreboard'е игры
+                SkyWarsRanked.getGameBoard().updateEvent("Конец суж. зоны " + timeToString(time));
 
-                        // Начать следующее игровое событие
-                        if (time-- <= 0) {
-                            startMysteryChestCloseEventV2();
-                            cancel();
-                        }
-                    }
-                }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L)
-        );
-    }
-
-    /**
-     * Начать игровое событие закрытия мистического сундука
-     */
-    private void startMysteryChestCloseEventV2() {
-        // Начать обратный отсчет
-        SkyWarsRanked.getGameManager().setTask(
-                new BukkitRunnable() {
-                    int time = 30; // Время до закрытия мистического сундука
-
-                    @Override
-                    public void run() {
-                        // Изменить таймер в scoreboard'е игры
-                        SkyWarsRanked.getGameBoard().updateEvent("Закр. Мист. сундука " + timeToString(time));
-
-                        // Начать следующее игровое событие
-                        if (time-- <= 0) {
-                            startRefillChestsEventV2();
-                            cancel();
-                        }
-                    }
-                }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L)
-        );
+                if (time-- <= 0) {
+                    // Начать следующее игровое событие
+                    startRefillChestsEventV2();
+                    cancel();
+                }
+            }
+        }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L);
     }
 
     /**
@@ -160,23 +157,21 @@ public class GameEventsManager {
      */
     private void startRefillChestsEventV2() {
         // Начать обратный отсчет
-        SkyWarsRanked.getGameManager().setTask(
-                new BukkitRunnable() {
-                    int time = 120; // Время до перезаполнения сундуков
+        task = new BukkitRunnable() {
+            int time = 60; // Время до перезаполнения сундуков
 
-                    @Override
-                    public void run() {
-                        // Изменить таймер в scoreboard'е игры
-                        SkyWarsRanked.getGameBoard().updateEvent("Перезап. сундуков " + timeToString(time));
+            @Override
+            public void run() {
+                // Изменить таймер в scoreboard'е игры
+                SkyWarsRanked.getGameBoard().updateEvent("Перезап. сундуков " + timeToString(time));
 
-                        // Начать следующее игровое событие
-                        if (time-- <= 0) {
-                            startDeathmatchEvent();
-                            cancel();
-                        }
-                    }
-                }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L)
-        );
+                if (time-- <= 0) {
+                    // Начать следующее игровое событие
+                    startDeathmatchEvent();
+                    cancel();
+                }
+            }
+        }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L);
     }
 
     /**
@@ -184,48 +179,41 @@ public class GameEventsManager {
      */
     private void startDeathmatchEvent() {
         // Начать обратный отсчет
-        SkyWarsRanked.getGameManager().setTask(
-                new BukkitRunnable() {
-                    int time = 150; // Время до детматча
+        task = new BukkitRunnable() {
+            int time = 60; // Время до детматча
 
-                    @Override
-                    public void run() {
-                        // Изменить таймер в scoreboard'е игры
-                        SkyWarsRanked.getGameBoard().updateEvent("Детматч " + timeToString(time));
+            @Override
+            public void run() {
+                // Изменить таймер в scoreboard'е игры
+                SkyWarsRanked.getGameBoard().updateEvent("Детматч " + timeToString(time));
 
-                        // Начать следующее игровое событие
-                        if (time-- <= 0) {
-                            startMegaDeathmatchEvent();
-                            cancel();
-                        }
-                    }
-                }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L)
-        );
+                if (time-- <= 0) {
+                    // Начать следующее игровое событие
+                    startPlayersDecreasingHealthEvent();
+                    cancel();
+                }
+            }
+        }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L);
     }
 
     /**
-     * Начать игровое событие мега детматча
+     * Начать игровое событие снижения здоровья игроков
      */
-    private void startMegaDeathmatchEvent() {
+    private void startPlayersDecreasingHealthEvent() {
         // Начать обратный отсчет
-        SkyWarsRanked.getGameManager().setTask(
-                new BukkitRunnable() {
-                    int time = 150; // Время до мега детматча
+        task = new BukkitRunnable() {
+            int time = 60; // Время до начала снижения здоровья игроков
 
-                    @Override
-                    public void run() {
-                        // Изменить таймер в scoreboard'е игры
-                        SkyWarsRanked.getGameBoard().updateEvent("Мега Детматч " + timeToString(time));
+            @Override
+            public void run() {
+                // Изменить таймер в scoreboard'е игры
+                SkyWarsRanked.getGameBoard().updateEvent("Сниж. здор. игроков " + timeToString(time));
 
-                        // Начать следующее игровое событие
-                        if (time-- <= 0) {
-                            // Начать стадию конца игры, так как не удалось выявить победителя
-                            SkyWarsRanked.getGameStageManager().startEndingStage();
-                            cancel();
-                        }
-                    }
-                }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L)
-        );
+                if (time-- <= 0) {
+                    cancel();
+                }
+            }
+        }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L);
     }
 
     /**
@@ -233,7 +221,7 @@ public class GameEventsManager {
      * @param time Время типа Integer
      * @return Время в типе String
      */
-    private String timeToString(int time) {
+    public String timeToString(int time) {
         int min = time / 60 % 60;
         int sec = time % 60;
 
