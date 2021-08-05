@@ -1,8 +1,10 @@
 package net.Abdymazhit.SkyWarsRanked.managers;
 
+import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import org.bukkit.Bukkit;
 import org.bukkit.WorldBorder;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -194,6 +196,12 @@ public class GameEventsManager {
                 SkyWarsRanked.getGameBoard().updateEvent("Детматч " + timeToString(time));
 
                 if (time-- <= 0) {
+                    // Телепортировать игроков в местоположение детматча
+                    for(int id = 0; id < SkyWarsRanked.getGameManager().getPlayers().size(); id++) {
+                        Player player = SkyWarsRanked.getGameManager().getPlayers().get(id);
+                        player.teleport(Config.deathmatchSpawns.get(id));
+                    }
+
                     // Начать следующее игровое событие
                     startPlayersDecreasingHealthEvent();
                     cancel();

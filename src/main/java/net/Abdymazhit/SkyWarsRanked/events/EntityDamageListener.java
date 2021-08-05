@@ -39,8 +39,8 @@ public class EntityDamageListener implements Listener {
                 if(SkyWarsRanked.getGameManager().getSpectators().contains(player)) {
                     // Проверка причины урона на VOID (пустоту)
                     if(event.getCause() == EntityDamageEvent.DamageCause.VOID) {
-                        // Телепортировать игрока в местоположение спавна зрителей
-                        player.teleport(SkyWarsRanked.getGameManager().getPlayerInfo(player).getDeathLocation());
+                        // Телепортировать игрока в местоположение лобби
+                        player.teleport(Config.lobbyLocation);
                     }
                     // Отменить урон, так как игрок является зрителем
                     event.setCancelled(true);
@@ -52,8 +52,8 @@ public class EntityDamageListener implements Listener {
                 if(SkyWarsRanked.getGameManager().getSpectators().contains(player)) {
                     // Проверка причины урона на VOID (пустоту)
                     if(event.getCause() == EntityDamageEvent.DamageCause.VOID) {
-                        // Телепортировать игрока в местоположение спавна зрителей
-                        player.teleport(SkyWarsRanked.getGameManager().getPlayerInfo(player).getDeathLocation());
+                        // Телепортировать игрока в местоположение лобби
+                        player.teleport(Config.lobbyLocation);
                     }
                 }
                 // Отменить урон, так как стадия игры ENDING
