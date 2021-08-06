@@ -11,7 +11,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 /**
  * Менеджер {@link GameStage стадии игры}, отвечает за изменение {@link GameStage стадии игры}
  *
- * @version   05.08.2021
+ * @version   06.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameStageManager extends GameEventsManager {
@@ -152,6 +152,9 @@ public class GameStageManager extends GameEventsManager {
      * Начать {@link GameStage стадию игры} ENDING
      */
     public void startEndingStage() {
+        // Отменить таймер предыдущего события
+        task.cancel();
+
         // Установить стадию игры на ENDING
         SkyWarsRanked.getGameManager().setGameStage(GameStage.ENDING);
 

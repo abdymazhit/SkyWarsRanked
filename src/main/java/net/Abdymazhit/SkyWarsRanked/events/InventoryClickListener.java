@@ -2,6 +2,7 @@ package net.Abdymazhit.SkyWarsRanked.events;
 
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.managers.GameStage;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,7 +11,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 /**
  * Отвечает за событие клика по слоту инвентаря
  *
- * @version   05.08.2021
+ * @version   06.08.2021
  * @author    Islam Abdymazhit
  */
 public class InventoryClickListener implements Listener {
@@ -29,6 +30,11 @@ public class InventoryClickListener implements Listener {
                 // Отменить клик, так как стадия игры WAITING или STARTING
                 event.setCancelled(true);
 
+                // Проверка существует ли предмет
+                if(event.getCurrentItem() == null || event.getCurrentItem().getType().equals(Material.AIR)) {
+                    return;
+                }
+
                 // Отправляет событие клика по инвентарю
                 SkyWarsRanked.getGameItems().clickInventory(player, event.getInventory(), event.getSlot());
             }
@@ -37,6 +43,11 @@ public class InventoryClickListener implements Listener {
             if(SkyWarsRanked.getGameManager().getSpectators().contains(player)) {
                 // Отменить клик, так как игрок является зрителем
                 event.setCancelled(true);
+
+                // Проверка существует ли предмет
+                if(event.getCurrentItem() == null || event.getCurrentItem().getType().equals(Material.AIR)) {
+                    return;
+                }
 
                 // Отправляет событие клика по инвентарю
                 SkyWarsRanked.getGameItems().clickInventory(player, event.getInventory(), event.getSlot());

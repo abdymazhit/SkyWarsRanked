@@ -111,44 +111,46 @@ public class SpectatorSettingsMenu extends Menu {
     public void clickSlot(Player player, int slot) {
         super.clickSlot(player, slot);
 
-        for(int flightSpeed : flightSpeedSlot.keySet()) {
-            int speedSlot = flightSpeedSlot.get(flightSpeed);
+        if(flightSpeedSlot.containsValue(slot)) {
+            for(int flightSpeed : flightSpeedSlot.keySet()) {
+                int speedSlot = flightSpeedSlot.get(flightSpeed);
 
-            ItemStack item = flightSpeedItem.get(flightSpeed);
-            ItemMeta itemMeta = item.getItemMeta();
+                ItemStack item = flightSpeedItem.get(flightSpeed);
+                ItemMeta itemMeta = item.getItemMeta();
 
-            if(speedSlot == slot) {
-                System.out.println(item.getItemMeta().getLore());
+                if(speedSlot == slot) {
+                    System.out.println(item.getItemMeta().getLore());
 
-                List<String> itemLore = new ArrayList<>();
-                itemLore.add("§7Используйте этот предмет,");
-                itemLore.add("§7чтобы изменить свою скорость полета");
-                itemLore.add("");
-                itemLore.add("§aВыбрано");
-                itemMeta.setLore(itemLore);
+                    List<String> itemLore = new ArrayList<>();
+                    itemLore.add("§7Используйте этот предмет,");
+                    itemLore.add("§7чтобы изменить свою скорость полета");
+                    itemLore.add("");
+                    itemLore.add("§aВыбрано");
+                    itemMeta.setLore(itemLore);
 
-                player.setFlySpeed(Float.parseFloat("0." + flightSpeed));
-            } else {
-                List<String> itemLore = new ArrayList<>();
-                itemLore.add("§7Используйте этот предмет,");
-                itemLore.add("§7чтобы изменить свою скорость полета");
-                itemLore.add("");
-                itemLore.add("§eНажмите, чтобы выбрать");
-                itemMeta.setLore(itemLore);
+                    player.setFlySpeed(Float.parseFloat("0." + flightSpeed));
+                } else {
+                    List<String> itemLore = new ArrayList<>();
+                    itemLore.add("§7Используйте этот предмет,");
+                    itemLore.add("§7чтобы изменить свою скорость полета");
+                    itemLore.add("");
+                    itemLore.add("§eНажмите, чтобы выбрать");
+                    itemMeta.setLore(itemLore);
+                }
+
+                item.setItemMeta(itemMeta);
+
+                // Добавить зачарование о выбранности скорости полета после установки ItemMeta
+                // Если добавлять перед установкой ItemMeta, зачарование не добавится
+                if(speedSlot == slot) {
+                    item.addEnchantment(Enchantment.PROTECTION_FALL, 1);
+                } else {
+                    item.removeEnchantment(Enchantment.PROTECTION_FALL);
+                }
+
+                flightSpeedItem.put(flightSpeed, item);
+                getInventory().setItem(flightSpeedSlot.get(flightSpeed), flightSpeedItem.get(flightSpeed));
             }
-
-            item.setItemMeta(itemMeta);
-
-            // Добавить зачарование о выбранности скорости полета после установки ItemMeta
-            // Если добавлять перед установкой ItemMeta, зачарование не добавится
-            if(speedSlot == slot) {
-                item.addEnchantment(Enchantment.PROTECTION_FALL, 1);
-            } else {
-                item.removeEnchantment(Enchantment.PROTECTION_FALL);
-            }
-
-            flightSpeedItem.put(flightSpeed, item);
-            getInventory().setItem(flightSpeedSlot.get(flightSpeed), flightSpeedItem.get(flightSpeed));
         }
     }
 }

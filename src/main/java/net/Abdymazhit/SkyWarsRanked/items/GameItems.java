@@ -232,7 +232,9 @@ public class GameItems {
         // Если меню не найдено, тогда меню является уникальным
         // Уникальное меню для каждого игрока - настройки зрителя
         if(!isFoundMenu) {
-            spectatorSettingsMenus.get(player).clickSlot(player, slot);
+            if(spectatorSettingsMenus.get(player) != null) {
+                spectatorSettingsMenus.get(player).clickSlot(player, slot);
+            }
         }
     }
 
