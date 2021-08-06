@@ -3,6 +3,7 @@ package net.Abdymazhit.SkyWarsRanked.items;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.items.menu.IslandSelectMenu;
 import net.Abdymazhit.SkyWarsRanked.items.menu.Menu;
+import net.Abdymazhit.SkyWarsRanked.items.menu.SpectatorSettingsMenu;
 import net.Abdymazhit.SkyWarsRanked.items.menu.TeleportMenu;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -11,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,7 @@ import java.util.Map;
 /**
  * Отвечает за игровые предметы
  *
- * @version   05.08.2021
+ * @version   06.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameItems {
@@ -39,6 +40,9 @@ public class GameItems {
     /** Меню телепортации к игрокам */
     private final TeleportMenu teleportMenu;
 
+    /** Хранит информацию о зрителе и его настройках зрителя */
+    private final Map<Player, SpectatorSettingsMenu> spectatorSettingsMenus;
+
     /**
      * Инициализирует игровые предметы
      */
@@ -47,22 +51,38 @@ public class GameItems {
         spectatorItems = new HashMap<>();
         itemUsage = new HashMap<>();
         itemMenu = new HashMap<>();
-
-        List<String> lore = Collections.singletonList("§5§oVimeWorld.ru");
+        spectatorSettingsMenus = new HashMap<>();
 
         ItemStack teleportItem = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
         ItemMeta teleportItemMeta = teleportItem.getItemMeta();
         teleportItemMeta.setDisplayName("§r>> §e§lТелепортация к игрокам §r<<");
-        teleportItemMeta.setLore(lore);
+        List<String> teleportItemLore = new ArrayList<>();
+        teleportItemLore.add("§7Нажмите ПКМ, чтобы открыть");
+        teleportItemLore.add("§7меню телепортации к игрокам");
+        teleportItemMeta.setLore(teleportItemLore);
         teleportItem.setItemMeta(teleportItemMeta);
         spectatorItems.put(teleportItem, 0);
         itemMenu.put(teleportItem, teleportMenu = new TeleportMenu());
         itemUsage.put(teleportItem, player -> itemMenu.get(teleportItem).open(player));
 
+        ItemStack spectatorSettingsItem = new ItemStack(Material.DIODE);
+        ItemMeta spectatorSettingsItemMeta = spectatorSettingsItem.getItemMeta();
+        spectatorSettingsItemMeta.setDisplayName("§r>> §e§lНастройки зрителя §r<<");
+        List<String> spectatorSettingsItemLore = new ArrayList<>();
+        spectatorSettingsItemLore.add("§7Нажмите ПКМ, чтобы открыть");
+        spectatorSettingsItemLore.add("§7меню настроек зрителя");
+        spectatorSettingsItemMeta.setLore(spectatorSettingsItemLore);
+        spectatorSettingsItem.setItemMeta(spectatorSettingsItemMeta);
+        spectatorItems.put(spectatorSettingsItem, 1);
+        itemUsage.put(spectatorSettingsItem, player -> spectatorSettingsMenus.get(player).open(player));
+
         ItemStack islandsItem = new ItemStack(Material.NAME_TAG);
         ItemMeta islandsItemMeta = islandsItem.getItemMeta();
         islandsItemMeta.setDisplayName("§r>> §e§lВыбор острова §r<<");
-        islandsItemMeta.setLore(lore);
+        List<String> islandsItemLore = new ArrayList<>();
+        islandsItemLore.add("§7Нажмите ПКМ, чтобы открыть");
+        islandsItemLore.add("§7меню выбора острова");
+        islandsItemMeta.setLore(islandsItemLore);
         islandsItem.setItemMeta(islandsItemMeta);
         lobbyItems.put(islandsItem, 0);
         itemMenu.put(islandsItem, new IslandSelectMenu());
@@ -71,34 +91,49 @@ public class GameItems {
         ItemStack upgradesItem = new ItemStack(Material.EYE_OF_ENDER);
         ItemMeta upgradesItemMeta = upgradesItem.getItemMeta();
         upgradesItemMeta.setDisplayName("§r>> §e§lМеню прокачек §r<<");
-        upgradesItemMeta.setLore(lore);
+        List<String> upgradesItemLore = new ArrayList<>();
+        upgradesItemLore.add("§7Нажмите ПКМ, чтобы открыть");
+        upgradesItemLore.add("§7меню прокачек");
+        upgradesItemMeta.setLore(upgradesItemLore);
         upgradesItem.setItemMeta(upgradesItemMeta);
         lobbyItems.put(upgradesItem, 1);
 
         ItemStack kitsItem = new ItemStack(Material.BOW);
         ItemMeta kitsItemMeta = kitsItem.getItemMeta();
-        kitsItemMeta.setDisplayName("§r>> §e§lВыбор стартового набора §r<<");
-        kitsItemMeta.setLore(lore);
+        kitsItemMeta.setDisplayName("§r>> §e§lВыбор набора §r<<");
+        List<String> kitsItemLore = new ArrayList<>();
+        kitsItemLore.add("§7Нажмите ПКМ, чтобы открыть");
+        kitsItemLore.add("§7меню выбора набора");
+        kitsItemMeta.setLore(kitsItemLore);
         kitsItem.setItemMeta(kitsItemMeta);
         lobbyItems.put(kitsItem, 2);
 
         ItemStack cosmeticsItem = new ItemStack(Material.SLIME_BALL);
         ItemMeta cosmeticsItemMeta = cosmeticsItem.getItemMeta();
         cosmeticsItemMeta.setDisplayName("§r>> §e§lКосметика §r<<");
-        cosmeticsItemMeta.setLore(lore);
+        List<String> cosmeticsItemLore = new ArrayList<>();
+        cosmeticsItemLore.add("§7Нажмите ПКМ, чтобы открыть");
+        cosmeticsItemLore.add("§7меню косметики");
+        cosmeticsItemMeta.setLore(cosmeticsItemLore);
         cosmeticsItem.setItemMeta(cosmeticsItemMeta);
         lobbyItems.put(cosmeticsItem, 3);
 
         ItemStack tracesItem = new ItemStack(Material.INK_SACK, 1, (byte) 11);
         ItemMeta tracesItemMeta = tracesItem.getItemMeta();
         tracesItemMeta.setDisplayName("§r>> §e§lВыбор следа §r<<");
-        tracesItemMeta.setLore(lore);
+        List<String> tracesItemLore = new ArrayList<>();
+        tracesItemLore.add("§7Нажмите ПКМ, чтобы открыть");
+        tracesItemLore.add("§7меню выбора следа");
+        tracesItemMeta.setLore(tracesItemLore);
         tracesItem.setItemMeta(tracesItemMeta);
         lobbyItems.put(tracesItem, 6);
 
         ItemStack meItem = new ItemStack(Material.NETHER_STAR);
         ItemMeta meItemMeta = meItem.getItemMeta();
-        meItemMeta.setLore(lore);
+        List<String> meItemLore = new ArrayList<>();
+        meItemLore.add("§7Нажмите ПКМ, чтобы посмотреть задания,");
+        meItemLore.add("§7достижения или изменить личные настройки");
+        meItemMeta.setLore(meItemLore);
         meItem.setItemMeta(meItemMeta);
         lobbyItems.put(meItem, 7);
         spectatorItems.put(meItem, 7);
@@ -106,7 +141,10 @@ public class GameItems {
         ItemStack leaveItem = new ItemStack(Material.COMPASS);
         ItemMeta leaveItemMeta = leaveItem.getItemMeta();
         leaveItemMeta.setDisplayName("§r>> §e§lВернуться в лобби §r<<");
-        leaveItemMeta.setLore(lore);
+        List<String> leaveItemLore = new ArrayList<>();
+        leaveItemLore.add("§7Нажмите ПКМ, чтобы");
+        leaveItemLore.add("§7покинуть игру");
+        leaveItemMeta.setLore(leaveItemLore);
         leaveItem.setItemMeta(leaveItemMeta);
         lobbyItems.put(leaveItem, 8);
         spectatorItems.put(leaveItem, 8);
@@ -156,6 +194,14 @@ public class GameItems {
     }
 
     /**
+     * Добавляет зрителю меню настроек зрителя
+     * @param player Зритель
+     */
+    public void addSpectatorSettingsMenu(Player player) {
+        spectatorSettingsMenus.put(player, new SpectatorSettingsMenu());
+    }
+
+    /**
      * Обрабатывает событие использования предмета
      * @param player Игрок
      * @param itemStack Предмет
@@ -172,11 +218,21 @@ public class GameItems {
      * @param inventory Инвентарь
      */
     public void clickInventory(Player player, Inventory inventory, int slot) {
+        // Значение, найдено ли меню
+        boolean isFoundMenu = false;
+
         for(ItemStack itemStack : itemMenu.keySet()) {
             Menu menu = itemMenu.get(itemStack);
             if(menu.getInventory().equals(inventory)) {
+                isFoundMenu = true;
                 menu.clickSlot(player, slot);
             }
+        }
+
+        // Если меню не найдено, тогда меню является уникальным
+        // Уникальное меню для каждого игрока - настройки зрителя
+        if(!isFoundMenu) {
+            spectatorSettingsMenus.get(player).clickSlot(player, slot);
         }
     }
 

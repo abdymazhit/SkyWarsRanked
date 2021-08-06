@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Менеджер игры, отвечает за работу игры
  *
- * @version   05.08.2021
+ * @version   06.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameManager {
@@ -125,10 +125,14 @@ public class GameManager {
 
         player.setAllowFlight(true);
         player.setFlying(true);
+        player.setFlySpeed(0.1f);
 
         for(Player p : Bukkit.getOnlinePlayers()) {
             p.hidePlayer(player);
         }
+
+        // Добавить меню настроек зрителя для зрителя
+        SkyWarsRanked.getGameItems().addSpectatorSettingsMenu(player);
 
         players.remove(player);
         spectators.add(player);
