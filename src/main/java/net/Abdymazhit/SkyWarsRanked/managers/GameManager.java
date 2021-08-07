@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Менеджер игры, отвечает за работу игры
  *
- * @version   06.08.2021
+ * @version   07.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameManager {
@@ -81,6 +81,9 @@ public class GameManager {
         player.setGameMode(GameMode.ADVENTURE);
 
         player.teleport(Config.lobbyLocation);
+
+        // Добавить меню прокачек для игрока
+        SkyWarsRanked.getGameItems().addPlayerUpgradesMenu(player);
 
         spectators.remove(player);
         players.add(player);

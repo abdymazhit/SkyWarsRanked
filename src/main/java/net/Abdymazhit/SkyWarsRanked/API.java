@@ -5,9 +5,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.Abdymazhit.SkyWarsRanked.customs.PlayerInfo;
-import net.Abdymazhit.SkyWarsRanked.customs.PlayerRank;
-import net.Abdymazhit.SkyWarsRanked.customs.PlayerStats;
 import net.Abdymazhit.SkyWarsRanked.customs.PlayerVimeInfo;
+import net.Abdymazhit.SkyWarsRanked.customs.Stats;
+import net.Abdymazhit.SkyWarsRanked.enums.PlayerRank;
+import net.Abdymazhit.SkyWarsRanked.upgrades.Upgrade;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -17,11 +18,13 @@ import org.apache.http.util.EntityUtils;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Отвечает за работу с API
  *
- * @version   04.08.2021
+ * @version   07.08.2021
  * @author    Islam Abdymazhit
  */
 public class API {
@@ -37,11 +40,13 @@ public class API {
     public PlayerInfo getPlayerInfo(Player player) {
         PlayerVimeInfo playerVimeInfo = getPlayerVimeInfo(player);
         if(playerVimeInfo != null) {
-            PlayerStats playerStats = getPlayerStats(playerVimeInfo);
-            if(playerStats != null) {
-                return new PlayerInfo(playerVimeInfo, playerStats);
+            Stats stats = getPlayerStats(playerVimeInfo);
+            if(stats != null) {
+                Map<Upgrade, Integer> playerUpgrades = getPlayerUpgrades(player);
+                return new PlayerInfo(playerVimeInfo, stats, playerUpgrades);
             }
         }
+
         return null;
     }
 
@@ -83,7 +88,7 @@ public class API {
      * @param playerVimeInfo Глобальная информация игрока
      * @return Информация о статистике игрока
      */
-    private PlayerStats getPlayerStats(PlayerVimeInfo playerVimeInfo) {
+    private Stats getPlayerStats(PlayerVimeInfo playerVimeInfo) {
         JsonParser parser = new JsonParser();
 
         String stringStats = sendGetRequest("https://api.vimeworld.ru/user/" + playerVimeInfo.getId() + "/stats?games=sw");
@@ -111,10 +116,19 @@ public class API {
             int monthlyBlocksBroken = monthlyObject.get("blocksBroken").getAsInt();
             int monthlyBlocksPlaced = monthlyObject.get("blocksPlaced").getAsInt();
 
-            return new PlayerStats(wins, games, kills, deaths, arrowsFired, blocksBroken, blocksPlaced, currentWinStreak, winStreak,
+            return new Stats(wins, games, kills, deaths, arrowsFired, blocksBroken, blocksPlaced, currentWinStreak, winStreak,
                     monthlyWins, monthlyGames, monthlyKills, monthlyDeaths, monthlyArrowsFired, monthlyBlocksBroken, monthlyBlocksPlaced);
         }
         return null;
+    }
+
+    /**
+     * Получает прокачки игрока с их уровнем
+     * @return Прокачки игрока с их уровнем
+     */
+    private Map<Upgrade, Integer> getPlayerUpgrades(Player player) {
+        Map<Upgrade, Integer> playerUpgrades = new HashMap<>();
+        return playerUpgrades;
     }
 
     /**

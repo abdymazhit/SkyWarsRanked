@@ -1,12 +1,15 @@
 package net.Abdymazhit.SkyWarsRanked.customs;
 
+import net.Abdymazhit.SkyWarsRanked.upgrades.Upgrade;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+
+import java.util.Map;
 
 /**
  * Представляет собой информацию о игроке
  *
- * @version   05.08.2021
+ * @version   07.08.2021
  * @author    Islam Abdymazhit
  */
 public class PlayerInfo {
@@ -14,8 +17,11 @@ public class PlayerInfo {
     /** Глобальная информация о игроке */
     private final PlayerVimeInfo playerVimeInfo;
 
-    /** Информация о статистике игрока */
-    private final PlayerStats playerStats;
+    /** Статистика игрока */
+    private final Stats stats;
+
+    /** Хранит информацию о прокачках игрока с их уровнем */
+    private final Map<Upgrade, Integer> upgrades;
 
     /** Количество убийств игрока в этом матче */
     private int kills;
@@ -38,11 +44,13 @@ public class PlayerInfo {
     /**
      * Создает информацию о игроке
      * @param playerVimeInfo Глобальная информация о игроке
-     * @param playerStats Информация о статистике игрока
+     * @param stats Статистика игрока
+     * @param upgrades Информация о прокачках игрока с их уровнем
      */
-    public PlayerInfo(PlayerVimeInfo playerVimeInfo, PlayerStats playerStats) {
+    public PlayerInfo(PlayerVimeInfo playerVimeInfo, Stats stats, Map<Upgrade, Integer> upgrades) {
         this.playerVimeInfo = playerVimeInfo;
-        this.playerStats = playerStats;
+        this.stats = stats;
+        this.upgrades = upgrades;
         this.kills = 0;
         this.arrowsFired = 0;
         this.blocksBroken = 0;
@@ -60,11 +68,19 @@ public class PlayerInfo {
     }
 
     /**
-     * Получает информацию о статистике игрока
-     * @return Информация о статистике игрока
+     * Получает статистику игрока
+     * @return Статистика игрока
      */
-    public PlayerStats getPlayerStats() {
-        return playerStats;
+    public Stats getStats() {
+        return stats;
+    }
+
+    /**
+     * Получает информацию о прокачках игрока с их уровнем
+     * @return Информация о прокачках игрока с их уровнем
+     */
+    public Map<Upgrade, Integer> getUpgrades() {
+        return upgrades;
     }
 
     /**

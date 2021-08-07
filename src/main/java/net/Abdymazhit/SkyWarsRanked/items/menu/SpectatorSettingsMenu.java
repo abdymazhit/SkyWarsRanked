@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Меню настроек зрителя
  *
- * @version   06.08.2021
+ * @version   07.08.2021
  * @author    Islam Abdymazhit
  */
 public class SpectatorSettingsMenu extends Menu {
@@ -119,8 +119,6 @@ public class SpectatorSettingsMenu extends Menu {
                 ItemMeta itemMeta = item.getItemMeta();
 
                 if(speedSlot == slot) {
-                    System.out.println(item.getItemMeta().getLore());
-
                     List<String> itemLore = new ArrayList<>();
                     itemLore.add("§7Используйте этот предмет,");
                     itemLore.add("§7чтобы изменить свою скорость полета");

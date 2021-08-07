@@ -3,10 +3,10 @@ package net.Abdymazhit.SkyWarsRanked.customs;
 /**
  * Представляет собой информацию о статистике игроке
  *
- * @version   04.08.2021
+ * @version   07.08.2021
  * @author    Islam Abdymazhit
  */
-public class PlayerStats {
+public class Stats {
 
     /** Общее количество побед игрока */
     private final int wins;
@@ -75,8 +75,8 @@ public class PlayerStats {
      * @param monthlyBlocksBroken Количество сломанных блоков игрока за месяц
      * @param monthlyBlocksPlaced Количество поставленных блоков игрока за месяц
      */
-    public PlayerStats(int wins, int games, int kills, int deaths, int arrowsFired, int blocksBroken, int blocksPlaced, int currentWinStreak, int winStreak,
-                       int monthlyWins, int monthlyGames, int monthlyKills, int monthlyDeaths, int monthlyArrowsFired, int monthlyBlocksBroken, int monthlyBlocksPlaced) {
+    public Stats(int wins, int games, int kills, int deaths, int arrowsFired, int blocksBroken, int blocksPlaced, int currentWinStreak, int winStreak,
+                 int monthlyWins, int monthlyGames, int monthlyKills, int monthlyDeaths, int monthlyArrowsFired, int monthlyBlocksBroken, int monthlyBlocksPlaced) {
         this.wins = wins;
         this.games = games;
         this.kills = kills;

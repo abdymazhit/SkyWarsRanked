@@ -1,9 +1,9 @@
-package net.Abdymazhit.SkyWarsRanked.customs;
+package net.Abdymazhit.SkyWarsRanked.enums;
 
 /**
  * Представляет собой ранг игрока
  *
- * @version   04.08.2021
+ * @version   07.08.2021
  * @author    Islam Abdymazhit
  */
 public enum PlayerRank {

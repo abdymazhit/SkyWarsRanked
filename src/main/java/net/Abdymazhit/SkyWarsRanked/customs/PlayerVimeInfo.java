@@ -1,9 +1,11 @@
 package net.Abdymazhit.SkyWarsRanked.customs;
 
+import net.Abdymazhit.SkyWarsRanked.enums.PlayerRank;
+
 /**
  * Представляет собой глобальную информацию о игроке
  *
- * @version   04.08.2021
+ * @version   07.08.2021
  * @author    Islam Abdymazhit
  */
 public class PlayerVimeInfo {

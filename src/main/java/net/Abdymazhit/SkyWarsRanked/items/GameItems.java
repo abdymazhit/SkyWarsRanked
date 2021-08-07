@@ -1,10 +1,7 @@
 package net.Abdymazhit.SkyWarsRanked.items;
 
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
-import net.Abdymazhit.SkyWarsRanked.items.menu.IslandSelectMenu;
-import net.Abdymazhit.SkyWarsRanked.items.menu.Menu;
-import net.Abdymazhit.SkyWarsRanked.items.menu.SpectatorSettingsMenu;
-import net.Abdymazhit.SkyWarsRanked.items.menu.TeleportMenu;
+import net.Abdymazhit.SkyWarsRanked.items.menu.*;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -20,7 +17,7 @@ import java.util.Map;
 /**
  * Отвечает за игровые предметы
  *
- * @version   06.08.2021
+ * @version   07.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameItems {
@@ -40,8 +37,11 @@ public class GameItems {
     /** Меню телепортации к игрокам */
     private final TeleportMenu teleportMenu;
 
-    /** Хранит информацию о зрителе и его настройках зрителя */
+    /** Хранит меню настроек зрителя для каждого зрителя */
     private final Map<Player, SpectatorSettingsMenu> spectatorSettingsMenus;
+
+    /** Хранит меню прокачек для каждого игрока */
+    private final Map<Player, UpgradesMenu> playerUpgradesMenus;
 
     /**
      * Инициализирует игровые предметы
@@ -52,6 +52,7 @@ public class GameItems {
         itemUsage = new HashMap<>();
         itemMenu = new HashMap<>();
         spectatorSettingsMenus = new HashMap<>();
+        playerUpgradesMenus = new HashMap<>();
 
         ItemStack teleportItem = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
         ItemMeta teleportItemMeta = teleportItem.getItemMeta();
@@ -97,6 +98,7 @@ public class GameItems {
         upgradesItemMeta.setLore(upgradesItemLore);
         upgradesItem.setItemMeta(upgradesItemMeta);
         lobbyItems.put(upgradesItem, 1);
+        itemUsage.put(upgradesItem, player -> playerUpgradesMenus.get(player).open(player));
 
         ItemStack kitsItem = new ItemStack(Material.BOW);
         ItemMeta kitsItemMeta = kitsItem.getItemMeta();
@@ -199,6 +201,14 @@ public class GameItems {
      */
     public void addSpectatorSettingsMenu(Player player) {
         spectatorSettingsMenus.put(player, new SpectatorSettingsMenu());
+    }
+
+    /**
+     * Добавляет игроку меню прокачек
+     * @param player Игрок
+     */
+    public void addPlayerUpgradesMenu(Player player) {
+        playerUpgradesMenus.put(player, new UpgradesMenu(SkyWarsRanked.getGameManager().getPlayerInfo(player).getUpgrades()));
     }
 
     /**
