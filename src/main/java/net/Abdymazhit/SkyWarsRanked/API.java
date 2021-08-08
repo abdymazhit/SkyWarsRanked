@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * Отвечает за работу с API
  *
- * @version   07.08.2021
+ * @version   08.08.2021
  * @author    Islam Abdymazhit
  */
 public class API {
@@ -128,6 +128,7 @@ public class API {
      */
     private Map<Upgrade, Integer> getPlayerUpgrades(Player player) {
         Map<Upgrade, Integer> playerUpgrades = new HashMap<>();
+        playerUpgrades.put(Upgrade.BLAZING_ARROWS, 8);
         return playerUpgrades;
     }
 

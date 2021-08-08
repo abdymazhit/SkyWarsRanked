@@ -6,13 +6,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Меню прокачек игрока
  *
- * @version   07.08.2021
+ * @version   08.08.2021
  * @author    Islam Abdymazhit
  */
 public class UpgradesMenu extends Menu {
@@ -61,18 +62,20 @@ public class UpgradesMenu extends Menu {
         ItemMeta itemMeta = itemStack.getItemMeta();
 
         List<String> lore = new ArrayList<>();
-        lore.add("§7Редкость: " + upgrade.getRarity());
+        for(String description : upgrade.getDescription()) {
+            String desc = description.replace("<upgrade>", upgrade.getLevelUpgrade().getOrDefault(level, 0).toString());
+            lore.add(desc);
+        }
+
+        lore.add("");
+        lore.add("§7Редкость: " + upgrade.getRarity().getName());
         lore.add("");
 
-        if(level == 0) {
-            lore.add("§cНе открыто");
+        int maxLevel = Collections.max(upgrade.getLevelUpgrade().keySet());
+        if(level == maxLevel) {
+            lore.add("§c§lМАКСИМАЛЬНЫЙ УРОВЕНЬ");
         } else {
-            lore.add("§7Уровень: §a" + level);
-            lore.add("");
-            for(String description : upgrade.getDescription()) {
-                String desc = description.replace("%upgrade%", upgrade.getLevelUpgrade().get(level).toString());
-                lore.add(desc);
-            }
+            lore.add("§eМожно улучшить в лобби!");
         }
 
         itemMeta.setLore(lore);

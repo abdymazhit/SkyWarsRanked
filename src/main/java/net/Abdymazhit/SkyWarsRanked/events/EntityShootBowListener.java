@@ -2,6 +2,7 @@ package net.Abdymazhit.SkyWarsRanked.events;
 
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.managers.GameStage;
+import net.Abdymazhit.SkyWarsRanked.upgrades.Upgrade;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,7 +11,7 @@ import org.bukkit.event.entity.EntityShootBowEvent;
 /**
  * Отвечает за событие стрельбы из лука entity
  *
- * @version   04.08.2021
+ * @version   08.08.2021
  * @author    Islam Abdymazhit
  */
 public class EntityShootBowListener implements Listener {
@@ -30,9 +31,14 @@ public class EntityShootBowListener implements Listener {
                 event.setCancelled(true);
             }
 
-            // Увеличить количество выпущенных стрел игрока за матч
             if(!event.isCancelled()) {
+                // Увеличить количество выпущенных стрел игрока за матч
                 SkyWarsRanked.getGameManager().getPlayerInfo(player).addArrowsFired();
+
+                // Выполнить действия прокачки Пылающие стрелы
+                if(Upgrade.performUpgradeAction(player, Upgrade.BLAZING_ARROWS)) {
+                    event.getProjectile().setFireTicks(Integer.MAX_VALUE);
+                }
             }
         }
     }
