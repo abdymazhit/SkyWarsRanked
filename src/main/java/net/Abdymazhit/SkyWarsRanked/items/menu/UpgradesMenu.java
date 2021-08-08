@@ -63,7 +63,7 @@ public class UpgradesMenu extends Menu {
 
         List<String> lore = new ArrayList<>();
         for(String description : upgrade.getDescription()) {
-            String desc = description.replace("<upgrade>", upgrade.getLevelUpgrade().getOrDefault(level, 0).toString());
+            String desc = description.replace("<upgrade>", upgrade.getLevelsImprovement().getOrDefault(level, 0).toString());
             lore.add(desc);
         }
 
@@ -71,7 +71,7 @@ public class UpgradesMenu extends Menu {
         lore.add("§7Редкость: " + upgrade.getRarity().getName());
         lore.add("");
 
-        int maxLevel = Collections.max(upgrade.getLevelUpgrade().keySet());
+        int maxLevel = Collections.max(upgrade.getLevelsImprovement().keySet());
         if(level == maxLevel) {
             lore.add("§c§lМАКСИМАЛЬНЫЙ УРОВЕНЬ");
         } else {

@@ -128,7 +128,8 @@ public class API {
      */
     private Map<Upgrade, Integer> getPlayerUpgrades(Player player) {
         Map<Upgrade, Integer> playerUpgrades = new HashMap<>();
-        playerUpgrades.put(Upgrade.BLAZING_ARROWS, 8);
+        playerUpgrades.put(Upgrade.BLAZING_ARROWS, 10);
+        playerUpgrades.put(Upgrade.JUGGERNAUT, 10);
         return playerUpgrades;
     }
 

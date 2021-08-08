@@ -3,10 +3,14 @@ package net.Abdymazhit.SkyWarsRanked.managers;
 import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.customs.PlayerInfo;
+import net.Abdymazhit.SkyWarsRanked.upgrades.Upgrade;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.WorldBorder;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -178,5 +182,67 @@ public class GameManager {
      */
     public PlayerInfo getPlayerInfo(Player player) {
         return playersInfo.get(player);
+    }
+
+    /**
+     * Выполняет действия убийства игрока
+     * @param player Игрок (умерший)
+     */
+    public void performKillEvent(Player player) {
+        // Установить местоположение смерти игрока
+        Location deathLocation = player.getLocation();
+        deathLocation.setY(Config.respawnY);
+        playersInfo.get(player).setDeathLocation(deathLocation);
+
+        // Телепортировать игрока в местоположение смерти
+        player.teleport(playersInfo.get(player).getDeathLocation());
+
+        // Удалить игрока из списка живых игроков и обновить количество живых игроков в scoreboard'е игры
+        removePlayer(player);
+        SkyWarsRanked.getGameBoard().updateLivePlayersCount();
+
+        // Добавить игрока в список зрителей и обновить количество зрителей в scoreboard'е игры
+        addSpectator(player);
+        SkyWarsRanked.getGameBoard().updateSpectatorsCount();
+
+        // Получить убийцу игрока (последнего нанесшего урон)
+        Player killer = playersInfo.get(player).getLastDamager();
+
+        // Проверить, существует ли последний нанесший урон
+        if(killer != null) {
+            // Выполнить действия прокачки Джаггернаут
+            int improvement = Upgrade.getPlayerUpgradeImprovement(killer, Upgrade.JUGGERNAUT);
+            if(improvement > 0) {
+                killer.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, improvement * 20, 0));
+            }
+
+            // Отправить сообщения о убийстве
+            for(Player p : Bukkit.getOnlinePlayers()) {
+                p.sendMessage("Игрок " + player.getName() + " убит игроком " + killer.getName());
+            }
+            player.sendMessage("Вас убил игрок §c" + killer.getName() + " §fи у него осталось §c" + (killer.getHealth() / 2) + "❤");
+        } else {
+            // Отправить сообщения о убийстве
+            for(Player p : Bukkit.getOnlinePlayers()) {
+                p.sendMessage("Игрок " + player.getName() + " самоубился");
+            }
+            player.sendMessage("Вы самоубились");
+        }
+
+        // Проверить, есть ли победитель игры
+        if(players.size() == 1) {
+            Player winner = players.get(0);
+
+            // Отправить сообщение о победителе
+            for(Player p : Bukkit.getOnlinePlayers()) {
+                p.sendMessage("§7####################################");
+                p.sendMessage("§7# §fПобедитель:");
+                p.sendMessage("§7#     §f" + winner.getName());
+                p.sendMessage("§7####################################");
+            }
+
+            // Начать стадию конца игры
+            SkyWarsRanked.getGameStageManager().startEndingStage();
+        }
     }
 }

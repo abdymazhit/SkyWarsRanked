@@ -24,6 +24,9 @@ public class Upgrade {
     /** Прокачка Пылающие стрелы */
     public static final Upgrade BLAZING_ARROWS = new BlazingArrows(1);
 
+    /** Прокачка Джаггернаут */
+    public static final Upgrade JUGGERNAUT = new Juggernaut(2);
+
     /** Id прокачки */
     private final int id;
 
@@ -39,8 +42,8 @@ public class Upgrade {
     /** Описание прокачки */
     private final List<String> description;
 
-    /** Хранит информацию о уровнях прокачки и улучшениях */
-    private final Map<Integer, Integer> levelUpgrade;
+    /** Хранит информацию о улучшениях уровней прокачки */
+    private final Map<Integer, Integer> levelsImprovement;
 
     /**
      * Инициализирует прокачку
@@ -49,15 +52,15 @@ public class Upgrade {
      * @param name Название прокачки
      * @param rarity Редкость прокачки
      * @param description Описание прокачки
-     * @param levelUpgrade Информация о уровнях прокачки и улучшениях
+     * @param levelsImprovement Информация о улучшениях уровней прокачки
      */
-    public Upgrade(int id, Material material, String name, Rarity rarity, List<String> description, Map<Integer, Integer> levelUpgrade) {
+    public Upgrade(int id, Material material, String name, Rarity rarity, List<String> description, Map<Integer, Integer> levelsImprovement) {
         this.id = id;
         this.material = material;
         this.name = name;
         this.rarity = rarity;
         this.description = description;
-        this.levelUpgrade = levelUpgrade;
+        this.levelsImprovement = levelsImprovement;
     }
 
     /**
@@ -109,27 +112,42 @@ public class Upgrade {
     }
 
     /**
-     * Получает информацию о уровнях прокачки и улучшениях
-     * @return Информация о уровнях прокачки и улучшениях
+     * Получает информацию о улучшениях уровней прокачки
+     * @return Информация о улучшениях уровней прокачки
      */
-    public Map<Integer, Integer> getLevelUpgrade() {
-        return levelUpgrade;
+    public Map<Integer, Integer> getLevelsImprovement() {
+        return levelsImprovement;
     }
 
     /**
-     * Возвращает значение, можно ли выполнить действия прокачки игрока
+     * Возвращает значение, можно ли выполнить действия прокачки, которая работает по принципу шансов
+     *
+     * Прокачка Пылающие стрелы - работает по принципу шансов, так как стрела игрока может с определенным шансом стать горящей
+     * Прокачка Джаггернаут - не работает, так как игрок после убийства получает эффект Регенерации на определенное количество секунд, здесь нету шансов
+     *
      * @param player Игрок
      * @param upgrade Прокачка
-     * @return Значение, можно ли выполнить действия прокачки игрока
+     * @return Значение, можно ли выполнить действия прокачки, которая работает по принципу шансов
      */
-    public static boolean performUpgradeAction(Player player, Upgrade upgrade) {
+    public static boolean canPerformUpgradeAction(Player player, Upgrade upgrade) {
         Map<Upgrade, Integer> upgrades = SkyWarsRanked.getGameManager().getPlayerInfo(player).getUpgrades();
-        if(upgrades.containsKey(Upgrade.BLAZING_ARROWS)) {
+        if(upgrades.containsKey(upgrade)) {
             SplittableRandom random = new SplittableRandom();
-            return random.nextInt(1, 101) <= upgrades.get(Upgrade.BLAZING_ARROWS);
+            return random.nextInt(1, 101) <= upgrades.get(upgrade);
         } else {
             return false;
         }
+    }
+
+    /**
+     * Получает улучшение прокачки игрока
+     * @param player Игрок
+     * @param upgrade Прокачка
+     * @return Улучшение прокачки игрока
+     */
+    public static int getPlayerUpgradeImprovement(Player player, Upgrade upgrade) {
+        Map<Upgrade, Integer> upgrades = SkyWarsRanked.getGameManager().getPlayerInfo(player).getUpgrades();
+        return upgrades.getOrDefault(upgrade, 0);
     }
 
     /**

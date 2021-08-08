@@ -36,7 +36,7 @@ public class EntityShootBowListener implements Listener {
                 SkyWarsRanked.getGameManager().getPlayerInfo(player).addArrowsFired();
 
                 // Выполнить действия прокачки Пылающие стрелы
-                if(Upgrade.performUpgradeAction(player, Upgrade.BLAZING_ARROWS)) {
+                if(Upgrade.canPerformUpgradeAction(player, Upgrade.BLAZING_ARROWS)) {
                     event.getProjectile().setFireTicks(Integer.MAX_VALUE);
                 }
             }
