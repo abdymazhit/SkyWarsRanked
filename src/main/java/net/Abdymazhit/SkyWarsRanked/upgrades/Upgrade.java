@@ -61,14 +61,7 @@ public class Upgrade {
         this.rarity = rarity;
         this.description = description;
         this.levelsImprovement = levelsImprovement;
-    }
-
-    /**
-     * Региструет прокачку
-     * @param upgrade Прокачка
-     */
-    public void registerUpgrade(Upgrade upgrade) {
-        byId.put(upgrade.id, upgrade);
+        byId.put(id, this);
     }
 
     /**

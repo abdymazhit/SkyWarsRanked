@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Представляет собой остров
  *
- * @version   03.08.2021
+ * @version   09.08.2021
  * @author    Islam Abdymazhit
  */
 public class Island {
@@ -26,7 +26,7 @@ public class Island {
     private Player player;
 
     /**
-     * Создает новый остров с заданными параметрами
+     * Создает новый остров
      * @param id Id острова
      * @param spawn Местоположение спавна острова
      * @param chests Список местоположений сундуков острова
@@ -38,21 +38,24 @@ public class Island {
         this.player = null;
     }
 
-    /** Получает id острова
+    /**
+     * Получает id острова
      * @return Id острова
      */
     public int getId() {
         return id;
     }
 
-    /** Получает местоположение спавна острова
+    /**
+     * Получает местоположение спавна острова
      * @return Местоположение спавна острова
      */
     public Location getSpawn() {
         return spawn;
     }
 
-    /** Получает список местоположений сундуков острова
+    /**
+     * Получает список местоположений сундуков острова
      * @return Список местоположений сундуков острова
      */
     public List<Location> getChests() {
@@ -67,7 +70,8 @@ public class Island {
         this.player = player;
     }
 
-    /** Получает игрока острова
+    /**
+     * Получает игрока острова
      * @return Игрок острова
      */
     public Player getPlayer() {

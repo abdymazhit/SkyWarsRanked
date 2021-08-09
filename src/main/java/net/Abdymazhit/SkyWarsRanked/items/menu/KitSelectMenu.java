@@ -25,20 +25,19 @@ public class KitSelectMenu extends Menu {
      * Инициализирует объекты меню
      */
     public KitSelectMenu(Player player) {
-        Map<Kit, Integer> kits = SkyWarsRanked.getGameManager().getPlayerInfo(player).getKits();
-
         setInventory(Bukkit.createInventory(null, 45, "Выбор набора"));
+
+        // Получить доступные игроку наборы с их уровнями
+        Map<Kit, Integer> kits = SkyWarsRanked.getGameManager().getPlayerInfo(player).getKits();
 
         // Добавить слоты, которые доступны для наборов
         List<Integer> slots = new ArrayList<>();
         for(int slot = 10; slot < 17; slot++) {
             slots.add(slot);
         }
-
         for(int slot = 19; slot < 26; slot++) {
             slots.add(slot);
         }
-
         for(int slot = 28; slot < 35; slot++) {
             slots.add(slot);
         }

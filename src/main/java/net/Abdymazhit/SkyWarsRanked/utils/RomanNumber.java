@@ -3,14 +3,14 @@ package net.Abdymazhit.SkyWarsRanked.utils;
 import java.util.TreeMap;
 
 /**
- * Отвечает за конвертацию обычных цифр в римские цифры
+ * Отвечает за конвертацию арабских цифр в римские цифры
  *
  * @version   09.08.2021
  * @author    Islam Abdymazhit
  */
 public class RomanNumber {
 
-    /** Хранит обычные и римские цифры*/
+    /** Хранит арабские и римские цифры */
     private final static TreeMap<Integer, String> map = new TreeMap<>();
 
     static {
@@ -31,7 +31,7 @@ public class RomanNumber {
 
     /**
      * Получает римскую цифру
-     * @param number Цифра
+     * @param number Арабская цифра
      * @return Римская цифра
      */
     public static String toRoman(int number) {

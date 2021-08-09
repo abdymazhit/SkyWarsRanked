@@ -13,7 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 /**
  * Главный класс, отвечает за весь плагин
  *
- * @version   05.08.2021
+ * @version   09.08.2021
  * @author    Islam Abdymazhit
  */
 public class SkyWarsRanked extends JavaPlugin {
@@ -23,6 +23,9 @@ public class SkyWarsRanked extends JavaPlugin {
 
     /** Объект, отвечает за работу с API */
     private static API api;
+
+    /** Объект, отвечает за работу с базой данных */
+    private static MySQL mySQL;
 
     /** Менеджер игры, отвечает за работу игры */
     private static GameManager gameManager;
@@ -54,6 +57,8 @@ public class SkyWarsRanked extends JavaPlugin {
         Config.load();
 
         api = new API();
+        mySQL = new MySQL();
+
         gameManager = new GameManager();
         gameSettingsManager = new GameSettingsManager();
         gameStageManager = new GameStageManager();
@@ -104,6 +109,14 @@ public class SkyWarsRanked extends JavaPlugin {
      */
     public static API getApi() {
         return api;
+    }
+
+    /**
+     * Получает объект, отвечающий за работы с базой данных
+     * @return Объект, отвечающий за работы с базой данных
+     */
+    public static MySQL getMySQL() {
+        return mySQL;
     }
 
     /**

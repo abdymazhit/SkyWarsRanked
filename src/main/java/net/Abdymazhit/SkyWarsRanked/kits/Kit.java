@@ -56,14 +56,7 @@ public class Kit {
         this.rarity = rarity;
         this.levelDescriptions = levelDescriptions;
         this.levelItems = levelItems;
-    }
-
-    /**
-     * Региструет набор
-     * @param kit Набор
-     */
-    public void registerKit(Kit kit) {
-        byId.put(kit.id, kit);
+        byId.put(id, this);
     }
 
     /**

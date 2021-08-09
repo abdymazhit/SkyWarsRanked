@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Представляет собой прокачку Пылающие стрелы
  *
- * @version   08.08.2021
+ * @version   09.08.2021
  * @author    Islam Abdymazhit
  */
 public class BlazingArrows extends Upgrade {
@@ -20,7 +20,7 @@ public class BlazingArrows extends Upgrade {
     private static final Material material = Material.BLAZE_ROD;
 
     /** Название прокачки */
-    private static final String name = "§bПылающие стрелы";
+    private static final String name = "Пылающие стрелы";
 
     /** Редкость прокачки */
     private static final Rarity rarity = Rarity.RARE;
@@ -53,6 +53,5 @@ public class BlazingArrows extends Upgrade {
      */
     public BlazingArrows(int id) {
         super(id, material, name, rarity, description, levelsImprovement);
-        registerUpgrade(this);
     }
 }

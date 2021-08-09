@@ -1,7 +1,7 @@
 package net.Abdymazhit.SkyWarsRanked.events.cancelled;
 
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
-import net.Abdymazhit.SkyWarsRanked.managers.GameStage;
+import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,7 +10,7 @@ import org.bukkit.event.inventory.*;
 /**
  * Отменяет события связанные с инвентарем
  *
- * @version   03.08.2021
+ * @version   09.08.2021
  * @author    Islam Abdymazhit
  */
 public class InventoryEventsListener implements Listener {
@@ -20,8 +20,8 @@ public class InventoryEventsListener implements Listener {
      */
     @EventHandler
     public void onFurnaceBurn(FurnaceBurnEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage() == GameStage.WAITING ||
-                SkyWarsRanked.getGameManager().getGameStage() == GameStage.STARTING) {
+        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) ||
+                SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
             event.setCancelled(true);
         }
     }
@@ -31,8 +31,8 @@ public class InventoryEventsListener implements Listener {
      */
     @EventHandler
     public void onFurnaceExtract(FurnaceExtractEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage() == GameStage.WAITING ||
-                SkyWarsRanked.getGameManager().getGameStage() == GameStage.STARTING) {
+        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) ||
+                SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
             event.setExpToDrop(0);
         }
     }
@@ -42,8 +42,8 @@ public class InventoryEventsListener implements Listener {
      */
     @EventHandler
     public void onFurnaceSmelt(FurnaceSmeltEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage() == GameStage.WAITING ||
-                SkyWarsRanked.getGameManager().getGameStage() == GameStage.STARTING) {
+        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) ||
+                SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
             event.setCancelled(true);
         }
     }
@@ -53,8 +53,8 @@ public class InventoryEventsListener implements Listener {
      */
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage() == GameStage.WAITING ||
-                SkyWarsRanked.getGameManager().getGameStage() == GameStage.STARTING) {
+        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) ||
+                SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
             event.setCancelled(true);
         }
 
@@ -72,8 +72,8 @@ public class InventoryEventsListener implements Listener {
      */
     @EventHandler
     public void onInventoryPickupItem(InventoryPickupItemEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage() == GameStage.WAITING ||
-                SkyWarsRanked.getGameManager().getGameStage() == GameStage.STARTING) {
+        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) ||
+                SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
             event.setCancelled(true);
         }
     }

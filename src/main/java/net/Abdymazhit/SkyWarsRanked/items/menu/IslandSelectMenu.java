@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Меню выбора острова
  *
- * @version   05.08.2021
+ * @version   09.08.2021
  * @author    Islam Abdymazhit
  */
 public class IslandSelectMenu extends Menu {
@@ -95,7 +95,7 @@ public class IslandSelectMenu extends Menu {
         super.clickSlot(player, slot);
         // Проверка нажатого предмета на EMERALD_BLOCK
         // EMERALD_BLOCK означает, что остров доступен для выбора
-        if(getInventory().getItem(slot) != null && getInventory().getItem(slot).getType() == Material.EMERALD_BLOCK) {
+        if(getInventory().getItem(slot) != null && getInventory().getItem(slot).getType().equals(Material.EMERALD_BLOCK)) {
             // Id острова
             int islandId = 0;
 

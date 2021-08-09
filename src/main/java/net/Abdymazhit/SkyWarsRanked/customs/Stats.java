@@ -1,9 +1,9 @@
 package net.Abdymazhit.SkyWarsRanked.customs;
 
 /**
- * Представляет собой информацию о статистике игроке
+ * Представляет собой статистику игрока
  *
- * @version   07.08.2021
+ * @version   09.08.2021
  * @author    Islam Abdymazhit
  */
 public class Stats {

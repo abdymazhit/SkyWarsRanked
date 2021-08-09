@@ -21,14 +21,14 @@ public class PlayerInfo {
     /** Статистика игрока */
     private final Stats stats;
 
-    /** Прокачки игрока с их уровнем */
-    private final Map<Upgrade, Integer> upgrades;
-
     /** Выбранный набор игрока */
-    private final Kit kit;
+    private Kit kit;
 
-    /** Наборы игрока с их уровнем */
-    private final Map<Kit, Integer> kits;
+    /** Доступные наборы игрока с их уровнями */
+    private Map<Kit, Integer> kits;
+
+    /** Доступные прокачки игрока с их уровнями */
+    private Map<Upgrade, Integer> upgrades;
 
     /** Количество убийств игрока в этом матче */
     private int kills;
@@ -52,16 +52,13 @@ public class PlayerInfo {
      * Создает информацию о игроке
      * @param playerVimeInfo Глобальная информация о игроке
      * @param stats Статистика игрока
-     * @param upgrades Прокачки игрока с их уровнем
-     * @param kit Выбранный набор игрока
-     * @param kits Наборы игрока с их уровнем
      */
-    public PlayerInfo(PlayerVimeInfo playerVimeInfo, Stats stats, Map<Upgrade, Integer> upgrades, Kit kit, Map<Kit, Integer> kits) {
+    public PlayerInfo(PlayerVimeInfo playerVimeInfo, Stats stats) {
         this.playerVimeInfo = playerVimeInfo;
         this.stats = stats;
-        this.upgrades = upgrades;
-        this.kit = kit;
-        this.kits = kits;
+        this.upgrades = null;
+        this.kit = null;
+        this.kits = null;
         this.kills = 0;
         this.arrowsFired = 0;
         this.blocksBroken = 0;
@@ -87,27 +84,51 @@ public class PlayerInfo {
     }
 
     /**
-     * Получает прокачки игрока с их уровнем
-     * @return Прокачки игрока с их уровнем
+     * Устанавливает выбранный набор игрока
+     * @param kit Выбранный набор
      */
-    public Map<Upgrade, Integer> getUpgrades() {
-        return upgrades;
+    public void setKit(Kit kit) {
+        this.kit = kit;
     }
 
     /**
      * Получает выбранный набор игрока
-     * @return Выбранный набор игрока
+     * @return Выбранный набор
      */
     public Kit getKit() {
         return kit;
     }
 
     /**
-     * Получает наборы игрока с их уровнем
-     * @return Наборы игрока с их уровнем
+     * Устанавливает доступные наборы для игрока с их уровнями
+     * @param kits Доступные наборы для игрока с их уровнями
+     */
+    public void setKits(Map<Kit, Integer> kits) {
+        this.kits = kits;
+    }
+
+    /**
+     * Получает доступные наборы игрока с их уровнями
+     * @return Доступные наборы игрока с их уровнями
      */
     public Map<Kit, Integer> getKits() {
         return kits;
+    }
+
+    /**
+     * Устанавливает доступные прокачки для игрока с их уровнями
+     * @param upgrades Доступные прокачки для игрока с их уровнями
+     */
+    public void setUpgrades(Map<Upgrade, Integer> upgrades) {
+        this.upgrades = upgrades;
+    }
+
+    /**
+     * Получает доступные прокачки игрока с их уровнями
+     * @return Доступные прокачки игрока с их уровнями
+     */
+    public Map<Upgrade, Integer> getUpgrades() {
+        return upgrades;
     }
 
     /**

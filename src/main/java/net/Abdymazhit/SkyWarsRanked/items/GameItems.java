@@ -37,7 +37,7 @@ public class GameItems {
     /** Меню телепортации к игрокам */
     private final TeleportMenu teleportMenu;
 
-    /** Хранит меню настроек зрителя для каждого зрителя */
+    /** Меню настроек зрителя для каждого зрителя */
     private final Map<Player, SpectatorSettingsMenu> spectatorSettingsMenus;
 
     /** Меню прокачек для каждого игрока */
@@ -207,7 +207,7 @@ public class GameItems {
     }
 
     /**
-     * Добавляет игроку меню выбора наборов
+     * Добавляет игроку меню выбора набора
      * @param player Игрок
      */
     public void addPlayerKitSelectMenu(Player player) {

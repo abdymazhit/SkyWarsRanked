@@ -3,6 +3,7 @@ package net.Abdymazhit.SkyWarsRanked.managers;
 import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.customs.PlayerInfo;
+import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
 import net.Abdymazhit.SkyWarsRanked.upgrades.Upgrade;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -86,11 +87,10 @@ public class GameManager {
 
         player.teleport(Config.lobbyLocation);
 
-        // Добавить меню прокачек для игрока
-        SkyWarsRanked.getGameItems().addPlayerUpgradesMenu(player);
-
-        // Добавить меню выбора набора для игрока
-        SkyWarsRanked.getGameItems().addPlayerKitSelectMenu(player);
+        // Получить данные игрока с базы данных
+        SkyWarsRanked.getMySQL().getPlayerKit(player);
+        SkyWarsRanked.getMySQL().getPlayerKits(player);
+        SkyWarsRanked.getMySQL().getPlayerUpgrades(player);
 
         spectators.remove(player);
         players.add(player);

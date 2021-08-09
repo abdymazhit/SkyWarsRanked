@@ -14,20 +14,20 @@ import java.util.Map;
 /**
  * Меню телепортации к игрокам
  *
- * @version   05.08.2021
+ * @version   09.08.2021
  * @author    Islam Abdymazhit
  */
 public class TeleportMenu extends Menu {
 
     /** Хранит информацию о живых игроках с их слотом */
-    private final Map<Integer, Player> playerSlotMap;
+    private final Map<Integer, Player> playersSlot;
 
     /**
      * Инициализирует объекты меню
      */
     public TeleportMenu() {
         setInventory(Bukkit.createInventory(null, 27, "Телепортация к игрокам"));
-        playerSlotMap = new HashMap<>();
+        playersSlot = new HashMap<>();
     }
 
     /**
@@ -35,7 +35,7 @@ public class TeleportMenu extends Menu {
      */
     public void update() {
         getInventory().clear();
-        playerSlotMap.clear();
+        playersSlot.clear();
 
         int slot = 0;
         for(Player player : SkyWarsRanked.getGameManager().getPlayers()) {
@@ -46,7 +46,7 @@ public class TeleportMenu extends Menu {
             item.setItemMeta(itemMeta);
             getInventory().setItem(slot, item);
 
-            playerSlotMap.put(slot, player);
+            playersSlot.put(slot, player);
             slot++;
         }
     }
@@ -59,7 +59,7 @@ public class TeleportMenu extends Menu {
     @Override
     public void clickSlot(Player player, int slot) {
         super.clickSlot(player, slot);
-        Player p = playerSlotMap.get(slot);
+        Player p = playersSlot.get(slot);
         player.teleport(p.getLocation());
     }
 }

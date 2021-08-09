@@ -3,7 +3,7 @@ package net.Abdymazhit.SkyWarsRanked.events;
 import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.customs.Island;
-import net.Abdymazhit.SkyWarsRanked.managers.GameStage;
+import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 /**
  * Отвечает за событие выхода игрока из сервера
  *
- * @version   08.08.2021
+ * @version   09.08.2021
  * @author    Islam Abdymazhit
  */
 public class PlayerQuitListener implements Listener {

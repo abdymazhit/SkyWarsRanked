@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Представляет собой прокачку Джаггернаут
  *
- * @version   08.08.2021
+ * @version   09.08.2021
  * @author    Islam Abdymazhit
  */
 public class Juggernaut extends Upgrade {
@@ -20,7 +20,7 @@ public class Juggernaut extends Upgrade {
     private static final Material material = Material.DIAMOND_SWORD;
 
     /** Название прокачки */
-    private static final String name = "§bДжаггернаут";
+    private static final String name = "Джаггернаут";
 
     /** Редкость прокачки */
     private static final Rarity rarity = Rarity.EPIC;
@@ -54,6 +54,5 @@ public class Juggernaut extends Upgrade {
      */
     public Juggernaut(int id) {
         super(id, material, name, rarity, description, levelsImprovement);
-        registerUpgrade(this);
     }
 }

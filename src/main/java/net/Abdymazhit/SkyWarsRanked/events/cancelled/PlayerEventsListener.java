@@ -1,7 +1,7 @@
 package net.Abdymazhit.SkyWarsRanked.events.cancelled;
 
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
-import net.Abdymazhit.SkyWarsRanked.managers.GameStage;
+import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
@@ -9,7 +9,7 @@ import org.bukkit.event.player.*;
 /**
  * Отменяет события связанные с игроком
  *
- * @version   03.08.2021
+ * @version   09.08.2021
  * @author    Islam Abdymazhit
  */
 public class PlayerEventsListener implements Listener {

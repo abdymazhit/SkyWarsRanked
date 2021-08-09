@@ -1,7 +1,7 @@
 package net.Abdymazhit.SkyWarsRanked.events;
 
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
-import net.Abdymazhit.SkyWarsRanked.managers.GameStage;
+import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 /**
  * Отвечает за событие взаимодействия игрока с объектом
  *
- * @version   05.08.2021
+ * @version   09.08.2021
  * @author    Islam Abdymazhit
  */
 public class PlayerInteractListener implements Listener {
@@ -39,7 +39,7 @@ public class PlayerInteractListener implements Listener {
             SkyWarsRanked.getGameItems().useItem(player, event.getItem());
         }
         // Проверка стадии игры на WAITING или STARTING
-        else if(SkyWarsRanked.getGameManager().getGameStage() == GameStage.WAITING || SkyWarsRanked.getGameManager().getGameStage() == GameStage.STARTING) {
+        else if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
             // Отменить событие, чтобы игрок не мог взаимодействовать с блоками в острове лобби
             event.setCancelled(true);
 

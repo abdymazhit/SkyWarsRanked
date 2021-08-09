@@ -4,10 +4,7 @@ import net.Abdymazhit.SkyWarsRanked.enums.Rarity;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Представляет собой набор Чародей
@@ -28,16 +25,16 @@ public class Enchanter extends Kit {
 
     /** Хранит информацию о описании уровней набора */
     private static final Map<Integer, List<String>> levelDescriptions = new HashMap<Integer, List<String>>() {{
-        put(1, Arrays.asList(
+        put(1, Collections.singletonList(
                 "§7Пузырёк опыта §8x8"
         ));
-        put(2, Arrays.asList(
+        put(2, Collections.singletonList(
                 "§7Пузырёк опыта §8x16"
         ));
-        put(3, Arrays.asList(
+        put(3, Collections.singletonList(
                 "§7Пузырёк опыта §8x24"
         ));
-        put(4, Arrays.asList(
+        put(4, Collections.singletonList(
                 "§7Пузырёк опыта §8x32"
         ));
         put(5, Arrays.asList(
@@ -86,6 +83,5 @@ public class Enchanter extends Kit {
      */
     public Enchanter(int id) {
         super(id, material, name, rarity, levelDescriptions, levelItems);
-        registerKit(this);
     }
 }

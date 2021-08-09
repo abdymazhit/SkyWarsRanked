@@ -3,6 +3,7 @@ package net.Abdymazhit.SkyWarsRanked.managers;
 import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.customs.Island;
+import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -11,7 +12,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 /**
  * Менеджер {@link GameStage стадии игры}, отвечает за изменение {@link GameStage стадии игры}
  *
- * @version   06.08.2021
+ * @version   09.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameStageManager extends GameEventsManager {

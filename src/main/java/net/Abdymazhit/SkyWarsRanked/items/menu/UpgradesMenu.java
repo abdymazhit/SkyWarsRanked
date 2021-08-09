@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Меню прокачек игрока
  *
- * @version   08.08.2021
+ * @version   09.08.2021
  * @author    Islam Abdymazhit
  */
 public class UpgradesMenu extends Menu {
@@ -29,11 +29,9 @@ public class UpgradesMenu extends Menu {
         for(int slot = 10; slot < 17; slot++) {
             slots.add(slot);
         }
-
         for(int slot = 19; slot < 26; slot++) {
             slots.add(slot);
         }
-
         for(int slot = 28; slot < 35; slot++) {
             slots.add(slot);
         }
@@ -79,7 +77,7 @@ public class UpgradesMenu extends Menu {
         }
 
         itemMeta.setLore(lore);
-        itemMeta.setDisplayName(upgrade.getName());
+        itemMeta.setDisplayName("§b" + upgrade.getName());
         itemStack.setItemMeta(itemMeta);
 
         return itemStack;

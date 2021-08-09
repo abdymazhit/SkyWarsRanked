@@ -1,7 +1,7 @@
 package net.Abdymazhit.SkyWarsRanked.events;
 
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
-import net.Abdymazhit.SkyWarsRanked.managers.GameStage;
+import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -9,7 +9,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 /**
  * Отвечает за событие ломания блока игроком
  *
- * @version   04.08.2021
+ * @version   09.08.2021
  * @author    Islam Abdymazhit
  */
 public class BlockBreakListener implements Listener {

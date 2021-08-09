@@ -16,16 +16,16 @@ import java.util.Map;
 /**
  * Меню настроек зрителя
  *
- * @version   07.08.2021
+ * @version   09.08.2021
  * @author    Islam Abdymazhit
  */
 public class SpectatorSettingsMenu extends Menu {
 
-    /** Хранит информацию о скорости полета и предмете */
-    private final Map<Integer, ItemStack> flightSpeedItem;
-
     /** Хранит информацию о скорости полета и его слоте */
     private final Map<Integer, Integer> flightSpeedSlot;
+
+    /** Хранит информацию о скорости полета и предмете */
+    private final Map<Integer, ItemStack> flightSpeedItem;
 
     /**
      * Инициализирует объекты меню
