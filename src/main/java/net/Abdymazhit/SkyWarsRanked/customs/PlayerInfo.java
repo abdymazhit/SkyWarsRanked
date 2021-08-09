@@ -1,5 +1,6 @@
 package net.Abdymazhit.SkyWarsRanked.customs;
 
+import net.Abdymazhit.SkyWarsRanked.kits.Kit;
 import net.Abdymazhit.SkyWarsRanked.upgrades.Upgrade;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -9,7 +10,7 @@ import java.util.Map;
 /**
  * Представляет собой информацию о игроке
  *
- * @version   07.08.2021
+ * @version   09.08.2021
  * @author    Islam Abdymazhit
  */
 public class PlayerInfo {
@@ -20,8 +21,14 @@ public class PlayerInfo {
     /** Статистика игрока */
     private final Stats stats;
 
-    /** Хранит информацию о прокачках игрока с их уровнем */
+    /** Прокачки игрока с их уровнем */
     private final Map<Upgrade, Integer> upgrades;
+
+    /** Выбранный набор игрока */
+    private final Kit kit;
+
+    /** Наборы игрока с их уровнем */
+    private final Map<Kit, Integer> kits;
 
     /** Количество убийств игрока в этом матче */
     private int kills;
@@ -45,12 +52,16 @@ public class PlayerInfo {
      * Создает информацию о игроке
      * @param playerVimeInfo Глобальная информация о игроке
      * @param stats Статистика игрока
-     * @param upgrades Информация о прокачках игрока с их уровнем
+     * @param upgrades Прокачки игрока с их уровнем
+     * @param kit Выбранный набор игрока
+     * @param kits Наборы игрока с их уровнем
      */
-    public PlayerInfo(PlayerVimeInfo playerVimeInfo, Stats stats, Map<Upgrade, Integer> upgrades) {
+    public PlayerInfo(PlayerVimeInfo playerVimeInfo, Stats stats, Map<Upgrade, Integer> upgrades, Kit kit, Map<Kit, Integer> kits) {
         this.playerVimeInfo = playerVimeInfo;
         this.stats = stats;
         this.upgrades = upgrades;
+        this.kit = kit;
+        this.kits = kits;
         this.kills = 0;
         this.arrowsFired = 0;
         this.blocksBroken = 0;
@@ -76,11 +87,27 @@ public class PlayerInfo {
     }
 
     /**
-     * Получает информацию о прокачках игрока с их уровнем
-     * @return Информация о прокачках игрока с их уровнем
+     * Получает прокачки игрока с их уровнем
+     * @return Прокачки игрока с их уровнем
      */
     public Map<Upgrade, Integer> getUpgrades() {
         return upgrades;
+    }
+
+    /**
+     * Получает выбранный набор игрока
+     * @return Выбранный набор игрока
+     */
+    public Kit getKit() {
+        return kit;
+    }
+
+    /**
+     * Получает наборы игрока с их уровнем
+     * @return Наборы игрока с их уровнем
+     */
+    public Map<Kit, Integer> getKits() {
+        return kits;
     }
 
     /**

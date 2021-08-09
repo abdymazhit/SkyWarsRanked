@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * Менеджер игры, отвечает за работу игры
  *
- * @version   07.08.2021
+ * @version   09.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameManager {
@@ -88,6 +88,9 @@ public class GameManager {
 
         // Добавить меню прокачек для игрока
         SkyWarsRanked.getGameItems().addPlayerUpgradesMenu(player);
+
+        // Добавить меню выбора набора для игрока
+        SkyWarsRanked.getGameItems().addPlayerKitSelectMenu(player);
 
         spectators.remove(player);
         players.add(player);

@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * Отвечает за игровые предметы
  *
- * @version   07.08.2021
+ * @version   09.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameItems {
@@ -40,8 +40,11 @@ public class GameItems {
     /** Хранит меню настроек зрителя для каждого зрителя */
     private final Map<Player, SpectatorSettingsMenu> spectatorSettingsMenus;
 
-    /** Хранит меню прокачек для каждого игрока */
+    /** Меню прокачек для каждого игрока */
     private final Map<Player, UpgradesMenu> playerUpgradesMenus;
+
+    /** Меню выбора наборов для каждого игрока */
+    private final Map<Player, KitSelectMenu> playerKitSelectMenus;
 
     /**
      * Инициализирует игровые предметы
@@ -53,6 +56,7 @@ public class GameItems {
         itemMenu = new HashMap<>();
         spectatorSettingsMenus = new HashMap<>();
         playerUpgradesMenus = new HashMap<>();
+        playerKitSelectMenus = new HashMap<>();
 
         ItemStack teleportItem = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
         ItemMeta teleportItemMeta = teleportItem.getItemMeta();
@@ -109,6 +113,7 @@ public class GameItems {
         kitsItemMeta.setLore(kitsItemLore);
         kitsItem.setItemMeta(kitsItemMeta);
         lobbyItems.put(kitsItem, 2);
+        itemUsage.put(kitsItem, player -> playerKitSelectMenus.get(player).open(player));
 
         ItemStack cosmeticsItem = new ItemStack(Material.SLIME_BALL);
         ItemMeta cosmeticsItemMeta = cosmeticsItem.getItemMeta();
@@ -119,16 +124,6 @@ public class GameItems {
         cosmeticsItemMeta.setLore(cosmeticsItemLore);
         cosmeticsItem.setItemMeta(cosmeticsItemMeta);
         lobbyItems.put(cosmeticsItem, 3);
-
-        ItemStack tracesItem = new ItemStack(Material.INK_SACK, 1, (byte) 11);
-        ItemMeta tracesItemMeta = tracesItem.getItemMeta();
-        tracesItemMeta.setDisplayName("§r>> §e§lВыбор следа §r<<");
-        List<String> tracesItemLore = new ArrayList<>();
-        tracesItemLore.add("§7Нажмите ПКМ, чтобы открыть");
-        tracesItemLore.add("§7меню выбора следа");
-        tracesItemMeta.setLore(tracesItemLore);
-        tracesItem.setItemMeta(tracesItemMeta);
-        lobbyItems.put(tracesItem, 6);
 
         ItemStack meItem = new ItemStack(Material.NETHER_STAR);
         ItemMeta meItemMeta = meItem.getItemMeta();
@@ -209,6 +204,14 @@ public class GameItems {
      */
     public void addPlayerUpgradesMenu(Player player) {
         playerUpgradesMenus.put(player, new UpgradesMenu(SkyWarsRanked.getGameManager().getPlayerInfo(player).getUpgrades()));
+    }
+
+    /**
+     * Добавляет игроку меню выбора наборов
+     * @param player Игрок
+     */
+    public void addPlayerKitSelectMenu(Player player) {
+        playerKitSelectMenus.put(player, new KitSelectMenu(player));
     }
 
     /**

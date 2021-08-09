@@ -13,12 +13,12 @@ import java.util.SplittableRandom;
 /**
  * Отвечает за прокачки
  *
- * @version   08.08.2021
+ * @version   09.08.2021
  * @author    Islam Abdymazhit
  */
 public class Upgrade {
 
-    /** Хранит информацию о прокачках по id */
+    /** Хранит прокачки по id */
     private static final Map<Integer, Upgrade> byId = new HashMap<>();
 
     /** Прокачка Пылающие стрелы */
@@ -42,7 +42,7 @@ public class Upgrade {
     /** Описание прокачки */
     private final List<String> description;
 
-    /** Хранит информацию о улучшениях уровней прокачки */
+    /** Улучшения уровней прокачки */
     private final Map<Integer, Integer> levelsImprovement;
 
     /**
@@ -52,7 +52,7 @@ public class Upgrade {
      * @param name Название прокачки
      * @param rarity Редкость прокачки
      * @param description Описание прокачки
-     * @param levelsImprovement Информация о улучшениях уровней прокачки
+     * @param levelsImprovement Улучшения уровней прокачки
      */
     public Upgrade(int id, Material material, String name, Rarity rarity, List<String> description, Map<Integer, Integer> levelsImprovement) {
         this.id = id;
@@ -112,8 +112,8 @@ public class Upgrade {
     }
 
     /**
-     * Получает информацию о улучшениях уровней прокачки
-     * @return Информация о улучшениях уровней прокачки
+     * Получает улучшения уровней прокачки
+     * @return Улучшения уровней прокачки
      */
     public Map<Integer, Integer> getLevelsImprovement() {
         return levelsImprovement;
@@ -160,10 +160,10 @@ public class Upgrade {
     }
 
     /**
-     * Получает список прокачек
-     * @return Список прокачек
+     * Получает массив прокачек
+     * @return Массив прокачек
      */
     public static Upgrade[] values() {
-        return byId.values().toArray(new Upgrade[byId.size()]);
+        return byId.values().toArray(new Upgrade[0]);
     }
 }

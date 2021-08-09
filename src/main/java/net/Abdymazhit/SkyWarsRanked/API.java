@@ -8,6 +8,7 @@ import net.Abdymazhit.SkyWarsRanked.customs.PlayerInfo;
 import net.Abdymazhit.SkyWarsRanked.customs.PlayerVimeInfo;
 import net.Abdymazhit.SkyWarsRanked.customs.Stats;
 import net.Abdymazhit.SkyWarsRanked.enums.PlayerRank;
+import net.Abdymazhit.SkyWarsRanked.kits.Kit;
 import net.Abdymazhit.SkyWarsRanked.upgrades.Upgrade;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -24,7 +25,7 @@ import java.util.Map;
 /**
  * Отвечает за работу с API
  *
- * @version   08.08.2021
+ * @version   09.08.2021
  * @author    Islam Abdymazhit
  */
 public class API {
@@ -43,7 +44,9 @@ public class API {
             Stats stats = getPlayerStats(playerVimeInfo);
             if(stats != null) {
                 Map<Upgrade, Integer> playerUpgrades = getPlayerUpgrades(player);
-                return new PlayerInfo(playerVimeInfo, stats, playerUpgrades);
+                Kit playerKit = getPlayerKit(player);
+                Map<Kit, Integer> playerKits = getPlayerKits(player);
+                return new PlayerInfo(playerVimeInfo, stats, playerUpgrades, playerKit, playerKits);
             }
         }
 
@@ -131,6 +134,23 @@ public class API {
         playerUpgrades.put(Upgrade.BLAZING_ARROWS, 10);
         playerUpgrades.put(Upgrade.JUGGERNAUT, 10);
         return playerUpgrades;
+    }
+
+    /**
+     * Получает выбранный набор игрока
+     * @return Выбранный набор игрока
+     */
+    private Kit getPlayerKit(Player player) {
+        return null;
+    }
+
+    /**
+     * Получает наборы игрока с их уровнем
+     * @return Наборы игрока с их уровнем
+     */
+    private Map<Kit, Integer> getPlayerKits(Player player) {
+        Map<Kit, Integer> playerKits = new HashMap<>();
+        return playerKits;
     }
 
     /**
