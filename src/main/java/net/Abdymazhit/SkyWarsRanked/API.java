@@ -141,7 +141,7 @@ public class API {
      * @return Выбранный набор игрока
      */
     private Kit getPlayerKit(Player player) {
-        return null;
+        return Kit.ENCHANTER;
     }
 
     /**
@@ -150,6 +150,7 @@ public class API {
      */
     private Map<Kit, Integer> getPlayerKits(Player player) {
         Map<Kit, Integer> playerKits = new HashMap<>();
+        playerKits.put(Kit.ENCHANTER, 10);
         return playerKits;
     }
 

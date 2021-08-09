@@ -19,6 +19,9 @@ public class Kit {
     /** Хранит наборы по id */
     private static final Map<Integer, Kit> byId = new HashMap<>();
 
+    /** Набор чародей */
+    public static final Kit ENCHANTER = new Enchanter(1);
+
     /** Id набора */
     private final int id;
 
