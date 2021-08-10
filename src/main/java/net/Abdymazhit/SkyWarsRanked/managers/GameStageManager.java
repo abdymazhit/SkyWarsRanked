@@ -8,6 +8,7 @@ import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
 import net.Abdymazhit.SkyWarsRanked.kits.Kit;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.WorldBorder;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -115,6 +116,10 @@ public class GameStageManager extends GameEventsManager {
                 Player player = island.getPlayer();
 
                 // Очистить инвентарь игрока
+                player.getInventory().setHelmet(null);
+                player.getInventory().setChestplate(null);
+                player.getInventory().setLeggings(null);
+                player.getInventory().setBoots(null);
                 player.getInventory().clear();
 
                 // Установить игровой режим на выживание
@@ -155,6 +160,11 @@ public class GameStageManager extends GameEventsManager {
 
         // Обновить количество зрителей в scoreboard'е игры
         SkyWarsRanked.getGameBoard().updateSpectatorsCount();
+
+        // Установить зону
+        WorldBorder worldBorder = Bukkit.getWorld("world").getWorldBorder();
+        worldBorder.setCenter(Config.mysteryChest);
+        worldBorder.setSize(200);
 
         // Начать игровое событие начала битвы
         startBattleStartEvent();

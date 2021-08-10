@@ -93,7 +93,7 @@ public class GameEventsManager {
 
                     // Начать сужение зоны
                     WorldBorder worldBorder = Bukkit.getWorld("world").getWorldBorder();
-                    worldBorder.setSize(20, 180);
+                    worldBorder.setSize(30, 180);
 
                     // Начать следующее игровое событие
                     startMysteryChestOpenEvent();

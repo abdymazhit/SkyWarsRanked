@@ -47,11 +47,9 @@ public class GameManager {
         spectators = new ArrayList<>();
         playersInfo = new HashMap<>();
 
-        // Установить зону
+        // Сбросить зону
         WorldBorder worldBorder = Bukkit.getWorld("world").getWorldBorder();
         worldBorder.reset();
-        worldBorder.setCenter(Config.mysteryChest);
-        worldBorder.setSize(200);
     }
 
     /**
@@ -79,6 +77,9 @@ public class GameManager {
         player.setHealth(20.0);
         player.setFoodLevel(20);
         player.setSaturation(10);
+        player.setFlySpeed(0.1f);
+        player.setLevel(0);
+        player.setExp(0);
 
         // Выдать игроку предметы лобби
         SkyWarsRanked.getGameItems().giveLobbyItems(player);
@@ -127,6 +128,9 @@ public class GameManager {
         player.setHealth(20.0);
         player.setFoodLevel(20);
         player.setSaturation(10);
+        player.setFlySpeed(0.1f);
+        player.setLevel(0);
+        player.setExp(0);
 
         // Выдать зрителю предметы зрителя
         SkyWarsRanked.getGameItems().giveSpectatorItems(player);
@@ -135,7 +139,6 @@ public class GameManager {
 
         player.setAllowFlight(true);
         player.setFlying(true);
-        player.setFlySpeed(0.1f);
 
         for(Player p : Bukkit.getOnlinePlayers()) {
             p.hidePlayer(player);

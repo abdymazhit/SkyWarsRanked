@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * Отвечает за игровые предметы
  *
- * @version   09.08.2021
+ * @version   10.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameItems {
@@ -152,6 +152,10 @@ public class GameItems {
      * @param player Игрок
      */
     public void giveLobbyItems(Player player) {
+        player.getInventory().setHelmet(null);
+        player.getInventory().setChestplate(null);
+        player.getInventory().setLeggings(null);
+        player.getInventory().setBoots(null);
         player.getInventory().clear();
 
         for(ItemStack itemStack : lobbyItems.keySet()) {
@@ -175,6 +179,10 @@ public class GameItems {
         new BukkitRunnable() {
             @Override
             public void run() {
+                player.getInventory().setHelmet(null);
+                player.getInventory().setChestplate(null);
+                player.getInventory().setLeggings(null);
+                player.getInventory().setBoots(null);
                 player.getInventory().clear();
 
                 for(ItemStack itemStack : spectatorItems.keySet()) {
