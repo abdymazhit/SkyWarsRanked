@@ -3,16 +3,20 @@ package net.Abdymazhit.SkyWarsRanked.managers;
 import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.customs.Island;
+import net.Abdymazhit.SkyWarsRanked.customs.PlayerInfo;
 import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
+import net.Abdymazhit.SkyWarsRanked.kits.Kit;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Map;
+
 /**
  * Менеджер {@link GameStage стадии игры}, отвечает за изменение {@link GameStage стадии игры}
  *
- * @version   09.08.2021
+ * @version   10.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameStageManager extends GameEventsManager {
@@ -124,6 +128,13 @@ public class GameStageManager extends GameEventsManager {
 
                 // Телепортировать игрока в спавн острова
                 player.teleport(island.getSpawn());
+
+                // Выдать игроку набор
+                PlayerInfo playerInfo = SkyWarsRanked.getGameManager().getPlayerInfo(player);
+                Map<Kit, Integer> kits = playerInfo.getKits();
+                Kit kit = playerInfo.getKit();
+                int level = kits.get(kit);
+                player.getInventory().addItem(kit.getLevelItems().get(level));
             }
         }
 

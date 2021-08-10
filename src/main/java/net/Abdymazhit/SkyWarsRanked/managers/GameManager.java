@@ -21,7 +21,7 @@ import java.util.Map;
 /**
  * Менеджер игры, отвечает за работу игры
  *
- * @version   09.08.2021
+ * @version   10.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameManager {
@@ -221,9 +221,9 @@ public class GameManager {
 
             // Отправить сообщения о убийстве
             for(Player p : Bukkit.getOnlinePlayers()) {
-                p.sendMessage("Игрок " + player.getName() + " убит игроком " + killer.getName());
+                p.sendMessage("Игрок " + player.getDisplayName() + " убит игроком " + killer.getName());
             }
-            player.sendMessage("Вас убил игрок §c" + killer.getName() + " §fи у него осталось §c" + (killer.getHealth() / 2) + "❤");
+            player.sendMessage("Вас убил игрок §c" + killer.getDisplayName() + " §fи у него осталось §c" + (killer.getHealth() / 2) + "❤");
         } else {
             // Отправить сообщения о убийстве
             for(Player p : Bukkit.getOnlinePlayers()) {
@@ -240,7 +240,7 @@ public class GameManager {
             for(Player p : Bukkit.getOnlinePlayers()) {
                 p.sendMessage("§7####################################");
                 p.sendMessage("§7# §fПобедитель:");
-                p.sendMessage("§7#     §f" + winner.getName());
+                p.sendMessage("§7#     " + winner.getDisplayName());
                 p.sendMessage("§7####################################");
             }
 

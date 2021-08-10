@@ -11,7 +11,7 @@ import org.bukkit.scheduler.BukkitTask;
 /**
  * Менеджер игровых событий, отвечает за изменение игровых событий
  *
- * @version   05.08.2021
+ * @version   10.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameEventsManager {
@@ -233,7 +233,7 @@ public class GameEventsManager {
                                 player.damage(2);
                             }
 
-                            if(SkyWarsRanked.getGameManager().getPlayers().isEmpty()) {
+                            if(SkyWarsRanked.getGameManager().getPlayers().size() == 1) {
                                 cancel();
                             }
                         }

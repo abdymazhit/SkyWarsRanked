@@ -21,7 +21,7 @@ import java.io.IOException;
 /**
  * Отвечает за работу с API VimeWorld.ru
  *
- * @version   09.08.2021
+ * @version   10.08.2021
  * @author    Islam Abdymazhit
  */
 public class API {
@@ -35,7 +35,7 @@ public class API {
      * @return Информация о игроке
      */
     public PlayerInfo getPlayerInfo(Player player) {
-        PlayerVimeInfo playerVimeInfo = getPlayerVimeInfo(player);
+        PlayerVimeInfo playerVimeInfo = getPlayerVimeInfo(player.getName());
         if(playerVimeInfo != null) {
             Stats playerStats = getPlayerStats(playerVimeInfo.getId());
             if(playerStats != null) {
@@ -50,13 +50,13 @@ public class API {
 
     /**
      * Получает глобальную информацию о игроке
-     * @param player Игрок
+     * @param playerName Имя игрока
      * @return Глобальная информация о игроке
      */
-    private PlayerVimeInfo getPlayerVimeInfo(Player player) {
+    private PlayerVimeInfo getPlayerVimeInfo(String playerName) {
         JsonParser parser = new JsonParser();
 
-        String stringInfo = sendGetRequest("https://api.vimeworld.ru/user/name/" + player.getName() + "?token=" + token);
+        String stringInfo = sendGetRequest("https://api.vimeworld.ru/user/name/" + playerName + "?token=" + token);
 
         if(stringInfo != null) {
             JsonArray infoArray = parser.parse(stringInfo).getAsJsonArray();
@@ -71,8 +71,14 @@ public class API {
             String guildColor = null;
             if(!guildElement.isJsonNull()) {
                 JsonObject guildObject = guildElement.getAsJsonObject();
-                guildTag = guildObject.get("tag").getAsString();
-                guildColor = guildObject.get("color").getAsString();
+
+                if(!guildObject.get("tag").toString().equals("null")) {
+                    guildTag = guildObject.get("tag").getAsString();
+                }
+
+                if(!guildObject.get("color").toString().equals("null")) {
+                    guildColor = guildObject.get("color").getAsString();
+                }
             }
 
             return new PlayerVimeInfo(id, PlayerRank.valueOf(rank), guildTag, guildColor);

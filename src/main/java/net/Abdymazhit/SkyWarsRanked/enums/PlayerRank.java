@@ -3,72 +3,71 @@ package net.Abdymazhit.SkyWarsRanked.enums;
 /**
  * Представляет собой ранг игрока
  *
- * @version   09.08.2021
+ * @version   10.08.2021
  * @author    Islam Abdymazhit
  */
 public enum PlayerRank {
-    PLAYER,
-    VIP,
-    PREMIUM,
-    HOLY,
-    IMMORTAL,
-    BUILDER,
-    SRBUILDER,
-    MAPLEAD,
-    YOUTUBE,
-    DEV,
-    ORGANIZER,
-    MODER,
-    WARDEN,
-    CHIEF,
-    ADMIN;
+    PLAYER("", "Игрок", null),
+    VIP("§a", "VIP", "V"),
+    PREMIUM("§b", "Premium", "P"),
+    HOLY("§6", "Holy", "H"),
+    IMMORTAL("§d", "Immortal", "I"),
+    BUILDER("§2", "Билдер", "Билдер"),
+    SRBUILDER("§2", "Проверенный билдер", "Пр. билдер"),
+    MAPLEAD("§2", "Главный билдер", "Гл. билдер"),
+    YOUTUBE("§c", "You§cTube", "§cYou§fTube"),
+    DEV("§3", "Разработчик", "Dev"),
+    ORGANIZER("§3", "Организатор", "Организатор"),
+    MODER("§9", "Модератор", "Модер"),
+    WARDEN("§9", "Проверенный модератор", "Модер"),
+    CHIEF("§9", "Главный модератор", "Гл. модер"),
+    ADMIN("§3§l", "Главный админ", "Гл. админ");
+
+    private final String color;
+    private final String name;
+    private final String prefix;
 
     /**
-     * Получает префикс ранга игрока
-     * @return Префикс ранга игрока
+     * Инициализирует ранг
+     * @param color Цвет ранга
+     * @param name Название ранга
+     * @param prefix Префикс ранга
      */
-    public String getPrefix() {
-        switch (this) {
-            case PLAYER:
-                return "§f";
-            case VIP:
-                return "§a[V]";
-            case PREMIUM:
-                return "§b[P]";
-            case HOLY:
-                return "§6[H]";
-            case IMMORTAL:
-                return "§5[I]";
-            case BUILDER:
-                return "§2[Билдер]";
-            case SRBUILDER:
-                return "§2[Пр. билдер]";
-            case MAPLEAD:
-                return "§2[Гл. билдер]";
-            case YOUTUBE:
-                return "§c[YouTube]";
-            case DEV:
-                return "§b[Dev]";
-            case ORGANIZER:
-                return "§b[Организатор]";
-            case MODER:
-            case WARDEN:
-                return "§9[Модер]";
-            case CHIEF:
-                return "§9[Гл. модер]";
-            case ADMIN:
-                return "§b[Гл. админ]";
-            default:
-                return "§cОШИБКА";
-        }
+    PlayerRank(String color, String name, String prefix) {
+        this.color = color;
+        this.name = ((name == null) ? "" : name);
+        this.prefix = ((prefix == null) ? "" : prefix);
     }
 
     /**
-     * Получает цвет ранга игрока
-     * @return Цвет ранга игрока
+     * Получает название ранга
+     * @return Название ранга
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Получает префикс ранга
+     * @return Префикс ранга
+     */
+    public String getPrefix() {
+        return prefix;
+    }
+
+    /**
+     * Получает цвет ранга
+     * @return Цвет ранга
      */
     public String getColor() {
-        String prefix = getPrefix();
-        return prefix.substring(0, 1);
+        return color;
+    }
+
+    /**
+     * Получает отображаемое имя
+     * @return Отображаемое имя
+     */
+    public String getDisplayName() {
+        return color + name + "§r";
     }
 }

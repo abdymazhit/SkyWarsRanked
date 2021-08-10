@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 /**
  * Отвечает за событие выхода игрока из сервера
  *
- * @version   09.08.2021
+ * @version   10.08.2021
  * @author    Islam Abdymazhit
  */
 public class PlayerQuitListener implements Listener {
@@ -45,7 +45,7 @@ public class PlayerQuitListener implements Listener {
 
                 // Отправить сообщение о выходе игрока
                 event.setQuitMessage("[" + SkyWarsRanked.getGameManager().getPlayers().size() + "/" + Config.islands.size() + "] " +
-                        "§e=> §fИгрок " + player.getName() + " отключился");
+                        "§e=> §fИгрок " + player.getDisplayName() + " отключился");
             }
             // Проверка, является ли игрок зрителем игры
             else if(SkyWarsRanked.getGameManager().getSpectators().contains(player)) {
@@ -62,6 +62,9 @@ public class PlayerQuitListener implements Listener {
             if (SkyWarsRanked.getGameManager().getPlayers().contains(player)) {
                 // Выполнить действия убийства игрока
                 SkyWarsRanked.getGameManager().performKillEvent(player);
+
+                // Не отображать сообщение о выходе
+                event.setQuitMessage(null);
             }
             // Проверка, является ли игрок зрителем игры
             else if(SkyWarsRanked.getGameManager().getSpectators().contains(player)) {
