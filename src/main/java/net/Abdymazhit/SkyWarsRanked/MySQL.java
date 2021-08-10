@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Отвечает за работу с базой данных
  *
- * @version   09.08.2021
+ * @version   10.08.2021
  * @author    Islam Abdymazhit
  */
 public class MySQL {
@@ -43,5 +43,23 @@ public class MySQL {
 
         SkyWarsRanked.getGameManager().getPlayerInfo(player).setUpgrades(playerUpgrades);
         SkyWarsRanked.getGameItems().addPlayerUpgradesMenu(player);
+    }
+
+    /**
+     * Добавить коины игроку
+     * @param player Игрок
+     * @param coins Коины
+     */
+    public void addCoins(Player player, int coins) {
+        player.sendMessage("§eДобавлено коинов: " + coins);
+    }
+
+    /**
+     * Добавить опыт игроку
+     * @param player Игрок
+     * @param exp Опыт
+     */
+    public void giveExp(Player player, int exp) {
+        player.sendMessage("§9Добавлено опыта: " + exp);
     }
 }

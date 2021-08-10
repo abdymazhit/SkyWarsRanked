@@ -224,6 +224,14 @@ public class GameManager {
                 p.sendMessage("Игрок " + player.getDisplayName() + " убит игроком " + killer.getName());
             }
             player.sendMessage("Вас убил игрок §c" + killer.getDisplayName() + " §fи у него осталось §c" + (killer.getHealth() / 2) + "❤");
+
+            // Добавить коины и опыт проигравшему
+            SkyWarsRanked.getMySQL().addCoins(player, 5 + playersInfo.get(player).getKills() * 4);
+            SkyWarsRanked.getMySQL().giveExp(player, 5 + playersInfo.get(player).getKills() * 4);
+
+            // Добавить коины и опыт убийце
+            SkyWarsRanked.getMySQL().addCoins(killer, 5);
+            SkyWarsRanked.getMySQL().giveExp(killer, 5);
         } else {
             // Отправить сообщения о убийстве
             for(Player p : Bukkit.getOnlinePlayers()) {
@@ -243,6 +251,10 @@ public class GameManager {
                 p.sendMessage("§7#     " + winner.getDisplayName());
                 p.sendMessage("§7####################################");
             }
+
+            // Добавить коины и опыт победителю
+            SkyWarsRanked.getMySQL().addCoins(winner, 50 + playersInfo.get(winner).getKills() * 5);
+            SkyWarsRanked.getMySQL().giveExp(winner , 50 + playersInfo.get(winner).getKills() * 5);
 
             // Начать стадию конца игры
             SkyWarsRanked.getGameStageManager().startEndingStage();
