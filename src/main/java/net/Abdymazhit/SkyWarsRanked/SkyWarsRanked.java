@@ -66,6 +66,7 @@ public class SkyWarsRanked extends JavaPlugin {
         gameBoard = new GameBoard();
         gameItems = new GameItems();
 
+        getServer().getPluginManager().registerEvents(new AsyncPlayerChatListener(), this);
         getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
         getServer().getPluginManager().registerEvents(new BlockPlaceListener(), this);
         getServer().getPluginManager().registerEvents(new EntityDamageByEntityListener(), this);
