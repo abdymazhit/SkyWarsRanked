@@ -2,7 +2,9 @@ package net.Abdymazhit.SkyWarsRanked.managers;
 
 import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
+import net.Abdymazhit.SkyWarsRanked.utils.Title;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.WorldBorder;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -32,7 +34,35 @@ public class GameEventsManager {
                 // Изменить таймер в scoreboard'е игры
                 SkyWarsRanked.getGameBoard().updateEvent("Начало битвы " + timeToString(time));
 
+                // Отправить уведомления обратного отсчета
+                if(time == 5) {
+                    for(Player player : Bukkit.getOnlinePlayers()) {
+                        Title.sendTitle(player, "§f5", 4, 12, 4);
+                    }
+                } else if(time == 4) {
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        Title.sendTitle(player, "§f4", 4, 12, 4);
+                    }
+                } else if(time == 3) {
+                    for(Player player : Bukkit.getOnlinePlayers()) {
+                        Title.sendTitle(player, "§e3", 4, 12, 4);
+                    }
+                } else if(time == 2) {
+                    for(Player player : Bukkit.getOnlinePlayers()) {
+                        Title.sendTitle(player, "§62", 4, 12, 4);
+                    }
+                } else if(time == 1) {
+                    for(Player player : Bukkit.getOnlinePlayers()) {
+                        Title.sendTitle(player, "§6§c1", 4, 12, 4);
+                    }
+                }
+
                 if (time-- <= 0) {
+                    // Отправить уведомление, что игра началась
+                    for(Player player : Bukkit.getOnlinePlayers()) {
+                        Title.sendTitle(player, "§6ИГРА НАЧАЛАСЬ!", 4, 12, 4);
+                    }
+
                     // Разрешить PvP между игроками
                     SkyWarsRanked.getGameSettingsManager().setEnabledPvP(true);
 
@@ -56,6 +86,11 @@ public class GameEventsManager {
                 SkyWarsRanked.getGameBoard().updateEvent("Начало суж. зоны " + timeToString(time));
 
                 if (time-- <= 0) {
+                    // Отправить уведомление, что сужение зоны началось
+                    for(Player player : Bukkit.getOnlinePlayers()) {
+                        Title.sendTitle(player, "§fСужение зоны началось!", 4, 20, 4);
+                    }
+
                     // Начать сужение зоны
                     WorldBorder worldBorder = Bukkit.getWorld("world").getWorldBorder();
                     worldBorder.setSize(20, 180);
@@ -82,6 +117,11 @@ public class GameEventsManager {
                 SkyWarsRanked.getGameBoard().updateEvent("Отк. Мист. сундука " + timeToString(time));
 
                 if (time-- <= 0) {
+                    // Отправить сообщение о открытии мистического сундука
+                    for(Player player : Bukkit.getOnlinePlayers()) {
+                        player.sendMessage("§dМистический сундук §aоткрыт§d! Поспешите забрать свои законные вещи!");
+                    }
+
                     // Открыть мистический сундук
                     SkyWarsRanked.getGameSettingsManager().setMysteryChestOpened(true);
 
@@ -107,6 +147,11 @@ public class GameEventsManager {
                 SkyWarsRanked.getGameBoard().updateEvent("Закр. Мист. сундука " + timeToString(time));
 
                 if (time-- <= 0) {
+                    // Отправить сообщение о закрытии мистического сундука
+                    for(Player player : Bukkit.getOnlinePlayers()) {
+                        player.sendMessage("§dМистический сундук §cзакрылся§d!");
+                    }
+
                     // Закрыть мистический сундук
                     SkyWarsRanked.getGameSettingsManager().setMysteryChestOpened(false);
 
@@ -132,6 +177,11 @@ public class GameEventsManager {
                 SkyWarsRanked.getGameBoard().updateEvent("Перезап. сундуков " + timeToString(time));
 
                 if (time-- <= 0) {
+                    // Отправить звук о перезаполнении сундуков
+                    for(Player player : Bukkit.getOnlinePlayers()) {
+                        player.playSound(player.getLocation(), Sound.CHEST_OPEN, 1, 1);
+                    }
+
                     // Начать следующее игровое событие
                     startEndNarrowingGameZoneEvent();
                     cancel();
@@ -152,6 +202,11 @@ public class GameEventsManager {
                 SkyWarsRanked.getGameBoard().updateEvent("Конец суж. зоны " + timeToString(time));
 
                 if (time-- <= 0) {
+                    // Отправить уведомление, что сужение зоны закончилось
+                    for(Player player : Bukkit.getOnlinePlayers()) {
+                        Title.sendTitle(player, "§fСужение зоны закончилось!", 4, 20, 4);
+                    }
+
                     // Начать следующее игровое событие
                     startRefillChestsEventV2();
                     cancel();
@@ -174,6 +229,11 @@ public class GameEventsManager {
                 SkyWarsRanked.getGameBoard().updateEvent("Перезап. сундуков " + timeToString(time));
 
                 if (time-- <= 0) {
+                    // Отправить звук о перезаполнении сундуков
+                    for(Player player : Bukkit.getOnlinePlayers()) {
+                        player.playSound(player.getLocation(), Sound.CHEST_OPEN, 1, 1);
+                    }
+
                     // Начать следующее игровое событие
                     startDeathmatchEvent();
                     cancel();
@@ -195,7 +255,34 @@ public class GameEventsManager {
                 // Изменить таймер в scoreboard'е игры
                 SkyWarsRanked.getGameBoard().updateEvent("Детматч " + timeToString(time));
 
+                // Отправить уведомления обратного отсчета
+                if(time == 5) {
+                    for(Player player : Bukkit.getOnlinePlayers()) {
+                        Title.sendTitle(player, "§f5", 4, 12, 4);
+                    }
+                } else if(time == 4) {
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        Title.sendTitle(player, "§f4", 4, 12, 4);
+                    }
+                } else if(time == 3) {
+                    for(Player player : Bukkit.getOnlinePlayers()) {
+                        Title.sendTitle(player, "§e3", 4, 12, 4);
+                    }
+                } else if(time == 2) {
+                    for(Player player : Bukkit.getOnlinePlayers()) {
+                        Title.sendTitle(player, "§62", 4, 12, 4);
+                    }
+                } else if(time == 1) {
+                    for(Player player : Bukkit.getOnlinePlayers()) {
+                        Title.sendTitle(player, "§6§c1", 4, 12, 4);
+                    }
+                }
+
                 if (time-- <= 0) {
+                    for(Player player : Bukkit.getOnlinePlayers()) {
+                        Title.sendTitle(player, "§6§cДетматч!", 4, 12, 4);
+                    }
+
                     // Телепортировать игроков в местоположение детматча
                     for(int id = 0; id < SkyWarsRanked.getGameManager().getPlayers().size(); id++) {
                         Player player = SkyWarsRanked.getGameManager().getPlayers().get(id);
@@ -224,6 +311,11 @@ public class GameEventsManager {
                 SkyWarsRanked.getGameBoard().updateEvent("Сниж. здор. игроков " + timeToString(time));
 
                 if (time-- <= 0) {
+                    // Отправить уведомление, что сужение зоны закончилось
+                    for(Player player : Bukkit.getOnlinePlayers()) {
+                        Title.sendTitle(player, "§cСнижение здоровья игроков!", 4, 20, 4);
+                    }
+
                     // Начать снижение здоровья игроков
                     // Каждую секунду здоровье будет уменьшаться на 2 хп
                     new BukkitRunnable() {
