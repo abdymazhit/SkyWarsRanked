@@ -2,18 +2,18 @@ package net.Abdymazhit.SkyWarsRanked.upgrades;
 
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.enums.Rarity;
+import net.Abdymazhit.SkyWarsRanked.utils.Random;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SplittableRandom;
 
 /**
  * Отвечает за прокачки
  *
- * @version   09.08.2021
+ * @version   11.08.2021
  * @author    Islam Abdymazhit
  */
 public class Upgrade {
@@ -125,8 +125,7 @@ public class Upgrade {
     public static boolean canPerformUpgradeAction(Player player, Upgrade upgrade) {
         Map<Upgrade, Integer> upgrades = SkyWarsRanked.getGameManager().getPlayerInfo(player).getUpgrades();
         if(upgrades.containsKey(upgrade)) {
-            SplittableRandom random = new SplittableRandom();
-            return random.nextInt(1, 101) <= upgrades.get(upgrade);
+            return Random.random.nextInt(1, 101) <= upgrades.get(upgrade);
         } else {
             return false;
         }
