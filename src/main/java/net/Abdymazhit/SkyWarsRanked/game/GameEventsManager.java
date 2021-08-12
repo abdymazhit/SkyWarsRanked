@@ -18,8 +18,38 @@ import org.bukkit.scheduler.BukkitTask;
  */
 public class GameEventsManager {
 
+    /** Время до начала битвы */
+    private static final int TIME_BEFORE_BATTLE_START = 10;
+
+    /** Время до начала сужения игровой зоны */
+    private static final int TIME_BEFORE_STARTING_NARROWING_GAME_ZONE = 50;
+
+    /** Время до открытия мистического сундука */
+    private static final int TIME_BEFORE_OPENING_MYSTERY_CHEST = 60;
+
+    /** Время до закрытия мистического сундука */
+    private static final int TIME_BEFORE_CLOSING_MYSTERY_CHEST = 30;
+
+    /** Время до перезаполнения сундуков */
+    private static final int TIME_BEFORE_REFILLING_CHESTS = 60;
+
+    /** Время до конца сужения игровой зоны */
+    private static final int TIME_BEFORE_ENDING_NARROWING_GAME_ZONE = 30;
+
+    /** Время до второго перезаполнения сундуков */
+    private static final int TIME_BEFORE_REFILLING_CHESTS2 = 60;
+
+    /** Время до начала детматча */
+    private static final int TIME_BEFORE_STARTING_DEATHMATCH = 60;
+
+    /** Время до начала снижения здоровья игроков */
+    private static final int TIME_BEFORE_DECREASING_PLAYERS_HEALTH = 60;
+
     /** Таймер обратного отсчета */
     public BukkitTask task;
+
+    /** Время до заполнения сундуков */
+    public int timeBeforeRefillingChests;
 
     /**
      * Начать игровое событие начала битвы
@@ -27,7 +57,7 @@ public class GameEventsManager {
     public void startBattleStartEvent() {
         // Начать обратный отсчет
         task = new BukkitRunnable() {
-            int time = 10; // Время до начала битвы
+            int time = TIME_BEFORE_BATTLE_START; // Время до начала битвы
 
             @Override
             public void run() {
@@ -57,6 +87,14 @@ public class GameEventsManager {
                     }
                 }
 
+                // Обновить таймер голограмм открытых сундуков
+                timeBeforeRefillingChests = time +
+                        TIME_BEFORE_STARTING_NARROWING_GAME_ZONE +
+                        TIME_BEFORE_OPENING_MYSTERY_CHEST +
+                        TIME_BEFORE_CLOSING_MYSTERY_CHEST +
+                        TIME_BEFORE_REFILLING_CHESTS;
+                SkyWarsRanked.getGameManager().getChestManager().updateOpenedChestsHologramsTimer(timeBeforeRefillingChests);
+
                 if (time-- <= 0) {
                     // Отправить уведомление, что игра началась
                     for(Player player : Bukkit.getOnlinePlayers()) {
@@ -78,12 +116,19 @@ public class GameEventsManager {
     private void startNarrowingGameZoneEvent() {
         // Начать обратный отсчет
         task = new BukkitRunnable() {
-            int time = 50; // Время до начала сужения зоны
+            int time = TIME_BEFORE_STARTING_NARROWING_GAME_ZONE; // Время до начала сужения зоны
 
             @Override
             public void run() {
                 // Изменить таймер в scoreboard'е игры
                 SkyWarsRanked.getGameManager().getGameBoard().updateEvent("Начало суж. зоны " + timeToString(time));
+
+                // Обновить таймер голограмм открытых сундуков
+                timeBeforeRefillingChests = time +
+                        TIME_BEFORE_OPENING_MYSTERY_CHEST +
+                        TIME_BEFORE_CLOSING_MYSTERY_CHEST +
+                        TIME_BEFORE_REFILLING_CHESTS;
+                SkyWarsRanked.getGameManager().getChestManager().updateOpenedChestsHologramsTimer(timeBeforeRefillingChests);
 
                 if (time-- <= 0) {
                     // Отправить уведомление, что сужение зоны началось
@@ -109,12 +154,18 @@ public class GameEventsManager {
     private void startMysteryChestOpenEvent() {
         // Начать обратный отсчет
         task = new BukkitRunnable() {
-            int time = 60; // Время до открытия мистического сундука
+            int time = TIME_BEFORE_OPENING_MYSTERY_CHEST; // Время до открытия мистического сундука
 
             @Override
             public void run() {
                 // Изменить таймер в scoreboard'е игры
                 SkyWarsRanked.getGameManager().getGameBoard().updateEvent("Отк. Мист. сундука " + timeToString(time));
+
+                // Обновить таймер голограмм открытых сундуков
+                timeBeforeRefillingChests = time +
+                        TIME_BEFORE_CLOSING_MYSTERY_CHEST +
+                        TIME_BEFORE_REFILLING_CHESTS;
+                SkyWarsRanked.getGameManager().getChestManager().updateOpenedChestsHologramsTimer(timeBeforeRefillingChests);
 
                 if (time-- <= 0) {
                     // Отправить сообщение о открытии мистического сундука
@@ -139,12 +190,17 @@ public class GameEventsManager {
     private void startMysteryChestCloseEvent() {
         // Начать обратный отсчет
         task = new BukkitRunnable() {
-            int time = 30; // Время до закрытия мистического сундука
+            int time = TIME_BEFORE_CLOSING_MYSTERY_CHEST; // Время до закрытия мистического сундука
 
             @Override
             public void run() {
                 // Изменить таймер в scoreboard'е игры
                 SkyWarsRanked.getGameManager().getGameBoard().updateEvent("Закр. Мист. сундука " + timeToString(time));
+
+                // Обновить таймер голограмм открытых сундуков
+                timeBeforeRefillingChests = time +
+                        TIME_BEFORE_REFILLING_CHESTS;
+                SkyWarsRanked.getGameManager().getChestManager().updateOpenedChestsHologramsTimer(timeBeforeRefillingChests);
 
                 if (time-- <= 0) {
                     // Отправить сообщение о закрытии мистического сундука
@@ -169,14 +225,22 @@ public class GameEventsManager {
     private void startRefillChestsEvent() {
         // Начать обратный отсчет
         task = new BukkitRunnable() {
-            int time = 60; // Время до перезаполнения сундуков
+            int time = TIME_BEFORE_REFILLING_CHESTS; // Время до перезаполнения сундуков
 
             @Override
             public void run() {
                 // Изменить таймер в scoreboard'е игры
                 SkyWarsRanked.getGameManager().getGameBoard().updateEvent("Перезап. сундуков " + timeToString(time));
+                
+                // Обновить таймер голограмм открытых сундуков
+                timeBeforeRefillingChests = time;
+                SkyWarsRanked.getGameManager().getChestManager().updateOpenedChestsHologramsTimer(timeBeforeRefillingChests);
 
                 if (time-- <= 0) {
+                    // Удалить голограммы сундуков
+                    SkyWarsRanked.getGameManager().getChestManager().removeOpenedChestsHolograms();
+                    SkyWarsRanked.getGameManager().getChestManager().removeEmptyChestsHolograms();
+
                     // Перезаполнить сундуки лутом
                     SkyWarsRanked.getGameManager().getChestManager().refillIslandChests();
                     SkyWarsRanked.getGameManager().getChestManager().refillBasicChests();
@@ -199,12 +263,17 @@ public class GameEventsManager {
     private void startEndNarrowingGameZoneEvent() {
         // Начать обратный отсчет
         task = new BukkitRunnable() {
-            int time = 30; // Время до конца сужения зоны
+            int time = TIME_BEFORE_ENDING_NARROWING_GAME_ZONE; // Время до конца сужения зоны
 
             @Override
             public void run() {
                 // Изменить таймер в scoreboard'е игры
                 SkyWarsRanked.getGameManager().getGameBoard().updateEvent("Конец суж. зоны " + timeToString(time));
+
+                // Обновить таймер голограмм открытых сундуков
+                timeBeforeRefillingChests = time +
+                        TIME_BEFORE_REFILLING_CHESTS2;
+                SkyWarsRanked.getGameManager().getChestManager().updateOpenedChestsHologramsTimer(timeBeforeRefillingChests);
 
                 if (time-- <= 0) {
                     // Отправить уведомление, что сужение зоны закончилось
@@ -226,14 +295,22 @@ public class GameEventsManager {
     private void startRefillChestsEventV2() {
         // Начать обратный отсчет
         task = new BukkitRunnable() {
-            int time = 60; // Время до перезаполнения сундуков
+            int time = TIME_BEFORE_REFILLING_CHESTS2; // Время до перезаполнения сундуков
 
             @Override
             public void run() {
                 // Изменить таймер в scoreboard'е игры
                 SkyWarsRanked.getGameManager().getGameBoard().updateEvent("Перезап. сундуков " + timeToString(time));
 
+                // Обновить таймер голограмм открытых сундуков
+                timeBeforeRefillingChests = time;
+                SkyWarsRanked.getGameManager().getChestManager().updateOpenedChestsHologramsTimer(timeBeforeRefillingChests);
+
                 if (time-- <= 0) {
+                    // Удалить голограммы сундуков
+                    SkyWarsRanked.getGameManager().getChestManager().removeOpenedChestsHolograms();
+                    SkyWarsRanked.getGameManager().getChestManager().removeEmptyChestsHolograms();
+
                     // Перезаполнить сундуки лутом
                     SkyWarsRanked.getGameManager().getChestManager().refillIslandChests();
                     SkyWarsRanked.getGameManager().getChestManager().refillBasicChests();
@@ -258,7 +335,7 @@ public class GameEventsManager {
     private void startDeathmatchEvent() {
         // Начать обратный отсчет
         task = new BukkitRunnable() {
-            int time = 60; // Время до детматча
+            int time = TIME_BEFORE_STARTING_DEATHMATCH; // Время до детматча
 
             @Override
             public void run() {
@@ -313,7 +390,7 @@ public class GameEventsManager {
     private void startPlayersDecreasingHealthEvent() {
         // Начать обратный отсчет
         task = new BukkitRunnable() {
-            int time = 60; // Время до начала снижения здоровья игроков
+            int time = TIME_BEFORE_DECREASING_PLAYERS_HEALTH; // Время до начала снижения здоровья игроков
 
             @Override
             public void run() {

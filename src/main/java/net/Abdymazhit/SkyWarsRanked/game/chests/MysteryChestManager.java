@@ -2,12 +2,15 @@ package net.Abdymazhit.SkyWarsRanked.game.chests;
 
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.Inventory;
+
+import java.util.ArrayList;
 
 /**
  * Менеджер мистического сундука, отвечает за мистический сундук
  *
- * @version   11.08.2021
+ * @version   12.08.2021
  * @author    Islam Abdymazhit
  */
 public class MysteryChestManager {
@@ -38,6 +41,10 @@ public class MysteryChestManager {
      * Закрывает мистический сундук
      */
     public void close() {
+        for (HumanEntity humanEntity : new ArrayList<>(inventory.getViewers())) {
+            humanEntity.closeInventory();
+        }
+
         inventory.clear();
         isOpen = false;
     }

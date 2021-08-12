@@ -17,13 +17,19 @@ import java.util.Map;
 /**
  * Менеджер {@link GameStage стадии игры}, отвечает за изменение {@link GameStage стадии игры}
  *
- * @version   11.08.2021
+ * @version   12.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameStageManager extends GameEventsManager {
 
+    /** Время до начала игры */
+    private static final int TIME_BEFORE_STARTING_GAME = 15;
+
+    /** Время до завершения игры */
+    private static final int TIME_BEFORE_ENDING_GAME = 15;
+
     /**
-     * Начать {@link GameStage стадию игры} WAITING
+     * Начинает {@link GameStage стадию игры} WAITING
      */
     private void startWaitingStage() {
         // Установить стадию игры на WAITING
@@ -34,7 +40,7 @@ public class GameStageManager extends GameEventsManager {
     }
 
     /**
-     * Попытаться начать {@link GameStage стадию игры} STARTING
+     * Попытается начать {@link GameStage стадию игры} STARTING
      */
     public void tryStartStartingStage() {
         // Начать стадию STARTING, если набрано достаточное количество игроков
@@ -44,7 +50,7 @@ public class GameStageManager extends GameEventsManager {
     }
 
     /**
-     * Начать {@link GameStage стадию игры} STARTING
+     * Начинает {@link GameStage стадию игры} STARTING
      */
     private void startStartingStage() {
         // Установить стадию игры на STARTING
@@ -52,7 +58,7 @@ public class GameStageManager extends GameEventsManager {
 
         // Начать обратный отсчет начала игры
         task = new BukkitRunnable() {
-            int time = 15;
+            int time = TIME_BEFORE_STARTING_GAME; // Время до начала игры
 
             @Override
             public void run() {
@@ -76,7 +82,7 @@ public class GameStageManager extends GameEventsManager {
     }
 
     /**
-     * Начать {@link GameStage стадию игры} GAME
+     * Начинает {@link GameStage стадию игры} GAME
      */
     private void startGameStage() {
         // Установить стадию игры на GAME
@@ -176,7 +182,7 @@ public class GameStageManager extends GameEventsManager {
     }
 
     /**
-     * Начать {@link GameStage стадию игры} ENDING
+     * Начинает {@link GameStage стадию игры} ENDING
      */
     public void startEndingStage() {
         // Отменить таймер предыдущего события
@@ -187,7 +193,7 @@ public class GameStageManager extends GameEventsManager {
 
         // Начать обратный отсчет конца игры
         task = new BukkitRunnable() {
-            int time = 15;
+            int time = TIME_BEFORE_ENDING_GAME; // Время до завершения игры
 
             @Override
             public void run() {
@@ -207,5 +213,13 @@ public class GameStageManager extends GameEventsManager {
                 }
             }
         }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L);
+    }
+
+    /**
+     * Получает время до заполнения сундуков
+     * @return Время до заполнения сундуков
+     */
+    public int getTimeBeforeRefillingChests() {
+        return timeBeforeRefillingChests;
     }
 }

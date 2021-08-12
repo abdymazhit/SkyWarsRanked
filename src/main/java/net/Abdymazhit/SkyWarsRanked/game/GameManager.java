@@ -85,6 +85,7 @@ public class GameManager {
         SkyWarsRanked.getInstance().getServer().getPluginManager().registerEvents(new EntityDamageListener(), SkyWarsRanked.getInstance());
         SkyWarsRanked.getInstance().getServer().getPluginManager().registerEvents(new EntityShootBowListener(), SkyWarsRanked.getInstance());
         SkyWarsRanked.getInstance().getServer().getPluginManager().registerEvents(new InventoryClickListener(), SkyWarsRanked.getInstance());
+        SkyWarsRanked.getInstance().getServer().getPluginManager().registerEvents(new InventoryCloseListener(), SkyWarsRanked.getInstance());
         SkyWarsRanked.getInstance().getServer().getPluginManager().registerEvents(new PlayerDeathListener(), SkyWarsRanked.getInstance());
         SkyWarsRanked.getInstance().getServer().getPluginManager().registerEvents(new PlayerInteractListener(), SkyWarsRanked.getInstance());
         SkyWarsRanked.getInstance().getServer().getPluginManager().registerEvents(new PlayerJoinListener(), SkyWarsRanked.getInstance());
@@ -314,6 +315,14 @@ public class GameManager {
             // Начать стадию конца игры
             gameStageManager.startEndingStage();
         }
+    }
+
+    /**
+     * Получает менеджер стадии игры
+     * @return Менеджер стадии игры
+     */
+    public GameStageManager getGameStageManager() {
+        return gameStageManager;
     }
 
     /**

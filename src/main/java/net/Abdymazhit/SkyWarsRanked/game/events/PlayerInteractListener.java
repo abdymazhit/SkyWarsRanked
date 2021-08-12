@@ -4,6 +4,7 @@ import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
 import org.bukkit.Material;
+import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -66,7 +67,7 @@ public class PlayerInteractListener implements Listener {
             }
 
             // Проверка на взаимодействие с эндер сундуком
-            if (event.hasBlock() && event.getClickedBlock().getTypeId() == Material.ENDER_CHEST.getId()) {
+            if (event.hasBlock() && event.getClickedBlock().getType().equals(Material.ENDER_CHEST)) {
                 event.setCancelled(true);
 
                 // Проверка на взаимодействие с мистическим сундуком
@@ -80,6 +81,13 @@ public class PlayerInteractListener implements Listener {
                         player.openInventory(SkyWarsRanked.getGameManager().getChestManager().getMysteryChestManager().getInventory());
                     }
                 }
+            }
+            // Проверка на взаимодействие с сундуком
+            else if (event.hasBlock() && event.getClickedBlock().getType().equals(Material.CHEST)) {
+                // Добавить голограмму открытого сундука
+                Chest chest = (Chest) event.getClickedBlock().getState();
+                SkyWarsRanked.getGameManager().getChestManager().setCurrentOpenedPlayerChest(player, chest);
+                SkyWarsRanked.getGameManager().getChestManager().addOpenedChestHologram(chest);
             }
         }
     }

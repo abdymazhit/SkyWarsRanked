@@ -12,7 +12,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 /**
  * Отменяет события связанные с entity
  *
- * @version   11.08.2021
+ * @version   12.08.2021
  * @author    Islam Abdymazhit
  */
 public class EntityEventsListener implements Listener {
@@ -27,7 +27,7 @@ public class EntityEventsListener implements Listener {
         }
 
         // Проверка причины спавна на CUSTOM (через плагин) или SPAWNER_EGG (через яйцо призыва)
-        if(event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.CUSTOM) || event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.SPAWNER_EGG)) {
+        if(!event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.CUSTOM) && !event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.SPAWNER_EGG)) {
             event.setCancelled(true);
         }
     }
