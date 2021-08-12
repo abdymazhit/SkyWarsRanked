@@ -5,7 +5,6 @@ import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.customs.PlayerInfo;
 import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
 import net.Abdymazhit.SkyWarsRanked.game.chests.ChestManager;
-import net.Abdymazhit.SkyWarsRanked.game.chests.MysteryChestManager;
 import net.Abdymazhit.SkyWarsRanked.game.events.*;
 import net.Abdymazhit.SkyWarsRanked.game.events.cancelled.*;
 import net.Abdymazhit.SkyWarsRanked.game.items.GameItems;
@@ -28,7 +27,7 @@ import java.util.Map;
 /**
  * Менеджер игры, отвечает за работу игры
  *
- * @version   11.08.2021
+ * @version   12.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameManager {
@@ -38,9 +37,6 @@ public class GameManager {
 
     /** Менеджер сундуков игры, отвечает за сундуки */
     private final ChestManager chestManager;
-
-    /** Менеджер мистического сундука, отвечает за мистический сундук */
-    private final MysteryChestManager mysteryChestManager;
 
     /** Объект, отвечающий за scoreboard лобби */
     private final LobbyBoard lobbyBoard;
@@ -72,7 +68,6 @@ public class GameManager {
     public GameManager() {
         gameStageManager = new GameStageManager();
         chestManager = new ChestManager();
-        mysteryChestManager = new MysteryChestManager();
         lobbyBoard = new LobbyBoard();
         gameBoard = new GameBoard();
         gameItems = new GameItems();
@@ -327,14 +322,6 @@ public class GameManager {
      */
     public ChestManager getChestManager() {
         return chestManager;
-    }
-
-    /**
-     * Получает менеджер мистического сундука
-     * @return Менеджер мистического сундука
-     */
-    public MysteryChestManager getMysteryChestManager() {
-        return mysteryChestManager;
     }
 
     /**

@@ -13,13 +13,23 @@ import org.bukkit.inventory.ItemStack;
 /**
  * Менеджер сундуков, отвечает за заполнение сундуков
  *
- * @version   11.08.2021
+ * @version   12.08.2021
  * @author    Islam Abdymazhit
  */
 public class ChestManager {
 
     /** Генератор лута */
     private static final LootGenerator lootGenerator = new StandardLootGenerator();
+
+    /** Менеджер мистического сундука, отвечает за мистический сундук */
+    private final MysteryChestManager mysteryChestManager;
+
+    /**
+     * Инициализирует объекты менеджера
+     */
+    public ChestManager() {
+        mysteryChestManager = new MysteryChestManager();
+    }
 
     /**
      * Заполняет сундуки островов лутом
@@ -118,5 +128,13 @@ public class ChestManager {
             array[index] = array[i];
             array[i] = a;
         }
+    }
+
+    /**
+     * Получает менеджер мистического сундука
+     * @return Менеджер мистического сундука
+     */
+    public MysteryChestManager getMysteryChestManager() {
+        return mysteryChestManager;
     }
 }

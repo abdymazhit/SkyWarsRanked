@@ -13,7 +13,7 @@ import org.bukkit.scheduler.BukkitTask;
 /**
  * Менеджер игровых событий, отвечает за изменение игровых событий
  *
- * @version   11.08.2021
+ * @version   12.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameEventsManager {
@@ -93,7 +93,7 @@ public class GameEventsManager {
 
                     // Начать сужение зоны
                     WorldBorder worldBorder = Bukkit.getWorld("world").getWorldBorder();
-                    worldBorder.setSize(30, 180);
+                    worldBorder.setSize(40, 180);
 
                     // Начать следующее игровое событие
                     startMysteryChestOpenEvent();
@@ -123,7 +123,7 @@ public class GameEventsManager {
                     }
 
                     // Открыть мистический сундук
-                    SkyWarsRanked.getGameManager().getMysteryChestManager().open();
+                    SkyWarsRanked.getGameManager().getChestManager().getMysteryChestManager().open();
 
                     // Начать следующее игровое событие
                     startMysteryChestCloseEvent();
@@ -153,7 +153,7 @@ public class GameEventsManager {
                     }
 
                     // Закрыть мистический сундук
-                    SkyWarsRanked.getGameManager().getMysteryChestManager().close();
+                    SkyWarsRanked.getGameManager().getChestManager().getMysteryChestManager().close();
 
                     // Начать следующее игровое событие
                     startRefillChestsEvent();

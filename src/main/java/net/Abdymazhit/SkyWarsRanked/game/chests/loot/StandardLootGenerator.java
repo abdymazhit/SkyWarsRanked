@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 /**
  * Отвечает за генерацию стандартного лута
  *
- * @version   11.08.2021
+ * @version   12.08.2021
  * @author    Islam Abdymazhit
  */
 public class StandardLootGenerator extends LootGenerator {
@@ -158,13 +158,13 @@ public class StandardLootGenerator extends LootGenerator {
         }
 
         if(Random.random.nextDouble() < 0.01) {
-            ItemStack item = name(Material.SLIME_BALL, "&aСлизь богов");
+            ItemStack item = name(Material.SLIME_BALL, "§aСлизь богов");
             item.addUnsafeEnchantment(Enchantment.KNOCKBACK, 3);
             items.add(item);
         }
 
         if(Random.random.nextDouble() < 0.05) {
-            items.add(name(Material.COMPASS, "&eGPS трекер", "&7Укажет вам на ближайшего врага", "VimeWorld.ru"));
+            items.add(name(Material.COMPASS, "§eGPS трекер", "§7Укажет вам на ближайшего врага", "VimeWorld.ru"));
         }
 
         if(Random.random.nextDouble() < 0.2) {
@@ -336,7 +336,7 @@ public class StandardLootGenerator extends LootGenerator {
         }
 
         if(Random.random.nextDouble() < 0.1) {
-            items.add(name(Material.COMPASS, "&eGPS трекер", "&7Укажет вам на ближайшего врага", "VimeWorld.ru"));
+            items.add(name(Material.COMPASS, "§eGPS трекер", "§7Укажет вам на ближайшего врага", "VimeWorld.ru"));
         }
 
         if(Random.random.nextDouble() < 0.5) {
@@ -354,7 +354,7 @@ public class StandardLootGenerator extends LootGenerator {
     public List<ItemStack> mystic() {
         List<ItemStack> items = new ArrayList<>(25);
         if(Random.random.nextDouble() < 0.1) {
-            ItemStack item = name(Material.SLIME_BALL, "&aСлизь богов");
+            ItemStack item = name(Material.SLIME_BALL, "§aСлизь богов");
             item.addUnsafeEnchantment(Enchantment.KNOCKBACK, 3);
             items.add(item);
         }
@@ -487,7 +487,7 @@ public class StandardLootGenerator extends LootGenerator {
         items.add(new ItemStack(Material.GOLDEN_APPLE, Random.random.nextInt(2, 6)));
         items.add((Random.of(Registry.FOODS)).get());
         if(Random.random.nextDouble() < 0.8) {
-            items.add(name(Material.COMPASS, "&eGPS трекер", "&7Укажет вам на ближайшего врага", "VimeWorld.ru"));
+            items.add(name(Material.COMPASS, "§eGPS трекер", "§7Укажет вам на ближайшего врага", "VimeWorld.ru"));
         }
         return items;
     }

@@ -12,7 +12,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 /**
  * Отвечает за событие отправки сообщения в чат
  *
- * @version   11.08.2021
+ * @version   12.08.2021
  * @author    Islam Abdymazhit
  */
 public class AsyncPlayerChatListener implements Listener {
@@ -33,10 +33,25 @@ public class AsyncPlayerChatListener implements Listener {
             event.setMessage(colored(event.getMessage()));
         }
 
-        if(playerVimeInfo.getGuildColor() != null && playerVimeInfo.getGuildTag() != null) {
-            event.setFormat(colored("&7<" + playerVimeInfo.getGuildColor() + playerVimeInfo.getGuildTag() + "&7> &7%1$s&r&7: " + msgColor) + "%2$s");
-        } else {
-            event.setFormat(colored("&7%1$s&r&7: " + msgColor) + "%2$s");
+        // Чат для всех игроков
+        if(!SkyWarsRanked.getGameManager().getSpectators().contains(player)) {
+            if(playerVimeInfo.getGuildColor() != null && playerVimeInfo.getGuildTag() != null) {
+                event.setFormat(colored("&7<" + playerVimeInfo.getGuildColor() + playerVimeInfo.getGuildTag() + "&7> &7%1$s&r&7: " + msgColor) + "%2$s");
+            } else {
+                event.setFormat(colored("&7%1$s&r&7: " + msgColor) + "%2$s");
+            }
+        }
+        // Отдельный чат для зрителей
+        else {
+            for(Player p : SkyWarsRanked.getGameManager().getPlayers()) {
+                event.getRecipients().remove(p);
+            }
+
+            if(playerVimeInfo.getGuildColor() != null && playerVimeInfo.getGuildTag() != null) {
+                event.setFormat(colored("&7(Наблюдатели) <" + playerVimeInfo.getGuildColor() + playerVimeInfo.getGuildTag() + "&7> &7%1$s&r&7: " + msgColor) + "%2$s");
+            } else {
+                event.setFormat(colored("&7(Наблюдатели) %1$s&r&7: " + msgColor) + "%2$s");
+            }
         }
     }
 
