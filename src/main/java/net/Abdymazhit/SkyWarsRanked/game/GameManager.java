@@ -27,7 +27,7 @@ import java.util.Map;
 /**
  * Менеджер игры, отвечает за работу игры
  *
- * @version   12.08.2021
+ * @version   13.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameManager {
@@ -62,6 +62,9 @@ public class GameManager {
     /** Отвечает за параметр включения PvP */
     private boolean isEnabledPvP;
 
+    /** Объект, отвечающий за работу GPS трекера */
+    private final PlayerTrackerCompass playerTrackerCompass;
+
     /**
      * Инициализирует нужные объекты
      */
@@ -77,6 +80,8 @@ public class GameManager {
         spectators = new ArrayList<>();
         playersInfo = new HashMap<>();
         isEnabledPvP = false;
+
+        playerTrackerCompass = new PlayerTrackerCompass();
 
         SkyWarsRanked.getInstance().getServer().getPluginManager().registerEvents(new AsyncPlayerChatListener(), SkyWarsRanked.getInstance());
         SkyWarsRanked.getInstance().getServer().getPluginManager().registerEvents(new BlockBreakListener(), SkyWarsRanked.getInstance());
@@ -294,6 +299,10 @@ public class GameManager {
                 p.sendMessage("Игрок " + player.getName() + " самоубился");
             }
             player.sendMessage("Вы самоубились");
+
+            // Добавить коины и опыт проигравшему
+            SkyWarsRanked.getMySQL().addCoins(player, 5 + playersInfo.get(player).getKills() * 4);
+            SkyWarsRanked.getMySQL().giveExp(player, 5 + playersInfo.get(player).getKills() * 4);
         }
 
         // Проверить, есть ли победитель игры
@@ -371,5 +380,13 @@ public class GameManager {
      */
     public boolean isEnabledPvP() {
         return isEnabledPvP;
+    }
+
+    /**
+     * Получает объект, отвечающий за работу GPS трекера
+     * @return Объект, отвечающий за работу GPS трекера
+     */
+    public PlayerTrackerCompass getPlayerTrackerCompass() {
+        return playerTrackerCompass;
     }
 }

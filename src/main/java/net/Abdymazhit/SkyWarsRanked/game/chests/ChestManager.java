@@ -19,18 +19,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Менеджер сундуков, отвечает за заполнение сундуков
+ * Менеджер сундуков, отвечает за работу сундуков
  *
- * @version   12.08.2021
+ * @version   13.08.2021
  * @author    Islam Abdymazhit
  */
 public class ChestManager {
 
     /** Генератор лута */
-    private static final LootGenerator lootGenerator = new StandardLootGenerator();
+    private final LootGenerator lootGenerator;
 
-    /** Менеджер мистического сундука, отвечает за мистический сундук */
-    private final MysteryChestManager mysteryChestManager;
+    /** Мистический сундук */
+    private final MysteryChest mysteryChest;
 
     /** Хранит текущий открытый сундук игрока */
     private final Map<Player, Chest> currentOpenedPlayerChest;
@@ -45,7 +45,8 @@ public class ChestManager {
      * Инициализирует объекты менеджера
      */
     public ChestManager() {
-        mysteryChestManager = new MysteryChestManager();
+        lootGenerator = new StandardLootGenerator();
+        mysteryChest = new MysteryChest();
         currentOpenedPlayerChest = new HashMap<>();
         openedChestsHolograms = new HashMap<>();
         emptyChestsHolograms = new HashMap<>();
@@ -153,11 +154,11 @@ public class ChestManager {
     }
 
     /**
-     * Получает менеджер мистического сундука
-     * @return Менеджер мистического сундука
+     * Получает мистический сундук
+     * @return Мистический сундук
      */
-    public MysteryChestManager getMysteryChestManager() {
-        return mysteryChestManager;
+    public MysteryChest getMysteryChest() {
+        return mysteryChest;
     }
 
     /**

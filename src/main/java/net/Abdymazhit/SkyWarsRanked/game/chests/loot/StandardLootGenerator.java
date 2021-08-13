@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 /**
  * Отвечает за генерацию стандартного лута
  *
- * @version   12.08.2021
+ * @version   13.08.2021
  * @author    Islam Abdymazhit
  */
 public class StandardLootGenerator extends LootGenerator {
@@ -164,7 +164,7 @@ public class StandardLootGenerator extends LootGenerator {
         }
 
         if(Random.random.nextDouble() < 0.05) {
-            items.add(name(Material.COMPASS, "§eGPS трекер", "§7Укажет вам на ближайшего врага", "VimeWorld.ru"));
+            items.add(name(Material.COMPASS, "§eGPS трекер", "§7Нажмите ПКМ, чтобы начать", "§7отслеживать ближайшего игрока"));
         }
 
         if(Random.random.nextDouble() < 0.2) {
@@ -336,7 +336,7 @@ public class StandardLootGenerator extends LootGenerator {
         }
 
         if(Random.random.nextDouble() < 0.1) {
-            items.add(name(Material.COMPASS, "§eGPS трекер", "§7Укажет вам на ближайшего врага", "VimeWorld.ru"));
+            items.add(name(Material.COMPASS, "§eGPS трекер", "§7Нажмите ПКМ, чтобы начать", "§7отслеживать ближайшего игрока"));
         }
 
         if(Random.random.nextDouble() < 0.5) {
@@ -487,7 +487,7 @@ public class StandardLootGenerator extends LootGenerator {
         items.add(new ItemStack(Material.GOLDEN_APPLE, Random.random.nextInt(2, 6)));
         items.add((Random.of(Registry.FOODS)).get());
         if(Random.random.nextDouble() < 0.8) {
-            items.add(name(Material.COMPASS, "§eGPS трекер", "§7Укажет вам на ближайшего врага", "VimeWorld.ru"));
+            items.add(name(Material.COMPASS, "§eGPS трекер", "§7Нажмите ПКМ, чтобы начать", "§7отслеживать ближайшего игрока"));
         }
         return items;
     }

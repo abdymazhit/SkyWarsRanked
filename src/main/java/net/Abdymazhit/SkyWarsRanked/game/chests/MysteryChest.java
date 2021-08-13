@@ -10,10 +10,10 @@ import java.util.ArrayList;
 /**
  * Менеджер мистического сундука, отвечает за мистический сундук
  *
- * @version   12.08.2021
+ * @version   13.08.2021
  * @author    Islam Abdymazhit
  */
-public class MysteryChestManager {
+public class MysteryChest {
 
     /** Инвентарь мистического сундука */
     private final Inventory inventory;
@@ -24,7 +24,7 @@ public class MysteryChestManager {
     /**
      * Инициализирует мистический сундук
      */
-    public MysteryChestManager() {
+    public MysteryChest() {
         isOpen = false;
         inventory = Bukkit.createInventory(null, 27, "Мистический сундук");
     }

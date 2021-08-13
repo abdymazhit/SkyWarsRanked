@@ -14,7 +14,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 /**
  * Отвечает за событие взаимодействия игрока с объектом
  *
- * @version   12.08.2021
+ * @version   13.08.2021
  * @author    Islam Abdymazhit
  */
 public class PlayerInteractListener implements Listener {
@@ -26,24 +26,10 @@ public class PlayerInteractListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
-        // Проверка, является ли игрок зрителем
-        if(SkyWarsRanked.getGameManager().getSpectators().contains(player)) {
-            // Проверка клика на правый
-            if(event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_AIR) {
-                return;
-            }
-
-            // Проверка существует ли предмет
-            if(event.getItem() == null) {
-                return;
-            }
-
-            // Использовать предмет игроку
-            SkyWarsRanked.getGameManager().getGameItems().useItem(player, event.getItem());
-        }
-        // Проверка стадии игры на WAITING или STARTING
-        else if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
-            // Отменить событие, чтобы игрок не мог взаимодействовать с блоками в острове лобби
+        // Проверка, является ли игрок зрителем или является ли стадия игры WAITING или STARTING
+        if(SkyWarsRanked.getGameManager().getSpectators().contains(player) ||
+                SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+            // Отменить событие, чтобы игрок не мог взаимодействовать с блоками
             event.setCancelled(true);
 
             // Проверка клика на правый
@@ -73,12 +59,12 @@ public class PlayerInteractListener implements Listener {
                 // Проверка на взаимодействие с мистическим сундуком
                 if (Config.mysteryChest.equals(event.getClickedBlock().getLocation())) {
                     // Отправить сообщение, что мистический сундук закрыт
-                    if (!SkyWarsRanked.getGameManager().getChestManager().getMysteryChestManager().isOpen()) {
+                    if (!SkyWarsRanked.getGameManager().getChestManager().getMysteryChest().isOpen()) {
                         player.sendMessage("§cСундук в данный момент закрыт. Приходите позже.");
                     }
                     // Открыть мистический сундук игроку
                     else {
-                        player.openInventory(SkyWarsRanked.getGameManager().getChestManager().getMysteryChestManager().getInventory());
+                        player.openInventory(SkyWarsRanked.getGameManager().getChestManager().getMysteryChest().getInventory());
                     }
                 }
             }
@@ -88,6 +74,19 @@ public class PlayerInteractListener implements Listener {
                 Chest chest = (Chest) event.getClickedBlock().getState();
                 SkyWarsRanked.getGameManager().getChestManager().setCurrentOpenedPlayerChest(player, chest);
                 SkyWarsRanked.getGameManager().getChestManager().addOpenedChestHologram(chest);
+            }
+            // Проверка на взаимодействие с GPS трекером
+            else if (event.getItem() != null && event.getItem().getType().equals(Material.COMPASS)) {
+                // Отменить событие, чтобы игрок не мог взаимодействовать с блоками
+                event.setCancelled(true);
+
+                // Проверка клика на правый
+                if(event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_AIR) {
+                    return;
+                }
+
+                // Использовать GPS трекер игроку
+                SkyWarsRanked.getGameManager().getPlayerTrackerCompass().useItem(player);
             }
         }
     }
