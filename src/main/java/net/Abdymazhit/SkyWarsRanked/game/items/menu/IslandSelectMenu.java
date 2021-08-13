@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Меню выбора острова
  *
- * @version   11.08.2021
+ * @version   13.08.2021
  * @author    Islam Abdymazhit
  */
 public class IslandSelectMenu extends Menu {
@@ -30,18 +30,80 @@ public class IslandSelectMenu extends Menu {
         setInventory(Bukkit.createInventory(null, 27, "Выбор острова"));
 
         islandsIdSlot = new HashMap<>();
-        islandsIdSlot.put(1, 1);
-        islandsIdSlot.put(2, 2);
-        islandsIdSlot.put(3, 3);
-        islandsIdSlot.put(4, 5);
-        islandsIdSlot.put(5, 6);
-        islandsIdSlot.put(6, 7);
-        islandsIdSlot.put(7, 19);
-        islandsIdSlot.put(8, 20);
-        islandsIdSlot.put(9, 21);
-        islandsIdSlot.put(10, 23);
-        islandsIdSlot.put(11, 24);
-        islandsIdSlot.put(12, 25);
+
+        // Добавить слоты для островов по id
+        if(Config.islands.size() == 8) {
+            islandsIdSlot.put(1, 2);
+            islandsIdSlot.put(2, 3);
+            islandsIdSlot.put(3, 5);
+            islandsIdSlot.put(4, 6);
+            islandsIdSlot.put(5, 20);
+            islandsIdSlot.put(6, 21);
+            islandsIdSlot.put(7, 23);
+            islandsIdSlot.put(8, 24);
+        } else if(Config.islands.size() == 10) {
+            islandsIdSlot.put(1, 1);
+            islandsIdSlot.put(2, 2);
+            islandsIdSlot.put(3, 3);
+            islandsIdSlot.put(4, 5);
+            islandsIdSlot.put(5, 6);
+            islandsIdSlot.put(6, 7);
+            islandsIdSlot.put(7, 10);
+            islandsIdSlot.put(8, 11);
+            islandsIdSlot.put(9, 15);
+            islandsIdSlot.put(10, 16);
+        } else if(Config.islands.size() == 12) {
+            islandsIdSlot.put(1, 1);
+            islandsIdSlot.put(2, 2);
+            islandsIdSlot.put(3, 3);
+            islandsIdSlot.put(4, 5);
+            islandsIdSlot.put(5, 6);
+            islandsIdSlot.put(6, 7);
+            islandsIdSlot.put(7, 19);
+            islandsIdSlot.put(8, 20);
+            islandsIdSlot.put(9, 21);
+            islandsIdSlot.put(10, 23);
+            islandsIdSlot.put(11, 24);
+            islandsIdSlot.put(12, 25);
+        } else if(Config.islands.size() == 16) {
+            islandsIdSlot.put(1, 0);
+            islandsIdSlot.put(2, 1);
+            islandsIdSlot.put(3, 2);
+            islandsIdSlot.put(4, 3);
+            islandsIdSlot.put(5, 5);
+            islandsIdSlot.put(6, 6);
+            islandsIdSlot.put(7, 7);
+            islandsIdSlot.put(8, 8);
+            islandsIdSlot.put(9, 18);
+            islandsIdSlot.put(10, 19);
+            islandsIdSlot.put(11, 20);
+            islandsIdSlot.put(12, 21);
+            islandsIdSlot.put(13, 23);
+            islandsIdSlot.put(14, 24);
+            islandsIdSlot.put(15, 25);
+            islandsIdSlot.put(16, 26);
+        } else if(Config.islands.size() == 20) {
+            islandsIdSlot.put(1, 0);
+            islandsIdSlot.put(2, 1);
+            islandsIdSlot.put(3, 2);
+            islandsIdSlot.put(4, 3);
+            islandsIdSlot.put(5, 5);
+            islandsIdSlot.put(6, 6);
+            islandsIdSlot.put(7, 7);
+            islandsIdSlot.put(8, 8);
+            islandsIdSlot.put(9, 9);
+            islandsIdSlot.put(10, 10);
+            islandsIdSlot.put(11, 16);
+            islandsIdSlot.put(12, 17);
+            islandsIdSlot.put(13, 18);
+            islandsIdSlot.put(14, 19);
+            islandsIdSlot.put(15, 20);
+            islandsIdSlot.put(16, 21);
+            islandsIdSlot.put(17, 23);
+            islandsIdSlot.put(18, 24);
+            islandsIdSlot.put(19, 25);
+            islandsIdSlot.put(20, 26);
+        }
 
         update();
     }

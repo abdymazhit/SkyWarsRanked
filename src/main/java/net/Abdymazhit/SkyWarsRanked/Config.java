@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Отвечает за работу с конфиг файлом
  *
- * @version   05.08.2021
+ * @version   13.08.2021
  * @author    Islam Abdymazhit
  */
 public class Config {
@@ -53,12 +53,11 @@ public class Config {
      */
     public static void load() {
         FileConfiguration config = SkyWarsRanked.getInstance().getConfig();
-        config.options().copyDefaults(true);
-        SkyWarsRanked.getInstance().saveConfig();
+        SkyWarsRanked.getInstance().saveDefaultConfig();
 
         world = Bukkit.getWorld(config.getString("world"));
         lobbyLocation = getLocation(config.getString("lobby"));
-        mapName = config.getString("map");
+        mapName = config.getString("name");
 
         respawnY = config.getInt("respawnY");
 
@@ -80,22 +79,36 @@ public class Config {
         }
 
         islands = new ArrayList<>();
-        for (Map<?, ?> map : config.getMapList("islands")) {
+        for (Map<?, ?> island : config.getMapList("islands")) {
             int id = islands.size() + 1;
-            Location spawn = getLocation(String.valueOf(map.get("spawn")));
+            Location spawn = getLocation(island.get("spawn"));
 
             List<Location> chests = new ArrayList<>();
-            for (String chestLocation : (List<String>) map.get("chests")) {
+            for (Object chestLocation : (List) island.get("chests")) {
                 chests.add(getLocation(chestLocation));
             }
 
             islands.add(new Island(id, spawn, chests));
         }
 
-        SkyWarsRanked.getInstance().getLogger().info("Загружено " + Config.islands.size() + " островов.");
-        if (Config.islands.size() > Config.deathmatchSpawns.size()) {
-            throw new IllegalArgumentException("Не достаточно местоположений deathmatchSpawns. Количество: " + Config.deathmatchSpawns.size() + ". Необходимо: " + Config.islands.size());
+        if(Config.islands.size() != 8 && Config.islands.size() != 10 && Config.islands.size() != 12 && Config.islands.size() != 16 && Config.islands.size() != 20) {
+            throw new IllegalArgumentException("Неверный формат игры! Вам нужно изменить количество островов! Текущее количество островов: " +
+                    Config.islands.size() + ". Доступные форматы игры: 1x8, 1x10, 1x12, 1x16, 1x20");
         }
+
+        if (Config.islands.size() != Config.deathmatchSpawns.size()) {
+            throw new IllegalArgumentException("Количество местоположений точек детматча должно совпадать с количеством островов! Текущее количество: " +
+                    Config.deathmatchSpawns.size() + ". Необходимо: " + Config.islands.size());
+        }
+
+        for(Island island : islands) {
+            if(island.getChests().size() != 3) {
+                throw new IllegalArgumentException("Количество сундуков в каждом острове должно быть 3! Id острова " +
+                        island.getId() + ", количество сундуков: " + island.getChests().size());
+            }
+        }
+
+        SkyWarsRanked.getInstance().getLogger().info("Загружено " + Config.islands.size() + " островов.");
     }
 
     /**

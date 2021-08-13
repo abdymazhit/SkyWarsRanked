@@ -184,17 +184,19 @@ public class ChestManager {
      */
     public void addOpenedChestHologram(Chest chest) {
         if(!openedChestsHolograms.containsKey(chest)) {
-            Location location = chest.getLocation().add(0.5, -0.5, 0.5);
+            if(SkyWarsRanked.getGameManager().getGameStageManager().getTimeBeforeRefillingChests() != 0) {
+                Location location = chest.getLocation().add(0.5, -0.5, 0.5);
 
-            ArmorStand armorStand = (ArmorStand) location.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
+                ArmorStand armorStand = (ArmorStand) location.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
 
-            armorStand.setGravity(false);
-            armorStand.setCanPickupItems(false);
-            armorStand.setCustomName("§a" + timeToString(SkyWarsRanked.getGameManager().getGameStageManager().getTimeBeforeRefillingChests()));
-            armorStand.setCustomNameVisible(true);
-            armorStand.setVisible(false);
+                armorStand.setGravity(false);
+                armorStand.setCanPickupItems(false);
+                armorStand.setCustomName("§a" + timeToString(SkyWarsRanked.getGameManager().getGameStageManager().getTimeBeforeRefillingChests()));
+                armorStand.setCustomNameVisible(true);
+                armorStand.setVisible(false);
 
-            openedChestsHolograms.put(chest, armorStand);
+                openedChestsHolograms.put(chest, armorStand);
+            }
         }
     }
 

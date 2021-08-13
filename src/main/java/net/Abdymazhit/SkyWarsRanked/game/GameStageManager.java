@@ -3,7 +3,6 @@ package net.Abdymazhit.SkyWarsRanked.game;
 import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.customs.Island;
-import net.Abdymazhit.SkyWarsRanked.customs.PlayerInfo;
 import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
 import net.Abdymazhit.SkyWarsRanked.kits.Kit;
 import org.bukkit.Bukkit;
@@ -12,12 +11,10 @@ import org.bukkit.WorldBorder;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Map;
-
 /**
  * Менеджер {@link GameStage стадии игры}, отвечает за изменение {@link GameStage стадии игры}
  *
- * @version   12.08.2021
+ * @version   13.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameStageManager extends GameEventsManager {
@@ -141,11 +138,7 @@ public class GameStageManager extends GameEventsManager {
                 player.teleport(island.getSpawn());
 
                 // Выдать игроку набор
-                PlayerInfo playerInfo = SkyWarsRanked.getGameManager().getPlayerInfo(player);
-                Map<Kit, Integer> kits = playerInfo.getKits();
-                Kit kit = playerInfo.getKit();
-                int level = kits.get(kit);
-                player.getInventory().addItem(kit.getLevelItems().get(level));
+                Kit.equip(player);
             }
         }
 
@@ -168,9 +161,9 @@ public class GameStageManager extends GameEventsManager {
         SkyWarsRanked.getGameManager().getGameBoard().updateSpectatorsCount();
 
         // Установить зону
-        WorldBorder worldBorder = Bukkit.getWorld("world").getWorldBorder();
+        WorldBorder worldBorder = Config.world.getWorldBorder();
         worldBorder.setCenter(Config.mysteryChest);
-        worldBorder.setSize(200);
+        worldBorder.setSize(300);
 
         // Заполнить сундуки лутом
         SkyWarsRanked.getGameManager().getChestManager().refillIslandChests();
@@ -206,7 +199,7 @@ public class GameStageManager extends GameEventsManager {
                         player.kickPlayer("Игра завершена");
                     }
 
-                    Bukkit.getServer().unloadWorld("world", true);
+                    Bukkit.getServer().unloadWorld(Config.world, true);
                     Bukkit.shutdown();
 
                     cancel();

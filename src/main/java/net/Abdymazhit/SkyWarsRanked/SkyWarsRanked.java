@@ -6,7 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 /**
  * Главный класс, отвечает за весь плагин
  *
- * @version   11.08.2021
+ * @version   13.08.2021
  * @author    Islam Abdymazhit
  */
 public class SkyWarsRanked extends JavaPlugin {
@@ -37,6 +37,9 @@ public class SkyWarsRanked extends JavaPlugin {
         api = new API();
         mySQL = new MySQL();
         gameManager = new GameManager();
+
+        // Отменить сохранения мира
+        Config.world.setAutoSave(false);
     }
 
     /**

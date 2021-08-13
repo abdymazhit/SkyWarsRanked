@@ -8,7 +8,7 @@ import java.util.SplittableRandom;
 /**
  * Отвечает за рандом
  *
- * @version   11.08.2021
+ * @version   13.08.2021
  * @author    Islam Abdymazhit
  */
 public class Random {
@@ -33,6 +33,6 @@ public class Random {
             }
             var -= l.size();
         }
-        throw new IllegalArgumentException("Received lists is empty");
+        return null;
     }
 }

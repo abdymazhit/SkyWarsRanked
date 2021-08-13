@@ -137,7 +137,7 @@ public class GameEventsManager {
                     }
 
                     // Начать сужение зоны
-                    WorldBorder worldBorder = Bukkit.getWorld("world").getWorldBorder();
+                    WorldBorder worldBorder = Config.world.getWorldBorder();
                     worldBorder.setSize(40, 180);
 
                     // Начать следующее игровое событие

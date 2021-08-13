@@ -1,7 +1,10 @@
 package net.Abdymazhit.SkyWarsRanked.kits;
 
+import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
+import net.Abdymazhit.SkyWarsRanked.customs.PlayerInfo;
 import net.Abdymazhit.SkyWarsRanked.enums.Rarity;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
@@ -11,7 +14,7 @@ import java.util.Map;
 /**
  * Отвечает за наборы
  *
- * @version   09.08.2021
+ * @version   13.08.2021
  * @author    Islam Abdymazhit
  */
 public class Kit {
@@ -105,6 +108,18 @@ public class Kit {
      */
     public Map<Integer, ItemStack[]> getLevelItems() {
         return levelItems;
+    }
+
+    /**
+     * Выдает набор игроку
+     * @param player Игрок
+     */
+    public static void equip(Player player) {
+        PlayerInfo playerInfo = SkyWarsRanked.getGameManager().getPlayerInfo(player);
+        Map<Kit, Integer> kits = playerInfo.getKits();
+        Kit kit = playerInfo.getKit();
+        int level = kits.get(kit);
+        player.getInventory().addItem(kit.getLevelItems().get(level));
     }
 
     /**

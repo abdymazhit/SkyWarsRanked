@@ -106,7 +106,7 @@ public class GameManager {
         SkyWarsRanked.getInstance().getServer().getPluginManager().registerEvents(new WorldEventsListener(), SkyWarsRanked.getInstance());
 
         // Сбросить зону
-        WorldBorder worldBorder = Bukkit.getWorld("world").getWorldBorder();
+        WorldBorder worldBorder = Config.world.getWorldBorder();
         worldBorder.reset();
     }
 
@@ -255,7 +255,9 @@ public class GameManager {
     public void performKillEvent(Player player) {
         // Установить местоположение смерти игрока
         Location deathLocation = player.getLocation();
-        deathLocation.setY(Config.respawnY);
+        if(deathLocation.getY() < 0) {
+            deathLocation.setY(Config.respawnY);
+        }
         playersInfo.get(player).setDeathLocation(deathLocation);
 
         // Телепортировать игрока в местоположение смерти
@@ -282,7 +284,7 @@ public class GameManager {
 
             // Отправить сообщения о убийстве
             for(Player p : Bukkit.getOnlinePlayers()) {
-                p.sendMessage("Игрок " + player.getDisplayName() + " убит игроком " + killer.getName());
+                p.sendMessage("Игрок " + player.getDisplayName() + " убит игроком " + killer.getDisplayName());
             }
             player.sendMessage("Вас убил игрок §c" + killer.getDisplayName() + " §fи у него осталось §c" + (killer.getHealth() / 2) + "❤");
 
@@ -296,7 +298,7 @@ public class GameManager {
         } else {
             // Отправить сообщения о убийстве
             for(Player p : Bukkit.getOnlinePlayers()) {
-                p.sendMessage("Игрок " + player.getName() + " самоубился");
+                p.sendMessage("Игрок " + player.getDisplayName() + " самоубился");
             }
             player.sendMessage("Вы самоубились");
 
@@ -375,11 +377,11 @@ public class GameManager {
     }
 
     /**
-     * Получает параметр, включен ли PvP
-     * @return Параметр, включен ли PvP
+     * Получает параметр, отключено ли PvP
+     * @return Параметр, отключено ли PvP
      */
-    public boolean isEnabledPvP() {
-        return isEnabledPvP;
+    public boolean isDisabledPvP() {
+        return !isEnabledPvP;
     }
 
     /**
