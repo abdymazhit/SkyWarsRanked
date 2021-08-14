@@ -9,12 +9,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.WorldBorder;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  * Менеджер {@link GameStage стадии игры}, отвечает за изменение {@link GameStage стадии игры}
  *
- * @version   13.08.2021
+ * @version   14.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameStageManager extends GameEventsManager {
@@ -117,6 +118,23 @@ public class GameStageManager extends GameEventsManager {
         for(Island island : Config.islands) {
             if(island.getPlayer() != null) {
                 Player player = island.getPlayer();
+
+                player.setFireTicks(0);
+                player.setNoDamageTicks(200);
+                player.setMaxHealth(20.0);
+                player.setHealth(20.0);
+                player.setFoodLevel(20);
+                player.setSaturation(10);
+                player.setFlySpeed(0.1f);
+                player.setLevel(0);
+                player.setExp(0);
+
+                for(PotionEffect potionEffect : player.getActivePotionEffects()) {
+                    player.removePotionEffect(potionEffect.getType());
+                }
+
+                player.setItemOnCursor(null);
+                player.closeInventory();
 
                 // Очистить инвентарь игрока
                 player.getInventory().setHelmet(null);

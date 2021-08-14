@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Представляет собой информацию о игроке
  *
- * @version   09.08.2021
+ * @version   14.08.2021
  * @author    Islam Abdymazhit
  */
 public class PlayerInfo {
@@ -26,6 +26,12 @@ public class PlayerInfo {
 
     /** Доступные наборы игрока с их уровнями */
     private Map<Kit, Integer> kits;
+
+    /** Общий рейтинг игрока */
+    private int overallRating;
+
+    /** Рейтинги игрока за каждый набор */
+    private Map<Kit, Integer> kitsRatings;
 
     /** Доступные прокачки игрока с их уровнями */
     private Map<Upgrade, Integer> upgrades;
@@ -113,6 +119,38 @@ public class PlayerInfo {
      */
     public Map<Kit, Integer> getKits() {
         return kits;
+    }
+
+    /**
+     * Устанавливает общий рейтинг игрока
+     * @param overallRating Общий рейтинг игрока
+     */
+    public void setOverallRating(int overallRating) {
+        this.overallRating = overallRating;
+    }
+
+    /**
+     * Получает общий рейтинг игрока
+     * @return Общий рейтинг игрока
+     */
+    public int getOverallRating() {
+        return overallRating;
+    }
+
+    /**
+     * Устанавливает рейтинги игрока за каждый набор
+     * @param kitsRatings Рейтинги игрока за каждый набор
+     */
+    public void setKitsRatings(Map<Kit, Integer> kitsRatings) {
+        this.kitsRatings = kitsRatings;
+    }
+
+    /**
+     * Получает рейтинги игрока за каждый набор
+     * @return Рейтинги игрока за каждый набор
+     */
+    public Map<Kit, Integer> getKitsRatings() {
+        return kitsRatings;
     }
 
     /**

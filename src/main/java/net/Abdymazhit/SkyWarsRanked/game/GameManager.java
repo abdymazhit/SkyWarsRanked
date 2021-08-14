@@ -11,6 +11,7 @@ import net.Abdymazhit.SkyWarsRanked.game.items.GameItems;
 import net.Abdymazhit.SkyWarsRanked.game.scoreboards.GameBoard;
 import net.Abdymazhit.SkyWarsRanked.game.scoreboards.LobbyBoard;
 import net.Abdymazhit.SkyWarsRanked.upgrades.Upgrade;
+import net.Abdymazhit.SkyWarsRanked.utils.RatingSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -27,7 +28,7 @@ import java.util.Map;
 /**
  * Менеджер игры, отвечает за работу игры
  *
- * @version   13.08.2021
+ * @version   14.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameManager {
@@ -46,6 +47,9 @@ public class GameManager {
 
     /** Объект, отвечающий за игровые предметы */
     private final GameItems gameItems;
+
+    /** Объект, отвечает за рейтинговую систему */
+    private final RatingSystem ratingSystem;
 
     /** {@link GameStage Стадия игры} */
     private GameStage gameStage;
@@ -74,6 +78,7 @@ public class GameManager {
         lobbyBoard = new LobbyBoard();
         gameBoard = new GameBoard();
         gameItems = new GameItems();
+        ratingSystem = new RatingSystem();
         
         gameStage = GameStage.WAITING;
         players = new ArrayList<>();
@@ -131,6 +136,7 @@ public class GameManager {
      */
     public void addPlayer(Player player) {
         player.setFireTicks(0);
+        player.setNoDamageTicks(200);
         player.setMaxHealth(20.0);
         player.setHealth(20.0);
         player.setFoodLevel(20);
@@ -138,6 +144,13 @@ public class GameManager {
         player.setFlySpeed(0.1f);
         player.setLevel(0);
         player.setExp(0);
+
+        for(PotionEffect potionEffect : player.getActivePotionEffects()) {
+            player.removePotionEffect(potionEffect.getType());
+        }
+
+        player.setItemOnCursor(null);
+        player.closeInventory();
 
         // Выдать игроку предметы лобби
         gameItems.giveLobbyItems(player);
@@ -147,6 +160,8 @@ public class GameManager {
         player.teleport(Config.lobbyLocation);
 
         // Получить данные игрока с базы данных
+        SkyWarsRanked.getMySQL().getPlayerOverallRating(player);
+        SkyWarsRanked.getMySQL().getPlayerKitsRatings(player);
         SkyWarsRanked.getMySQL().getPlayerKit(player);
         SkyWarsRanked.getMySQL().getPlayerKits(player);
         SkyWarsRanked.getMySQL().getPlayerUpgrades(player);
@@ -307,6 +322,9 @@ public class GameManager {
             SkyWarsRanked.getMySQL().giveExp(player, 5 + playersInfo.get(player).getKills() * 4);
         }
 
+        // Установить новый рейтинг игроку
+        ratingSystem.setNewRating(player, SkyWarsRanked.getGameManager().getPlayers().size() + 1);
+
         // Проверить, есть ли победитель игры
         if(players.size() == 1) {
             Player winner = players.get(0);
@@ -322,6 +340,9 @@ public class GameManager {
             // Добавить коины и опыт победителю
             SkyWarsRanked.getMySQL().addCoins(winner, 50 + playersInfo.get(winner).getKills() * 5);
             SkyWarsRanked.getMySQL().giveExp(winner , 50 + playersInfo.get(winner).getKills() * 5);
+
+            // Установить новый рейтинг победителю
+            ratingSystem.setNewRating(winner, SkyWarsRanked.getGameManager().getPlayers().size());
 
             // Начать стадию конца игры
             gameStageManager.startEndingStage();
@@ -361,7 +382,7 @@ public class GameManager {
     }
 
     /**
-     * Возвращает объект, отвечающий за игровые предметы
+     * Получает объект, отвечающий за игровые предметы
      * @return Объект, отвечающий за игровые предметы
      */
     public GameItems getGameItems() {
