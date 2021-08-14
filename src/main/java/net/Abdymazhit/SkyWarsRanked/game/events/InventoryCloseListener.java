@@ -8,12 +8,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.EnchantingInventory;
 import org.bukkit.inventory.ItemStack;
 
 /**
  * Отвечает за событие закрытия инвентаря
  *
- * @version   12.08.2021
+ * @version   14.08.2021
  * @author    Islam Abdymazhit
  */
 public class InventoryCloseListener implements Listener {
@@ -23,6 +24,7 @@ public class InventoryCloseListener implements Listener {
      */
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
+        // Проверка, является ли инвентарь сундуком
         if(event.getInventory().getType().equals(InventoryType.CHEST)) {
             Player player = (Player) event.getPlayer();
 
@@ -45,6 +47,10 @@ public class InventoryCloseListener implements Listener {
                     SkyWarsRanked.getGameManager().getChestManager().removeEmptyChestHologram(chest);
                 }
             }
+        }
+        // Проверка, является ли инвентарь столом зачарований
+        else if (event.getInventory() instanceof EnchantingInventory) {
+            event.getInventory().setItem(1, null);
         }
     }
 }

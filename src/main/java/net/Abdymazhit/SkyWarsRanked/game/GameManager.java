@@ -96,6 +96,7 @@ public class GameManager {
         SkyWarsRanked.getInstance().getServer().getPluginManager().registerEvents(new EntityShootBowListener(), SkyWarsRanked.getInstance());
         SkyWarsRanked.getInstance().getServer().getPluginManager().registerEvents(new InventoryClickListener(), SkyWarsRanked.getInstance());
         SkyWarsRanked.getInstance().getServer().getPluginManager().registerEvents(new InventoryCloseListener(), SkyWarsRanked.getInstance());
+        SkyWarsRanked.getInstance().getServer().getPluginManager().registerEvents(new InventoryOpenListener(), SkyWarsRanked.getInstance());
         SkyWarsRanked.getInstance().getServer().getPluginManager().registerEvents(new PlayerDeathListener(), SkyWarsRanked.getInstance());
         SkyWarsRanked.getInstance().getServer().getPluginManager().registerEvents(new PlayerInteractListener(), SkyWarsRanked.getInstance());
         SkyWarsRanked.getInstance().getServer().getPluginManager().registerEvents(new PlayerJoinListener(), SkyWarsRanked.getInstance());
