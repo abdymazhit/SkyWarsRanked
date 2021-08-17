@@ -2,6 +2,7 @@ package net.Abdymazhit.SkyWarsRanked.game;
 
 import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
+import net.Abdymazhit.SkyWarsRanked.customs.Island;
 import net.Abdymazhit.SkyWarsRanked.customs.PlayerInfo;
 import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
 import net.Abdymazhit.SkyWarsRanked.game.chests.ChestManager;
@@ -28,7 +29,7 @@ import java.util.Map;
 /**
  * Менеджер игры, отвечает за работу игры
  *
- * @version   14.08.2021
+ * @version   17.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameManager {
@@ -300,7 +301,7 @@ public class GameManager {
 
             // Отправить сообщения о убийстве
             for(Player p : Bukkit.getOnlinePlayers()) {
-                p.sendMessage("Игрок " + player.getDisplayName() + " убит игроком " + killer.getDisplayName());
+                p.sendMessage("Игрок " + player.getDisplayName() + " §fубит игроком " + killer.getDisplayName());
             }
             player.sendMessage("Вас убил игрок §c" + killer.getDisplayName() + " §fи у него осталось §c" + (killer.getHealth() / 2) + "❤");
 
@@ -314,7 +315,7 @@ public class GameManager {
         } else {
             // Отправить сообщения о убийстве
             for(Player p : Bukkit.getOnlinePlayers()) {
-                p.sendMessage("Игрок " + player.getDisplayName() + " самоубился");
+                p.sendMessage("Игрок " + player.getDisplayName() + " §fсамоубился");
             }
             player.sendMessage("Вы самоубились");
 
@@ -323,27 +324,68 @@ public class GameManager {
             SkyWarsRanked.getMySQL().giveExp(player, 5 + playersInfo.get(player).getKills() * 4);
         }
 
-        // Установить новый рейтинг игроку
-        ratingSystem.setNewRating(player, SkyWarsRanked.getGameManager().getPlayers().size() + 1);
+        // Получить список живых островов
+        List<Island> liveIslands = new ArrayList<>();
+        for(Player p : SkyWarsRanked.getGameManager().getPlayers()) {
+            for(Island island : Config.islands) {
+                if(island.getPlayers().contains(p)) {
+                    if(!liveIslands.contains(island)) {
+                        liveIslands.add(island);
+                    }
+                }
+            }
+        }
+
+        // Проверить, живы ли игроки команды
+        boolean isPlayerIslandLive = false;
+        for(Island island : liveIslands) {
+            if (island.getPlayers().contains(player)) {
+                isPlayerIslandLive = true;
+                break;
+            }
+        }
+
+        // Установить новый рейтинг проигравшим игрокам
+        if(!isPlayerIslandLive) {
+            for(Island island : Config.islands) {
+                if(island.getPlayers().contains(player)) {
+                    for(Player p : island.getPlayers()) {
+                        ratingSystem.setNewRating(p, liveIslands.size() + 1);
+                    }
+                }
+            }
+        }
 
         // Проверить, есть ли победитель игры
-        if(players.size() == 1) {
-            Player winner = players.get(0);
+        if(liveIslands.size() == 1) {
+            List<Player> winners = liveIslands.get(0).getPlayers();
+
+            // Получить названия победителей игры
+            StringBuilder winnersNames = new StringBuilder();
+            for(Player winner : winners) {
+                if(winnersNames.toString().equals("")) {
+                    winnersNames.append("§f").append(winner.getPlayerListName());
+                } else {
+                    winnersNames.append("§f, ").append(winner.getPlayerListName());
+                }
+            }
 
             // Отправить сообщение о победителе
             for(Player p : Bukkit.getOnlinePlayers()) {
                 p.sendMessage("§7####################################");
                 p.sendMessage("§7# §fПобедитель:");
-                p.sendMessage("§7#     " + winner.getDisplayName());
+                p.sendMessage("§7#     " + winnersNames);
                 p.sendMessage("§7####################################");
             }
 
-            // Добавить коины и опыт победителю
-            SkyWarsRanked.getMySQL().addCoins(winner, 50 + playersInfo.get(winner).getKills() * 5);
-            SkyWarsRanked.getMySQL().giveExp(winner , 50 + playersInfo.get(winner).getKills() * 5);
+            for(Player winner : winners) {
+                // Добавить коины и опыт победителю
+                SkyWarsRanked.getMySQL().addCoins(winner, 50 + playersInfo.get(winner).getKills() * 5);
+                SkyWarsRanked.getMySQL().giveExp(winner , 50 + playersInfo.get(winner).getKills() * 5);
 
-            // Установить новый рейтинг победителю
-            ratingSystem.setNewRating(winner, SkyWarsRanked.getGameManager().getPlayers().size());
+                // Установить новый рейтинг победителю
+                ratingSystem.setNewRating(winner, liveIslands.size());
+            }
 
             // Начать стадию конца игры
             gameStageManager.startEndingStage();

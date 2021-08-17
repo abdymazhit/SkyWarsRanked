@@ -5,9 +5,12 @@ import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.customs.Island;
 import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
 import net.Abdymazhit.SkyWarsRanked.kits.Kit;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
+import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.WorldBorder;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -15,7 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 /**
  * Менеджер {@link GameStage стадии игры}, отвечает за изменение {@link GameStage стадии игры}
  *
- * @version   14.08.2021
+ * @version   17.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameStageManager extends GameEventsManager {
@@ -92,10 +95,8 @@ public class GameStageManager extends GameEventsManager {
 
             for(Island island : Config.islands) {
                 if(!hasIsland) {
-                    if(island.getPlayer() != null) {
-                        if(island.getPlayer().equals(player)) {
-                            hasIsland = true;
-                        }
+                    if(island.getPlayers().contains(player)) {
+                        hasIsland = true;
                     }
                 }
             }
@@ -105,8 +106,8 @@ public class GameStageManager extends GameEventsManager {
 
                 for (Island island : Config.islands) {
                     if (!islandSelected) {
-                        if (island.getPlayer() == null) {
-                            island.setPlayer(player);
+                        if (island.getPlayers().size() < Config.islandPlayers) {
+                            island.addPlayer(player);
                             islandSelected = true;
                         }
                     }
@@ -116,9 +117,7 @@ public class GameStageManager extends GameEventsManager {
 
         // Перекинуть игроков в игру
         for(Island island : Config.islands) {
-            if(island.getPlayer() != null) {
-                Player player = island.getPlayer();
-
+            for(Player player : island.getPlayers()) {
                 player.setFireTicks(0);
                 player.setNoDamageTicks(200);
                 player.setMaxHealth(20.0);
@@ -157,6 +156,30 @@ public class GameStageManager extends GameEventsManager {
 
                 // Выдать игроку набор
                 Kit.equip(player);
+
+                // Установить игрокам теги
+                EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
+                for(Player p : Bukkit.getOnlinePlayers()) {
+                    if(p != player) {
+                        String replacement = "";
+
+                        if (Config.islandPlayers > 1) {
+                            replacement = "[" + island.getTag() + "] ";
+                        }
+
+                        if(island.getPlayers().contains(p)) {
+                            replacement = "§a" + replacement;
+                        } else {
+                            replacement = "§c" + replacement;
+                        }
+
+                        entityPlayer.setCustomName(replacement + entityPlayer.getName());
+                        entityPlayer.setCustomNameVisible(true);
+
+                        PacketPlayOutPlayerInfo packet = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.UPDATE_DISPLAY_NAME, entityPlayer);
+                        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
+                    }
+                }
             }
         }
 

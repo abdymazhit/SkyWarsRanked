@@ -8,14 +8,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Меню выбора острова
  *
- * @version   13.08.2021
+ * @version   17.08.2021
  * @author    Islam Abdymazhit
  */
 public class IslandSelectMenu extends Menu {
@@ -113,7 +114,7 @@ public class IslandSelectMenu extends Menu {
      */
     public void update() {
         for(Island island : Config.islands) {
-            if(island.getPlayer() != null) {
+            if(island.getPlayers().size() >= Config.islandPlayers) {
                 setIslandLockedItem(island);
             } else {
                 setIslandAvailableItem(island);
@@ -128,8 +129,13 @@ public class IslandSelectMenu extends Menu {
     private void setIslandAvailableItem(Island island) {
         ItemStack islandItem = new ItemStack(Material.EMERALD_BLOCK);
         ItemMeta islandItemMeta = islandItem.getItemMeta();
-        islandItemMeta.setDisplayName("§rОстров " + island.getId() + " [0/1]");
-        islandItemMeta.setLore(Collections.singletonList("§5§oНажмите для выбора"));
+        islandItemMeta.setDisplayName("§rОстров " + island.getId() + " [" + island.getPlayers().size() + "/" + Config.islandPlayers + "]");
+        List<String> lore = new ArrayList<>();
+        for(Player player : island.getPlayers()) {
+            lore.add("§f" + player.getDisplayName());
+        }
+        lore.add("§5§oНажмите для выбора");
+        islandItemMeta.setLore(lore);
         islandItem.setItemMeta(islandItemMeta);
         getInventory().setItem(islandsIdSlot.get(island.getId()), islandItem);
     }
@@ -141,8 +147,12 @@ public class IslandSelectMenu extends Menu {
     private void setIslandLockedItem(Island island) {
         ItemStack islandItem = new ItemStack(Material.STAINED_CLAY, 1, (byte) 14);
         ItemMeta islandItemMeta = islandItem.getItemMeta();
-        islandItemMeta.setDisplayName("§rОстров " + island.getId() + " [1/1]");
-        islandItemMeta.setLore(Collections.singletonList("§r" + island.getPlayer().getDisplayName()));
+        islandItemMeta.setDisplayName("§rОстров " + island.getId() + " [" + island.getPlayers().size() + "/" + Config.islandPlayers + "]");
+        List<String> lore = new ArrayList<>();
+        for(Player player : island.getPlayers()) {
+            lore.add("§f" + player.getDisplayName());
+        }
+        islandItemMeta.setLore(lore);
         islandItem.setItemMeta(islandItemMeta);
         getInventory().setItem(islandsIdSlot.get(island.getId()), islandItem);
     }
@@ -185,13 +195,13 @@ public class IslandSelectMenu extends Menu {
     private void select(Player player, int islandId) {
         // Удалить старый остров игрока
         for(Island island : Config.islands) {
-            if(island.getPlayer() != null && island.getPlayer() == player) {
-                island.setPlayer(null);
+            if(island.getPlayers().contains(player)) {
+                island.removePlayer(player);
             }
         }
 
         // Установить для игрока новый остров
-        Config.islands.get(islandId - 1).setPlayer(player);
+        Config.islands.get(islandId - 1).addPlayer(player);
 
         // Обновить меню
         update();

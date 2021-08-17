@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 /**
  * Отвечает за событие выхода игрока из сервера
  *
- * @version   11.08.2021
+ * @version   17.08.2021
  * @author    Islam Abdymazhit
  */
 public class PlayerQuitListener implements Listener {
@@ -30,10 +30,8 @@ public class PlayerQuitListener implements Listener {
             if(SkyWarsRanked.getGameManager().getPlayers().contains(player)) {
                 // Убрать игрока из острова
                 for(Island island : Config.islands) {
-                    if(island.getPlayer() != null) {
-                        if(island.getPlayer().equals(player)) {
-                            island.setPlayer(null);
-                        }
+                    if(island.getPlayers().contains(player)) {
+                        island.removePlayer(player);
                     }
                 }
 
@@ -43,9 +41,12 @@ public class PlayerQuitListener implements Listener {
                 // Обновить количество игроков в scoreboard'е лобби
                 SkyWarsRanked.getGameManager().getLobbyBoard().updatePlayersCount();
 
+                // Обновляем меню выбора острова
+                SkyWarsRanked.getGameManager().getGameItems().getIslandSelectMenu().update();
+
                 // Отправить сообщение о выходе игрока
-                event.setQuitMessage("[" + SkyWarsRanked.getGameManager().getPlayers().size() + "/" + Config.islands.size() + "] " +
-                        "§e=> §fИгрок " + player.getDisplayName() + " отключился");
+                event.setQuitMessage("[" + SkyWarsRanked.getGameManager().getPlayers().size() + "/" + Config.islands.size() * Config.islandPlayers + "] " +
+                        "§e=> §fИгрок " + player.getDisplayName() + " §fотключился");
             }
             // Проверка, является ли игрок зрителем игры
             else if(SkyWarsRanked.getGameManager().getSpectators().contains(player)) {

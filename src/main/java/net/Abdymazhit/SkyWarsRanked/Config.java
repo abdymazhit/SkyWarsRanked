@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Отвечает за работу с конфиг файлом
  *
- * @version   13.08.2021
+ * @version   17.08.2021
  * @author    Islam Abdymazhit
  */
 public class Config {
@@ -26,6 +26,9 @@ public class Config {
 
     /** Название карты */
     public static String mapName;
+
+    /** Количество игроков на каждом острове */
+    public static int islandPlayers;
 
     /** Высота на которой будут появляться зрители */
     public static int respawnY;
@@ -59,6 +62,8 @@ public class Config {
         lobbyLocation = getLocation(config.getString("lobby"));
         mapName = config.getString("name");
 
+        islandPlayers = config.getInt("islandPlayers");
+
         respawnY = config.getInt("respawnY");
 
         basicChests = new ArrayList<>();
@@ -79,8 +84,14 @@ public class Config {
         }
 
         islands = new ArrayList<>();
+        char letterCounter = 'A';
+
         for (Map<?, ?> island : config.getMapList("islands")) {
             int id = islands.size() + 1;
+
+            char tag = letterCounter;
+            letterCounter++;
+
             Location spawn = getLocation(island.get("spawn"));
 
             List<Location> chests = new ArrayList<>();
@@ -88,17 +99,17 @@ public class Config {
                 chests.add(getLocation(chestLocation));
             }
 
-            islands.add(new Island(id, spawn, chests));
+            islands.add(new Island(id, tag, spawn, chests));
         }
 
-        if(Config.islands.size() != 8 && Config.islands.size() != 10 && Config.islands.size() != 12 && Config.islands.size() != 16 && Config.islands.size() != 20) {
+        if(islands.size() != 8 && islands.size() != 10 && islands.size() != 12 && islands.size() != 16 && islands.size() != 20) {
             throw new IllegalArgumentException("Неверный формат игры! Вам нужно изменить количество островов! Текущее количество островов: " +
-                    Config.islands.size() + ". Доступные форматы игры: 1x8, 1x10, 1x12, 1x16, 1x20");
+                    islands.size() + ". Доступные количества островов: 8, 10, 12, 16, 20");
         }
 
-        if (Config.islands.size() != Config.deathmatchSpawns.size()) {
+        if (islands.size() != deathmatchSpawns.size()) {
             throw new IllegalArgumentException("Количество местоположений точек детматча должно совпадать с количеством островов! Текущее количество: " +
-                    Config.deathmatchSpawns.size() + ". Необходимо: " + Config.islands.size());
+                    deathmatchSpawns.size() + ". Необходимо: " + islands.size());
         }
 
         for(Island island : islands) {
@@ -108,7 +119,7 @@ public class Config {
             }
         }
 
-        SkyWarsRanked.getInstance().getLogger().info("Загружено " + Config.islands.size() + " островов.");
+        SkyWarsRanked.getInstance().getLogger().info("Загружено " + islands.size() + " островов. Количество игроков в каждом острове: " + islandPlayers);
     }
 
     /**

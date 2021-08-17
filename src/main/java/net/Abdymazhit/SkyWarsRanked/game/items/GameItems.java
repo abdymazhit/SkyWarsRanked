@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * Отвечает за игровые предметы
  *
- * @version   11.08.2021
+ * @version   17.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameItems {
@@ -36,6 +36,9 @@ public class GameItems {
 
     /** Меню телепортации к игрокам */
     private final TeleportMenu teleportMenu;
+
+    /** Меню выбора острова */
+    private final IslandSelectMenu islandSelectMenu;
 
     /** Меню настроек зрителя для каждого зрителя */
     private final Map<Player, SpectatorSettingsMenu> spectatorSettingsMenus;
@@ -90,7 +93,7 @@ public class GameItems {
         islandsItemMeta.setLore(islandsItemLore);
         islandsItem.setItemMeta(islandsItemMeta);
         lobbyItems.put(islandsItem, 0);
-        itemMenu.put(islandsItem, new IslandSelectMenu());
+        itemMenu.put(islandsItem, islandSelectMenu = new IslandSelectMenu());
         itemUsage.put(islandsItem, player -> itemMenu.get(islandsItem).open(player));
 
         ItemStack upgradesItem = new ItemStack(Material.EYE_OF_ENDER);
@@ -265,5 +268,13 @@ public class GameItems {
      */
     public TeleportMenu getTeleportMenu() {
         return teleportMenu;
+    }
+
+    /**
+     * Получает меню выбора острова
+     * @return Меню выбора острова
+     */
+    public IslandSelectMenu getIslandSelectMenu() {
+        return islandSelectMenu;
     }
 }

@@ -3,12 +3,13 @@ package net.Abdymazhit.SkyWarsRanked.customs;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Представляет собой остров
  *
- * @version   09.08.2021
+ * @version   17.08.2021
  * @author    Islam Abdymazhit
  */
 public class Island {
@@ -16,14 +17,17 @@ public class Island {
     /** Id острова */
     private final int id;
 
+    /** Тег острова */
+    private final char tag;
+
     /** Местоположение спавна острова */
     private final Location spawn;
 
     /** Список местоположений сундуков острова */
     private final List<Location> chests;
 
-    /** Игрок острова */
-    private Player player;
+    /** Игроки острова */
+    private final List<Player> players;
 
     /**
      * Создает новый остров
@@ -31,11 +35,12 @@ public class Island {
      * @param spawn Местоположение спавна острова
      * @param chests Список местоположений сундуков острова
      */
-    public Island(int id, Location spawn, List<Location> chests) {
+    public Island(int id, char tag, Location spawn, List<Location> chests) {
         this.id = id;
+        this.tag = tag;
         this.spawn = spawn;
         this.chests = chests;
-        this.player = null;
+        this.players = new ArrayList<>();
     }
 
     /**
@@ -44,6 +49,14 @@ public class Island {
      */
     public int getId() {
         return id;
+    }
+
+    /**
+     * Получает тег острова
+     * @return Тег острова
+     */
+    public char getTag() {
+        return tag;
     }
 
     /**
@@ -63,18 +76,26 @@ public class Island {
     }
 
     /**
-     * Устанавливает игрока острова
-     * @param player Игрок острова
+     * Добавляет игрока в остров
+     * @param player Игрок
      */
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void addPlayer(Player player) {
+        players.add(player);
     }
 
     /**
-     * Получает игрока острова
-     * @return Игрок острова
+     * Удаляет игрока из острова
+     * @param player Игрок
      */
-    public Player getPlayer() {
-        return player;
+    public void removePlayer(Player player) {
+        players.remove(player);
+    }
+
+    /**
+     * Получает игроков острова
+     * @return Игроки острова
+     */
+    public List<Player> getPlayers() {
+        return players;
     }
 }

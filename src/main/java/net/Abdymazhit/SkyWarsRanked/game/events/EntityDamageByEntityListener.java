@@ -1,6 +1,8 @@
 package net.Abdymazhit.SkyWarsRanked.game.events;
 
+import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
+import net.Abdymazhit.SkyWarsRanked.customs.Island;
 import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -11,7 +13,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 /**
  * Отвечает за событие нанесения урона по entity от другого entity
  *
- * @version   13.08.2021
+ * @version   17.08.2021
  * @author    Islam Abdymazhit
  */
 public class EntityDamageByEntityListener implements Listener {
@@ -34,7 +36,17 @@ public class EntityDamageByEntityListener implements Listener {
                     // Установить игроку последнего нанесшего урон по нему игрока
                     else {
                         Player damager = (Player) event.getDamager();
-                        SkyWarsRanked.getGameManager().getPlayerInfo(player).setLastDamager(damager);
+
+                        for(Island island : Config.islands) {
+                            if(island.getPlayers().contains(player) && island.getPlayers().contains(damager)) {
+                                event.setCancelled(true);
+                                break;
+                            }
+                        }
+
+                        if(!event.isCancelled()) {
+                            SkyWarsRanked.getGameManager().getPlayerInfo(player).setLastDamager(damager);
+                        }
                     }
                 }
                 // Проверка, является ли нанесший урон снарядом
@@ -50,7 +62,17 @@ public class EntityDamageByEntityListener implements Listener {
                         // Установить игроку последнего нанесшего урон по нему игрока
                         else {
                             Player damager = (Player) projectile.getShooter();
-                            SkyWarsRanked.getGameManager().getPlayerInfo(player).setLastDamager(damager);
+
+                            for(Island island : Config.islands) {
+                                if(island.getPlayers().contains(player) && island.getPlayers().contains(damager)) {
+                                    event.setCancelled(true);
+                                    break;
+                                }
+                            }
+
+                            if(!event.isCancelled()) {
+                                SkyWarsRanked.getGameManager().getPlayerInfo(player).setLastDamager(damager);
+                            }
                         }
                     }
                 }

@@ -9,7 +9,7 @@ import org.bukkit.scoreboard.*;
 /**
  * Отвечает за scoreboard лобби
  *
- * @version   11.08.2021
+ * @version   17.08.2021
  * @author    Islam Abdymazhit
  */
 public class LobbyBoard {
@@ -75,7 +75,7 @@ public class LobbyBoard {
      */
     public void updatePlayersCount() {
         for(Player player : Bukkit.getOnlinePlayers()) {
-            player.getScoreboard().getTeam("players").setSuffix(SkyWarsRanked.getGameManager().getPlayers().size() + "/" + Config.islands.size());
+            player.getScoreboard().getTeam("players").setSuffix(SkyWarsRanked.getGameManager().getPlayers().size() + "/" + Config.islands.size() * Config.islandPlayers);
         }
     }
 
