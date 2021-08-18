@@ -9,7 +9,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 /**
  * Отвечает за событие смерти игрока
  *
- * @version   11.08.2021
+ * @version   18.08.2021
  * @author    Islam Abdymazhit
  */
 public class PlayerDeathListener implements Listener {
@@ -25,5 +25,10 @@ public class PlayerDeathListener implements Listener {
 
         // Выполнить действия убийства игрока
         SkyWarsRanked.getGameManager().performKillEvent(player);
+
+        // Удалить дропы игрока, если его высота ниже 0
+        if(SkyWarsRanked.getGameManager().getPlayerInfo(player).getDeathLocation().getY() < 0) {
+            event.getDrops().clear();
+        }
     }
 }

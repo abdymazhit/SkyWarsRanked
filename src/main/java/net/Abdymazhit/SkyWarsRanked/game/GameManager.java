@@ -29,7 +29,7 @@ import java.util.Map;
 /**
  * Менеджер игры, отвечает за работу игры
  *
- * @version   17.08.2021
+ * @version   18.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameManager {
@@ -271,14 +271,18 @@ public class GameManager {
      */
     public void performKillEvent(Player player) {
         // Установить местоположение смерти игрока
-        Location deathLocation = player.getLocation();
+        playersInfo.get(player).setDeathLocation(player.getLocation());
+
+        // Местоположение смерти игрока
+        Location deathLocation = player.getLocation().clone();
+
+        // Если высота ниже 0, установить заданное в конфигурации высоту возрождения
         if(deathLocation.getY() < 0) {
             deathLocation.setY(Config.respawnY);
         }
-        playersInfo.get(player).setDeathLocation(deathLocation);
 
         // Телепортировать игрока в местоположение смерти
-        player.teleport(playersInfo.get(player).getDeathLocation());
+        player.teleport(deathLocation);
 
         // Удалить игрока из списка живых игроков и обновить количество живых игроков в scoreboard'е игры
         removePlayer(player);

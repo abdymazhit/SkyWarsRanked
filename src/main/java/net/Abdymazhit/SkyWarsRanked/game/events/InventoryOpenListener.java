@@ -11,7 +11,7 @@ import org.bukkit.material.Dye;
 /**
  * Отвечает за событие открытия инвентаря
  *
- * @version   14.08.2021
+ * @version   18.08.2021
  * @author    Islam Abdymazhit
  */
 public class InventoryOpenListener implements Listener {
@@ -26,7 +26,7 @@ public class InventoryOpenListener implements Listener {
             // Добавить в стол зачарований лазурит
             Dye dye = new Dye();
             dye.setColor(DyeColor.BLUE);
-            ItemStack itemStack = dye.toItemStack(3);
+            ItemStack itemStack = dye.toItemStack(64);
             event.getInventory().setItem(1, itemStack);
         }
     }
