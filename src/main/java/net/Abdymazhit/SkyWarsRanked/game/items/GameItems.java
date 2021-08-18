@@ -1,5 +1,6 @@
 package net.Abdymazhit.SkyWarsRanked.game.items;
 
+import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.game.items.menu.*;
 import org.bukkit.Material;
@@ -17,7 +18,7 @@ import java.util.Map;
 /**
  * Отвечает за игровые предметы
  *
- * @version   17.08.2021
+ * @version   18.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameItems {
@@ -57,6 +58,7 @@ public class GameItems {
         spectatorItems = new HashMap<>();
         itemUsage = new HashMap<>();
         itemMenu = new HashMap<>();
+        islandSelectMenu = new IslandSelectMenu();
         spectatorSettingsMenus = new HashMap<>();
         playerUpgradesMenus = new HashMap<>();
         playerKitSelectMenus = new HashMap<>();
@@ -84,17 +86,28 @@ public class GameItems {
         spectatorItems.put(spectatorSettingsItem, 1);
         itemUsage.put(spectatorSettingsItem, player -> spectatorSettingsMenus.get(player).open(player));
 
-        ItemStack islandsItem = new ItemStack(Material.NAME_TAG);
-        ItemMeta islandsItemMeta = islandsItem.getItemMeta();
-        islandsItemMeta.setDisplayName("§r>> §e§lВыбор острова §r<<");
-        List<String> islandsItemLore = new ArrayList<>();
-        islandsItemLore.add("§7Нажмите ПКМ, чтобы открыть");
-        islandsItemLore.add("§7меню выбора острова");
-        islandsItemMeta.setLore(islandsItemLore);
-        islandsItem.setItemMeta(islandsItemMeta);
-        lobbyItems.put(islandsItem, 0);
-        itemMenu.put(islandsItem, islandSelectMenu = new IslandSelectMenu());
-        itemUsage.put(islandsItem, player -> itemMenu.get(islandsItem).open(player));
+        // Проверка, зарегистрированы ли слоты в меню выбора острова для текущего формата игры
+        if (islandSelectMenu.getIslandsIdSlot().size() != Config.islands.size()) {
+            SkyWarsRanked.getInstance().getLogger().warning("Возможность выбора острова отключена!");
+            SkyWarsRanked.getInstance().getLogger().warning("Для формата игры " + Config.islandPlayers + "x" + Config.islands.size() +
+                    " не зарегистрированы слоты для меню выбора острова!");
+        }
+        // Слоты зарегистрированы, можно выдавать предмет выбора острова
+        else {
+            ItemStack islandsItem = new ItemStack(Material.NAME_TAG);
+            ItemMeta islandsItemMeta = islandsItem.getItemMeta();
+            islandsItemMeta.setDisplayName("§r>> §e§lВыбор острова §r<<");
+            List<String> islandsItemLore = new ArrayList<>();
+            islandsItemLore.add("§7Нажмите ПКМ, чтобы открыть");
+            islandsItemLore.add("§7меню выбора острова");
+            islandsItemMeta.setLore(islandsItemLore);
+            islandsItem.setItemMeta(islandsItemMeta);
+            lobbyItems.put(islandsItem, 0);
+            itemMenu.put(islandsItem, islandSelectMenu);
+            itemUsage.put(islandsItem, player -> itemMenu.get(islandsItem).open(player));
+
+            islandSelectMenu.update();
+        }
 
         ItemStack upgradesItem = new ItemStack(Material.EYE_OF_ENDER);
         ItemMeta upgradesItemMeta = upgradesItem.getItemMeta();

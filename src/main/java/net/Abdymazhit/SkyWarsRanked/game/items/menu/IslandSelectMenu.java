@@ -16,12 +16,12 @@ import java.util.Map;
 /**
  * Меню выбора острова
  *
- * @version   17.08.2021
+ * @version   18.08.2021
  * @author    Islam Abdymazhit
  */
 public class IslandSelectMenu extends Menu {
 
-    /** Хранит информацию о id острове и его слоте */
+    /** Хранит информацию о id островах и их слотах */
     private final Map<Integer, Integer> islandsIdSlot;
 
     /**
@@ -33,7 +33,22 @@ public class IslandSelectMenu extends Menu {
         islandsIdSlot = new HashMap<>();
 
         // Добавить слоты для островов по id
-        if(Config.islands.size() == 8) {
+        if (Config.islands.size() == 2) {
+            islandsIdSlot.put(1, 11);
+            islandsIdSlot.put(2, 15);
+        } else if (Config.islands.size() == 4) {
+            islandsIdSlot.put(1, 10);
+            islandsIdSlot.put(2, 11);
+            islandsIdSlot.put(3, 15);
+            islandsIdSlot.put(4, 16);
+        } else if (Config.islands.size() == 6) {
+            islandsIdSlot.put(1, 10);
+            islandsIdSlot.put(2, 11);
+            islandsIdSlot.put(3, 12);
+            islandsIdSlot.put(4, 14);
+            islandsIdSlot.put(5, 15);
+            islandsIdSlot.put(6, 16);
+        } else if (Config.islands.size() == 8) {
             islandsIdSlot.put(1, 2);
             islandsIdSlot.put(2, 3);
             islandsIdSlot.put(3, 5);
@@ -42,7 +57,7 @@ public class IslandSelectMenu extends Menu {
             islandsIdSlot.put(6, 21);
             islandsIdSlot.put(7, 23);
             islandsIdSlot.put(8, 24);
-        } else if(Config.islands.size() == 10) {
+        } else if (Config.islands.size() == 10) {
             islandsIdSlot.put(1, 1);
             islandsIdSlot.put(2, 2);
             islandsIdSlot.put(3, 3);
@@ -53,7 +68,7 @@ public class IslandSelectMenu extends Menu {
             islandsIdSlot.put(8, 11);
             islandsIdSlot.put(9, 15);
             islandsIdSlot.put(10, 16);
-        } else if(Config.islands.size() == 12) {
+        } else if (Config.islands.size() == 12) {
             islandsIdSlot.put(1, 1);
             islandsIdSlot.put(2, 2);
             islandsIdSlot.put(3, 3);
@@ -66,7 +81,7 @@ public class IslandSelectMenu extends Menu {
             islandsIdSlot.put(10, 23);
             islandsIdSlot.put(11, 24);
             islandsIdSlot.put(12, 25);
-        } else if(Config.islands.size() == 16) {
+        } else if (Config.islands.size() == 16) {
             islandsIdSlot.put(1, 0);
             islandsIdSlot.put(2, 1);
             islandsIdSlot.put(3, 2);
@@ -83,7 +98,7 @@ public class IslandSelectMenu extends Menu {
             islandsIdSlot.put(14, 24);
             islandsIdSlot.put(15, 25);
             islandsIdSlot.put(16, 26);
-        } else if(Config.islands.size() == 20) {
+        } else if (Config.islands.size() == 20) {
             islandsIdSlot.put(1, 0);
             islandsIdSlot.put(2, 1);
             islandsIdSlot.put(3, 2);
@@ -105,8 +120,6 @@ public class IslandSelectMenu extends Menu {
             islandsIdSlot.put(19, 25);
             islandsIdSlot.put(20, 26);
         }
-
-        update();
     }
 
     /**
@@ -205,5 +218,13 @@ public class IslandSelectMenu extends Menu {
 
         // Обновить меню
         update();
+    }
+
+    /**
+     * Получает информацию о id островах и их слотах
+     * @return Информация о id островах и их слотах
+     */
+    public Map<Integer, Integer> getIslandsIdSlot() {
+        return islandsIdSlot;
     }
 }

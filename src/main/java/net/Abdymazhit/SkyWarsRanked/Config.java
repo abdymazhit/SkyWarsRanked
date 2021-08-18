@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Отвечает за работу с конфиг файлом
  *
- * @version   17.08.2021
+ * @version   18.08.2021
  * @author    Islam Abdymazhit
  */
 public class Config {
@@ -50,13 +50,15 @@ public class Config {
 
     /**
      * Загружает данные с конфиг файла
-     * @throws IllegalArgumentException Если количество островов
+     * @throws IllegalArgumentException Ошибка
      * <p>
      * больше чем количество местоположений детматча
      */
     public static void load() {
         FileConfiguration config = SkyWarsRanked.getInstance().getConfig();
         SkyWarsRanked.getInstance().saveDefaultConfig();
+
+        SkyWarsRanked.getInstance().getLogger().info("Конфигурация игры загружается...");
 
         world = Bukkit.getWorld(config.getString("world"));
         lobbyLocation = getLocation(config.getString("lobby"));
@@ -102,24 +104,13 @@ public class Config {
             islands.add(new Island(id, tag, spawn, chests));
         }
 
-        if(islands.size() != 8 && islands.size() != 10 && islands.size() != 12 && islands.size() != 16 && islands.size() != 20) {
-            throw new IllegalArgumentException("Неверный формат игры! Вам нужно изменить количество островов! Текущее количество островов: " +
-                    islands.size() + ". Доступные количества островов: 8, 10, 12, 16, 20");
-        }
+        SkyWarsRanked.getInstance().getLogger().info("Конфигурация успешно загружена");
+        SkyWarsRanked.getInstance().getLogger().info("Формат игры: " + islandPlayers + "x" + islands.size());
 
-        if (islands.size() != deathmatchSpawns.size()) {
-            throw new IllegalArgumentException("Количество местоположений точек детматча должно совпадать с количеством островов! Текущее количество: " +
+        if (islands.size() > deathmatchSpawns.size()) {
+            throw new IllegalArgumentException("Недостаточно местоположений точек детматча! Текущее количество: " +
                     deathmatchSpawns.size() + ". Необходимо: " + islands.size());
         }
-
-        for(Island island : islands) {
-            if(island.getChests().size() != 3) {
-                throw new IllegalArgumentException("Количество сундуков в каждом острове должно быть 3! Id острова " +
-                        island.getId() + ", количество сундуков: " + island.getChests().size());
-            }
-        }
-
-        SkyWarsRanked.getInstance().getLogger().info("Загружено " + islands.size() + " островов. Количество игроков в каждом острове: " + islandPlayers);
     }
 
     /**
