@@ -2,7 +2,7 @@ package net.Abdymazhit.SkyWarsRanked.game.events;
 
 import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
-import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
+import net.Abdymazhit.SkyWarsRanked.enums.GameState;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
@@ -14,7 +14,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 /**
  * Отвечает за событие взаимодействия игрока с объектом
  *
- * @version   13.08.2021
+ * @version   20.08.2021
  * @author    Islam Abdymazhit
  */
 public class PlayerInteractListener implements Listener {
@@ -28,7 +28,7 @@ public class PlayerInteractListener implements Listener {
 
         // Проверка, является ли игрок зрителем или является ли стадия игры WAITING или STARTING
         if(SkyWarsRanked.getGameManager().getSpectators().contains(player) ||
-                SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+                SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             // Отменить событие, чтобы игрок не мог взаимодействовать с блоками
             event.setCancelled(true);
 
@@ -46,7 +46,7 @@ public class PlayerInteractListener implements Listener {
             SkyWarsRanked.getGameManager().getGameItems().useItem(player, event.getItem());
         }
         // Проверка стадии игры на GAME
-        else if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.GAME)) {
+        else if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.GAME)) {
             // Проверка клика на правый
             if(event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_AIR) {
                 return;

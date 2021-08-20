@@ -2,7 +2,7 @@ package net.Abdymazhit.SkyWarsRanked.game.events;
 
 import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
-import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
+import net.Abdymazhit.SkyWarsRanked.enums.GameState;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
 import org.bukkit.Bukkit;
@@ -15,7 +15,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 /**
  * Отвечает за событие входа игрока в сервер
  *
- * @version   17.08.2021
+ * @version   20.08.2021
  * @author    Islam Abdymazhit
  */
 public class PlayerJoinListener implements Listener {
@@ -39,7 +39,7 @@ public class PlayerJoinListener implements Listener {
         }
 
         // Проверка стадии игры на WAITING или STARTING
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             // Установить игроку scoreboard лобби
             SkyWarsRanked.getGameManager().getLobbyBoard().setScoreboard(player);
 

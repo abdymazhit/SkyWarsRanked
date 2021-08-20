@@ -3,10 +3,10 @@ package net.Abdymazhit.SkyWarsRanked.enums;
 /**
  * Представляет собой стадию игры
  *
- * @version   09.08.2021
+ * @version   20.08.2021
  * @author    Islam Abdymazhit
  */
-public enum GameStage {
+public enum GameState {
     WAITING,
     STARTING,
     GAME,

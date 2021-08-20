@@ -1,7 +1,7 @@
 package net.Abdymazhit.SkyWarsRanked.game.events.cancelled;
 
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
-import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
+import net.Abdymazhit.SkyWarsRanked.enums.GameState;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
@@ -9,7 +9,7 @@ import org.bukkit.event.block.*;
 /**
  * Отменяет события связанные с блоками
  *
- * @version   11.08.2021
+ * @version   20.08.2021
  * @author    Islam Abdymazhit
  */
 public class BlockEventsListener implements Listener {
@@ -19,7 +19,7 @@ public class BlockEventsListener implements Listener {
      */
     @EventHandler
     public void onBlockBurn(BlockBurnEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             event.setCancelled(true);
         }
     }
@@ -29,7 +29,7 @@ public class BlockEventsListener implements Listener {
      */
     @EventHandler
     public void onBlockCanBuild(BlockCanBuildEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             event.setBuildable(false);
         }
     }
@@ -39,7 +39,7 @@ public class BlockEventsListener implements Listener {
      */
     @EventHandler
     public void onBlockDamage(BlockDamageEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             event.setCancelled(true);
         }
 
@@ -53,7 +53,7 @@ public class BlockEventsListener implements Listener {
      */
     @EventHandler
     public void onBlockDispense(BlockDispenseEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             event.setCancelled(true);
         }
     }
@@ -63,7 +63,7 @@ public class BlockEventsListener implements Listener {
      */
     @EventHandler
     public void onBlockExp(BlockExpEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             event.setExpToDrop(0);
         }
     }
@@ -73,7 +73,7 @@ public class BlockEventsListener implements Listener {
      */
     @EventHandler
     public void onBlockExplode(BlockExplodeEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             event.setCancelled(true);
         }
     }
@@ -83,7 +83,7 @@ public class BlockEventsListener implements Listener {
      */
     @EventHandler
     public void onBlockFade(BlockFadeEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             event.setCancelled(true);
         }
     }
@@ -93,7 +93,7 @@ public class BlockEventsListener implements Listener {
      */
     @EventHandler
     public void onBlockForm(BlockFormEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             event.setCancelled(true);
         }
     }
@@ -103,7 +103,7 @@ public class BlockEventsListener implements Listener {
      */
     @EventHandler
     public void onBlockFromTo(BlockFromToEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             event.setCancelled(true);
         }
     }
@@ -113,7 +113,7 @@ public class BlockEventsListener implements Listener {
      */
     @EventHandler
     public void onBlockGrow(BlockGrowEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             event.setCancelled(true);
         }
     }
@@ -123,7 +123,7 @@ public class BlockEventsListener implements Listener {
      */
     @EventHandler
     public void onBlockIgnite(BlockIgniteEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             event.setCancelled(true);
         }
     }
@@ -133,7 +133,7 @@ public class BlockEventsListener implements Listener {
      */
     @EventHandler
     public void onBlockMultiPlace(BlockMultiPlaceEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             event.setCancelled(true);
         }
 
@@ -147,7 +147,7 @@ public class BlockEventsListener implements Listener {
      */
     @EventHandler
     public void onBlockPhysics(BlockPhysicsEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             event.setCancelled(true);
         }
     }
@@ -157,7 +157,7 @@ public class BlockEventsListener implements Listener {
      */
     @EventHandler
     public void onBlockPistonExtend(BlockPistonExtendEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             event.setCancelled(true);
         }
     }
@@ -167,7 +167,7 @@ public class BlockEventsListener implements Listener {
      */
     @EventHandler
     public void onBlockPistonRetract(BlockPistonRetractEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             event.setCancelled(true);
         }
     }
@@ -177,7 +177,7 @@ public class BlockEventsListener implements Listener {
      */
     @EventHandler
     public void onBlockRedstone(BlockRedstoneEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             event.setNewCurrent(0);
         }
     }
@@ -187,7 +187,7 @@ public class BlockEventsListener implements Listener {
      */
     @EventHandler
     public void onBlockSpread(BlockSpreadEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             event.setCancelled(true);
         }
     }
@@ -197,7 +197,7 @@ public class BlockEventsListener implements Listener {
      */
     @EventHandler
     public void onEntityBlockForm(EntityBlockFormEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             event.setCancelled(true);
         }
     }
@@ -215,7 +215,7 @@ public class BlockEventsListener implements Listener {
      */
     @EventHandler
     public void onSignChange(SignChangeEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             event.setCancelled(true);
         }
 

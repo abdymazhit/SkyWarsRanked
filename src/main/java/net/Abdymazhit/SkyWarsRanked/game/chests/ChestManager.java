@@ -21,7 +21,7 @@ import java.util.Map;
 /**
  * Менеджер сундуков, отвечает за работу сундуков
  *
- * @version   13.08.2021
+ * @version   20.08.2021
  * @author    Islam Abdymazhit
  */
 public class ChestManager {
@@ -184,14 +184,14 @@ public class ChestManager {
      */
     public void addOpenedChestHologram(Chest chest) {
         if(!openedChestsHolograms.containsKey(chest)) {
-            if(SkyWarsRanked.getGameManager().getGameStageManager().getTimeBeforeRefillingChests() != 0) {
+            if(SkyWarsRanked.getGameManager().getGameStateManager().getTimeBeforeRefillingChests() != 0) {
                 Location location = chest.getLocation().add(0.5, -0.5, 0.5);
 
                 ArmorStand armorStand = (ArmorStand) location.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
 
                 armorStand.setGravity(false);
                 armorStand.setCanPickupItems(false);
-                armorStand.setCustomName("§a" + timeToString(SkyWarsRanked.getGameManager().getGameStageManager().getTimeBeforeRefillingChests()));
+                armorStand.setCustomName("§a" + timeToString(SkyWarsRanked.getGameManager().getGameStateManager().getTimeBeforeRefillingChests()));
                 armorStand.setCustomNameVisible(true);
                 armorStand.setVisible(false);
 

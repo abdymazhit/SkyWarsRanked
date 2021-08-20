@@ -1,7 +1,7 @@
 package net.Abdymazhit.SkyWarsRanked.game.events.cancelled;
 
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
-import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
+import net.Abdymazhit.SkyWarsRanked.enums.GameState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,7 +12,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 /**
  * Отменяет события связанные с entity
  *
- * @version   12.08.2021
+ * @version   20.08.2021
  * @author    Islam Abdymazhit
  */
 public class EntityEventsListener implements Listener {
@@ -22,7 +22,7 @@ public class EntityEventsListener implements Listener {
      */
     @EventHandler
     public void onCreatureSpawn(CreatureSpawnEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             event.setCancelled(true);
         }
 
@@ -37,7 +37,7 @@ public class EntityEventsListener implements Listener {
      */
     @EventHandler
     public void onEntityCombust(EntityCombustEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             event.setCancelled(true);
         }
     }
@@ -47,7 +47,7 @@ public class EntityEventsListener implements Listener {
      */
     @EventHandler
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             event.setCancelled(true);
         }
 

@@ -3,7 +3,7 @@ package net.Abdymazhit.SkyWarsRanked.game.events;
 import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.customs.Island;
-import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
+import net.Abdymazhit.SkyWarsRanked.enums.GameState;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -13,7 +13,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 /**
  * Отвечает за событие нанесения урона по entity от другого entity
  *
- * @version   17.08.2021
+ * @version   20.08.2021
  * @author    Islam Abdymazhit
  */
 public class EntityDamageByEntityListener implements Listener {
@@ -23,7 +23,7 @@ public class EntityDamageByEntityListener implements Listener {
      */
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.GAME)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.GAME)) {
             if(event.getEntity() instanceof Player) {
                 Player player = (Player) event.getEntity();
 

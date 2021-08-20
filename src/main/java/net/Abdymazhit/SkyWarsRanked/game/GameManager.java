@@ -4,7 +4,8 @@ import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.customs.Island;
 import net.Abdymazhit.SkyWarsRanked.customs.PlayerInfo;
-import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
+import net.Abdymazhit.SkyWarsRanked.enums.GameState;
+import net.Abdymazhit.SkyWarsRanked.enums.Mode;
 import net.Abdymazhit.SkyWarsRanked.game.chests.ChestManager;
 import net.Abdymazhit.SkyWarsRanked.game.events.*;
 import net.Abdymazhit.SkyWarsRanked.game.events.cancelled.*;
@@ -29,13 +30,13 @@ import java.util.Map;
 /**
  * Менеджер игры, отвечает за работу игры
  *
- * @version   18.08.2021
+ * @version   20.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameManager {
 
     /** Менеджер стадии игры, отвечает за стадии игры */
-    private final GameStageManager gameStageManager;
+    private final GameStateManager gameStateManager;
 
     /** Менеджер сундуков игры, отвечает за сундуки */
     private final ChestManager chestManager;
@@ -50,10 +51,10 @@ public class GameManager {
     private final GameItems gameItems;
 
     /** Объект, отвечает за рейтинговую систему */
-    private final RatingSystem ratingSystem;
+    private RatingSystem ratingSystem;
 
-    /** {@link GameStage Стадия игры} */
-    private GameStage gameStage;
+    /** {@link GameState Стадия игры} */
+    private GameState gameState;
 
     /** Список игроков игры */
     private final List<Player> players;
@@ -74,14 +75,17 @@ public class GameManager {
      * Инициализирует нужные объекты
      */
     public GameManager() {
-        gameStageManager = new GameStageManager();
+        gameStateManager = new GameStateManager();
         chestManager = new ChestManager();
         lobbyBoard = new LobbyBoard();
         gameBoard = new GameBoard();
         gameItems = new GameItems();
-        ratingSystem = new RatingSystem();
+
+        if(Config.mode.equals(Mode.RANKED)) {
+            ratingSystem = new RatingSystem();
+        }
         
-        gameStage = GameStage.WAITING;
+        gameState = GameState.WAITING;
         players = new ArrayList<>();
         spectators = new ArrayList<>();
         playersInfo = new HashMap<>();
@@ -118,18 +122,18 @@ public class GameManager {
     }
 
     /**
-     * Устанавливает {@link GameStage стадию игры}
-     * @param gameStage {@link GameStage Стадия игры}
+     * Устанавливает {@link GameState стадию игры}
+     * @param gameState {@link GameState Стадия игры}
      */
-    public void setGameStage(GameStage gameStage) {
-        this.gameStage = gameStage;
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 
-    /** Получает {@link GameStage стадию игры}
-     * @return {@link GameStage Стадия игры}
+    /** Получает {@link GameState стадию игры}
+     * @return {@link GameState Стадия игры}
      */
-    public GameStage getGameStage() {
-        return gameStage;
+    public GameState getGameState() {
+        return gameState;
     }
 
     /**
@@ -172,7 +176,7 @@ public class GameManager {
         players.add(player);
 
         // Попытаться начать игру
-        gameStageManager.tryStartStartingStage();
+        gameStateManager.tryStartStartingStage();
     }
 
     /**
@@ -350,11 +354,13 @@ public class GameManager {
         }
 
         // Установить новый рейтинг проигравшим игрокам
-        if(!isPlayerIslandLive) {
-            for(Island island : Config.islands) {
-                if(island.getPlayers().contains(player)) {
-                    for(Player p : island.getPlayers()) {
-                        ratingSystem.setNewRating(p, liveIslands.size() + 1);
+        if(Config.mode.equals(Mode.RANKED)) {
+            if(!isPlayerIslandLive) {
+                for(Island island : Config.islands) {
+                    if(island.getPlayers().contains(player)) {
+                        for(Player p : island.getPlayers()) {
+                            ratingSystem.setNewRating(p, liveIslands.size() + 1);
+                        }
                     }
                 }
             }
@@ -388,11 +394,13 @@ public class GameManager {
                 SkyWarsRanked.getMySQL().giveExp(winner , 50 + playersInfo.get(winner).getKills() * 5);
 
                 // Установить новый рейтинг победителю
-                ratingSystem.setNewRating(winner, liveIslands.size());
+                if(Config.mode.equals(Mode.RANKED)) {
+                    ratingSystem.setNewRating(winner, liveIslands.size());
+                }
             }
 
             // Начать стадию конца игры
-            gameStageManager.startEndingStage();
+            gameStateManager.startEndingStage();
         }
     }
 
@@ -400,8 +408,8 @@ public class GameManager {
      * Получает менеджер стадии игры
      * @return Менеджер стадии игры
      */
-    public GameStageManager getGameStageManager() {
-        return gameStageManager;
+    public GameStateManager getGameStateManager() {
+        return gameStateManager;
     }
 
     /**

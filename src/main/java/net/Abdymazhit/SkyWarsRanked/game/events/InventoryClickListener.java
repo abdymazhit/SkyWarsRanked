@@ -1,7 +1,7 @@
 package net.Abdymazhit.SkyWarsRanked.game.events;
 
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
-import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
+import net.Abdymazhit.SkyWarsRanked.enums.GameState;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,7 +12,7 @@ import org.bukkit.inventory.EnchantingInventory;
 /**
  * Отвечает за событие клика по слоту инвентаря
  *
- * @version   14.08.2021
+ * @version   20.08.2021
  * @author    Islam Abdymazhit
  */
 public class InventoryClickListener implements Listener {
@@ -27,7 +27,7 @@ public class InventoryClickListener implements Listener {
             Player player = (Player) event.getWhoClicked();
 
             // Проверка стадии игры на WAITING или STARTING
-            if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+            if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
                 // Отменить клик, так как стадия игры WAITING или STARTING
                 event.setCancelled(true);
 

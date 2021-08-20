@@ -3,7 +3,7 @@ package net.Abdymazhit.SkyWarsRanked.game.events;
 import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.customs.Island;
-import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
+import net.Abdymazhit.SkyWarsRanked.enums.GameState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 /**
  * Отвечает за событие выхода игрока из сервера
  *
- * @version   17.08.2021
+ * @version   20.08.2021
  * @author    Islam Abdymazhit
  */
 public class PlayerQuitListener implements Listener {
@@ -25,7 +25,7 @@ public class PlayerQuitListener implements Listener {
         Player player = event.getPlayer();
 
         // Проверка стадии игры на WAITING или STARTING
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             // Проверка, является ли игрок игроком игры
             if(SkyWarsRanked.getGameManager().getPlayers().contains(player)) {
                 // Убрать игрока из острова
@@ -58,7 +58,7 @@ public class PlayerQuitListener implements Listener {
             }
         }
         // Проверка стадии игры на GAME
-        else if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.GAME)) {
+        else if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.GAME)) {
             // Проверка, является ли игрок игроком игры
             if (SkyWarsRanked.getGameManager().getPlayers().contains(player)) {
                 // Выполнить действия убийства игрока
@@ -80,7 +80,7 @@ public class PlayerQuitListener implements Listener {
             }
         }
         // Проверка стадии игры на ENDING
-        else if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.ENDING)) {
+        else if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.ENDING)) {
             // Удалить игрока из списка игроков и зрителей игры
             SkyWarsRanked.getGameManager().removePlayer(player);
             SkyWarsRanked.getGameManager().removeSpectator(player);

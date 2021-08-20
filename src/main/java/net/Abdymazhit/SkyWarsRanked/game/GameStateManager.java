@@ -3,7 +3,7 @@ package net.Abdymazhit.SkyWarsRanked.game;
 import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.customs.Island;
-import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
+import net.Abdymazhit.SkyWarsRanked.enums.GameState;
 import net.Abdymazhit.SkyWarsRanked.kits.Kit;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
@@ -16,12 +16,12 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
- * Менеджер {@link GameStage стадии игры}, отвечает за изменение {@link GameStage стадии игры}
+ * Менеджер {@link GameState стадии игры}, отвечает за изменение {@link GameState стадии игры}
  *
- * @version   17.08.2021
+ * @version   20.08.2021
  * @author    Islam Abdymazhit
  */
-public class GameStageManager extends GameEventsManager {
+public class GameStateManager extends GameEventsManager {
 
     /** Время до начала игры */
     private static final int TIME_BEFORE_STARTING_GAME = 15;
@@ -30,18 +30,18 @@ public class GameStageManager extends GameEventsManager {
     private static final int TIME_BEFORE_ENDING_GAME = 15;
 
     /**
-     * Начинает {@link GameStage стадию игры} WAITING
+     * Начинает {@link GameState стадию игры} WAITING
      */
     private void startWaitingStage() {
         // Установить стадию игры на WAITING
-        SkyWarsRanked.getGameManager().setGameStage(GameStage.WAITING);
+        SkyWarsRanked.getGameManager().setGameState(GameState.WAITING);
 
         // Установить статус scoreboard'а лобби на WAITING
         SkyWarsRanked.getGameManager().getLobbyBoard().setWaitingStatus();
     }
 
     /**
-     * Попытается начать {@link GameStage стадию игры} STARTING
+     * Попытается начать {@link GameState стадию игры} STARTING
      */
     public void tryStartStartingStage() {
         // Начать стадию STARTING, если набрано достаточное количество игроков
@@ -51,11 +51,11 @@ public class GameStageManager extends GameEventsManager {
     }
 
     /**
-     * Начинает {@link GameStage стадию игры} STARTING
+     * Начинает {@link GameState стадию игры} STARTING
      */
     private void startStartingStage() {
         // Установить стадию игры на STARTING
-        SkyWarsRanked.getGameManager().setGameStage(GameStage.STARTING);
+        SkyWarsRanked.getGameManager().setGameState(GameState.STARTING);
 
         // Начать обратный отсчет начала игры
         task = new BukkitRunnable() {
@@ -74,7 +74,7 @@ public class GameStageManager extends GameEventsManager {
 
                     // Начать стадию игры GAME
                     if (time-- <= 0) {
-                        startGameStage();
+                        startGameState();
                         cancel();
                     }
                 }
@@ -83,11 +83,11 @@ public class GameStageManager extends GameEventsManager {
     }
 
     /**
-     * Начинает {@link GameStage стадию игры} GAME
+     * Начинает {@link GameState стадию игры} GAME
      */
-    private void startGameStage() {
+    private void startGameState() {
         // Установить стадию игры на GAME
-        SkyWarsRanked.getGameManager().setGameStage(GameStage.GAME);
+        SkyWarsRanked.getGameManager().setGameState(GameState.GAME);
 
         // Установить для игрока остров, если игрок не выбрал остров
         for(Player player : SkyWarsRanked.getGameManager().getPlayers()) {
@@ -216,14 +216,14 @@ public class GameStageManager extends GameEventsManager {
     }
 
     /**
-     * Начинает {@link GameStage стадию игры} ENDING
+     * Начинает {@link GameState стадию игры} ENDING
      */
     public void startEndingStage() {
         // Отменить таймер предыдущего события
         task.cancel();
 
         // Установить стадию игры на ENDING
-        SkyWarsRanked.getGameManager().setGameStage(GameStage.ENDING);
+        SkyWarsRanked.getGameManager().setGameState(GameState.ENDING);
 
         // Начать обратный отсчет конца игры
         task = new BukkitRunnable() {

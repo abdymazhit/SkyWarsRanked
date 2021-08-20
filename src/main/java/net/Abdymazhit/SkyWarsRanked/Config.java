@@ -1,6 +1,7 @@
 package net.Abdymazhit.SkyWarsRanked;
 
 import net.Abdymazhit.SkyWarsRanked.customs.Island;
+import net.Abdymazhit.SkyWarsRanked.enums.Mode;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -13,10 +14,13 @@ import java.util.Map;
 /**
  * Отвечает за работу с конфиг файлом
  *
- * @version   18.08.2021
+ * @version   20.08.2021
  * @author    Islam Abdymazhit
  */
 public class Config {
+
+    /** Режим игры */
+    public static Mode mode;
 
     /** Мир, где будет проходить игра */
     public static World world;
@@ -59,6 +63,8 @@ public class Config {
         SkyWarsRanked.getInstance().saveDefaultConfig();
 
         SkyWarsRanked.getInstance().getLogger().info("Конфигурация игры загружается...");
+
+        mode = Mode.valueOf(config.getString("mode"));
 
         world = Bukkit.getWorld(config.getString("world"));
         lobbyLocation = getLocation(config.getString("lobby"));
@@ -105,6 +111,8 @@ public class Config {
         }
 
         SkyWarsRanked.getInstance().getLogger().info("Конфигурация успешно загружена");
+
+        SkyWarsRanked.getInstance().getLogger().info("Режим игры: " + mode.name());
         SkyWarsRanked.getInstance().getLogger().info("Формат игры: " + islandPlayers + "x" + islands.size());
 
         if (islands.size() > deathmatchSpawns.size()) {

@@ -1,7 +1,7 @@
 package net.Abdymazhit.SkyWarsRanked.game.events;
 
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
-import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
+import net.Abdymazhit.SkyWarsRanked.enums.GameState;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -9,7 +9,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 /**
  * Отвечает за событие поставки блока игроком
  *
- * @version   11.08.2021
+ * @version   20.08.2021
  * @author    Islam Abdymazhit
  */
 public class BlockPlaceListener implements Listener {
@@ -19,7 +19,7 @@ public class BlockPlaceListener implements Listener {
      */
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             event.setCancelled(true);
         }
 

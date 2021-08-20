@@ -1,7 +1,7 @@
 package net.Abdymazhit.SkyWarsRanked.game.events;
 
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
-import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
+import net.Abdymazhit.SkyWarsRanked.enums.GameState;
 import net.Abdymazhit.SkyWarsRanked.upgrades.Upgrade;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,7 +11,7 @@ import org.bukkit.event.entity.EntityShootBowEvent;
 /**
  * Отвечает за событие стрельбы из лука entity
  *
- * @version   11.08.2021
+ * @version   20.08.2021
  * @author    Islam Abdymazhit
  */
 public class EntityShootBowListener implements Listener {
@@ -21,7 +21,7 @@ public class EntityShootBowListener implements Listener {
      */
     @EventHandler
     public void onEntityShootBow(EntityShootBowEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             event.setCancelled(true);
         }
 

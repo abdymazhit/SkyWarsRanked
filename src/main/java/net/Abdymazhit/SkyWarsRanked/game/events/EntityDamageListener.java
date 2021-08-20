@@ -2,7 +2,7 @@ package net.Abdymazhit.SkyWarsRanked.game.events;
 
 import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
-import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
+import net.Abdymazhit.SkyWarsRanked.enums.GameState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,7 +11,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 /**
  * Отвечает за событие нанесения урона по entity
  *
- * @version   11.08.2021
+ * @version   20.08.2021
  * @author    Islam Abdymazhit
  */
 public class EntityDamageListener implements Listener {
@@ -24,7 +24,7 @@ public class EntityDamageListener implements Listener {
         if(event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
             // Проверка стадии игры на WAITING или STARTING
-            if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+            if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
                 // Проверка причины урона на VOID (пустоту)
                 if(event.getCause() == EntityDamageEvent.DamageCause.VOID) {
                     // Телепортировать игрока в местоположение спавна
@@ -34,7 +34,7 @@ public class EntityDamageListener implements Listener {
                 event.setCancelled(true);
             }
             // Проверка стадии игры на GAME
-            else if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.GAME)) {
+            else if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.GAME)) {
                 // Проверка, есть ли игрок в списке зрителей
                 if(SkyWarsRanked.getGameManager().getSpectators().contains(player)) {
                     // Проверка причины урона на VOID (пустоту)
@@ -47,7 +47,7 @@ public class EntityDamageListener implements Listener {
                 }
             }
             // Проверка стадии игры на ENDING
-            else if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.ENDING)) {
+            else if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.ENDING)) {
                 // Проверка, есть ли игрок в списке зрителей
                 if(SkyWarsRanked.getGameManager().getSpectators().contains(player)) {
                     // Проверка причины урона на VOID (пустоту)

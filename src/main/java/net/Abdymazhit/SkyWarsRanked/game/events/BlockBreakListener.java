@@ -2,7 +2,7 @@ package net.Abdymazhit.SkyWarsRanked.game.events;
 
 import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
-import net.Abdymazhit.SkyWarsRanked.enums.GameStage;
+import net.Abdymazhit.SkyWarsRanked.enums.GameState;
 import net.Abdymazhit.SkyWarsRanked.game.chests.Registry;
 import net.Abdymazhit.SkyWarsRanked.utils.Random;
 import org.bukkit.Location;
@@ -15,16 +15,13 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Supplier;
 
 /**
  * Отвечает за событие ломания блока игроком
  *
- * @version   11.08.2021
+ * @version   20.08.2021
  * @author    Islam Abdymazhit
  */
 public class BlockBreakListener implements Listener {
@@ -34,7 +31,7 @@ public class BlockBreakListener implements Listener {
      */
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        if(SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.WAITING) || SkyWarsRanked.getGameManager().getGameStage().equals(GameStage.STARTING)) {
+        if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.WAITING) || SkyWarsRanked.getGameManager().getGameState().equals(GameState.STARTING)) {
             event.setCancelled(true);
         }
 
@@ -67,7 +64,7 @@ public class BlockBreakListener implements Listener {
                         items.addAll(Registry.BLOCKS);
                         items.addAll(Arrays.asList(() -> new ItemStack(Material.ARROW, 16 + Random.random.nextInt(15)), () -> new ItemStack(Material.EGG, 2 + Random.random.nextInt(3)), () -> new ItemStack(Material.TNT, 5 + Random.random.nextInt(11)), () -> new ItemStack(Material.WATER_BUCKET), () -> new ItemStack(Material.LAVA_BUCKET), () -> new ItemStack(Material.GOLDEN_APPLE, 1 + Random.random.nextInt(1)), () -> new ItemStack(Material.ENDER_PEARL), () -> new ItemStack(Material.FISHING_ROD)));
 
-                        Supplier<ItemStack> itemSupplier = () -> Random.of(items).get();
+                        Supplier<ItemStack> itemSupplier = () -> Objects.requireNonNull(Random.of(items)).get();
 
                         loc.getWorld().dropItem(loc, itemSupplier.get());
                         
@@ -99,7 +96,9 @@ public class BlockBreakListener implements Listener {
                 case LAPIS_ORE: {
                     PotionEffectType effect = Random.of(Registry.EFFECT_TYPES);
                     int duration = Random.random.nextInt(40, 60) * 20;
-                    player.addPotionEffect(effect.createEffect(duration, 0));
+                    if(effect != null) {
+                        player.addPotionEffect(effect.createEffect(duration, 0));
+                    }
                     event.setCancelled(true);
                     event.getBlock().setType(Material.AIR);
                     break;
@@ -111,7 +110,7 @@ public class BlockBreakListener implements Listener {
                     } else if (Random.random.nextDouble() < 0.05) {
                         loc.getWorld().dropItem(loc, new ItemStack(Material.DIAMOND));
                     } else {
-                        loc.getWorld().dropItem(loc, Random.of(Registry.DIAMOND_ITEMS).clone());
+                        loc.getWorld().dropItem(loc, Objects.requireNonNull(Random.of(Registry.DIAMOND_ITEMS)).clone());
                     }
                     event.setCancelled(true);
                     event.getBlock().setType(Material.AIR);
