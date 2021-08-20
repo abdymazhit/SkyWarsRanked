@@ -1,20 +1,23 @@
 package net.Abdymazhit.SkyWarsRanked.game.items.menu;
 
+import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
+import net.Abdymazhit.SkyWarsRanked.enums.Mode;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Меню телепортации к игрокам
  *
- * @version   11.08.2021
+ * @version   20.08.2021
  * @author    Islam Abdymazhit
  */
 public class TeleportMenu extends Menu {
@@ -42,7 +45,19 @@ public class TeleportMenu extends Menu {
             ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
             ItemMeta itemMeta = item.getItemMeta();
             itemMeta.setDisplayName("§f" + player.getDisplayName());
-            itemMeta.setLore(Collections.singletonList("§5§oНажмите для телепортации"));
+
+            List<String> lore = new ArrayList<>();
+            lore.add("§7Набор: §a" + SkyWarsRanked.getGameManager().getPlayerInfo(player).getKit().getName());
+            lore.add("");
+
+            if(Config.mode.equals(Mode.RANKED)) {
+                lore.add("§7Общий рейтинг: §a" + SkyWarsRanked.getGameManager().getPlayerInfo(player).getOverallRating());
+                lore.add("§7Рейтинг за набор: §a" + SkyWarsRanked.getGameManager().getPlayerInfo(player).getOverallRating());
+                lore.add("");
+            }
+            lore.add("§e► Нажмите для телепортации");
+
+            itemMeta.setLore(lore);
             item.setItemMeta(itemMeta);
             getInventory().setItem(slot, item);
 

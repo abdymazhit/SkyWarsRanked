@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Отвечает за рейтинговую систему
  *
- * @version   14.08.2021
+ * @version   20.08.2021
  * @author    Islam Abdymazhit
  */
 public class RatingSystem {
@@ -53,10 +53,10 @@ public class RatingSystem {
 
             if(ratingDifference >= 0) {
                 player.sendMessage("§7[§b§lSkyWars Ranked§7] §7Новый общий рейтинг: §e" + newOverallRating + " §7(§a+" + ratingDifference + "§7)");
-                player.sendMessage("§7[§b§lSkyWars Ranked§7] §7Новый рейтинг набора: §e" + newKitRating + " §7(§a+" + ratingDifference + "§7)");
+                player.sendMessage("§7[§b§lSkyWars Ranked§7] §7Новый рейтинг за набор: §e" + newKitRating + " §7(§a+" + ratingDifference + "§7)");
             } else {
                 player.sendMessage("§7[§b§lSkyWars Ranked§7] §7Новый общий рейтинг: §e" + newOverallRating + " §7(§c" + ratingDifference + "§7)");
-                player.sendMessage("§7[§b§lSkyWars Ranked§7] §7Новый рейтинг набора: §e" + newKitRating + " §7(§c" + ratingDifference + "§7)");
+                player.sendMessage("§7[§b§lSkyWars Ranked§7] §7Новый рейтинг за набор: §e" + newKitRating + " §7(§c" + ratingDifference + "§7)");
             }
         }
     }
