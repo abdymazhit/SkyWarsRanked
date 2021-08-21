@@ -1,4 +1,4 @@
-package net.Abdymazhit.SkyWarsRanked.game.items.menu;
+package net.Abdymazhit.SkyWarsRanked.game.menu;
 
 import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.customs.Island;
@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Меню выбора острова
  *
- * @version   18.08.2021
+ * @version   21.08.2021
  * @author    Islam Abdymazhit
  */
 public class IslandSelectMenu extends Menu {

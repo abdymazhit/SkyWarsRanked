@@ -1,8 +1,9 @@
-package net.Abdymazhit.SkyWarsRanked.game.items;
+package net.Abdymazhit.SkyWarsRanked.game;
 
 import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
-import net.Abdymazhit.SkyWarsRanked.game.items.menu.*;
+import net.Abdymazhit.SkyWarsRanked.game.menu.*;
+import net.Abdymazhit.SkyWarsRanked.interfaces.ItemUsage;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -16,12 +17,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Отвечает за игровые предметы
+ * Менеджер игровых предметов, отвечает за работу игровых предметов
  *
- * @version   18.08.2021
+ * @version   21.08.2021
  * @author    Islam Abdymazhit
  */
-public class GameItems {
+public class GameItemsManager {
 
     /** Хранит предметы лобби с их слотом */
     private final Map<ItemStack, Integer> lobbyItems;
@@ -53,7 +54,7 @@ public class GameItems {
     /**
      * Инициализирует игровые предметы
      */
-    public GameItems() {
+    public GameItemsManager() {
         lobbyItems = new HashMap<>();
         spectatorItems = new HashMap<>();
         itemUsage = new HashMap<>();

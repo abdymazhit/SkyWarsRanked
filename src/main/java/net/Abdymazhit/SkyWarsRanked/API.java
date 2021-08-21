@@ -7,7 +7,7 @@ import com.google.gson.JsonParser;
 import net.Abdymazhit.SkyWarsRanked.customs.PlayerInfo;
 import net.Abdymazhit.SkyWarsRanked.customs.PlayerVimeInfo;
 import net.Abdymazhit.SkyWarsRanked.customs.Stats;
-import net.Abdymazhit.SkyWarsRanked.enums.PlayerRank;
+import net.Abdymazhit.SkyWarsRanked.enums.Rank;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -21,7 +21,7 @@ import java.io.IOException;
 /**
  * Отвечает за работу с API VimeWorld.ru
  *
- * @version   10.08.2021
+ * @version   21.08.2021
  * @author    Islam Abdymazhit
  */
 public class API {
@@ -35,7 +35,7 @@ public class API {
      * @return Информация о игроке
      */
     public PlayerInfo getPlayerInfo(Player player) {
-        PlayerVimeInfo playerVimeInfo = getPlayerVimeInfo(player.getName());
+        PlayerVimeInfo playerVimeInfo = getPlayerVimeInfo(player);
         if(playerVimeInfo != null) {
             Stats playerStats = getPlayerStats(playerVimeInfo.getId());
             if(playerStats != null) {
@@ -50,13 +50,13 @@ public class API {
 
     /**
      * Получает глобальную информацию о игроке
-     * @param playerName Имя игрока
+     * @param player Игрок
      * @return Глобальная информация о игроке
      */
-    private PlayerVimeInfo getPlayerVimeInfo(String playerName) {
+    private PlayerVimeInfo getPlayerVimeInfo(Player player) {
         JsonParser parser = new JsonParser();
 
-        String stringInfo = sendGetRequest("https://api.vimeworld.ru/user/name/" + playerName + "?token=" + token);
+        String stringInfo = sendGetRequest("https://api.vimeworld.ru/user/name/" + player.getName() + "?token=" + token);
 
         if(stringInfo != null) {
             JsonArray infoArray = parser.parse(stringInfo).getAsJsonArray();
@@ -64,6 +64,10 @@ public class API {
 
             int id = infoObject.get("id").getAsInt();
             String rank = infoObject.get("rank").getAsString();
+
+            if(player.isOp()) {
+                rank = "ADMIN";
+            }
 
             JsonElement guildElement = infoObject.get("guild");
 
@@ -81,7 +85,7 @@ public class API {
                 }
             }
 
-            return new PlayerVimeInfo(id, PlayerRank.valueOf(rank), guildTag, guildColor);
+            return new PlayerVimeInfo(id, Rank.valueOf(rank), guildTag, guildColor);
         }
         return null;
     }

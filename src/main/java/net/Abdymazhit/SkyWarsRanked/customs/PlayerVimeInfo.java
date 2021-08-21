@@ -1,11 +1,11 @@
 package net.Abdymazhit.SkyWarsRanked.customs;
 
-import net.Abdymazhit.SkyWarsRanked.enums.PlayerRank;
+import net.Abdymazhit.SkyWarsRanked.enums.Rank;
 
 /**
  * Представляет собой глобальную информацию о игроке
  *
- * @version   07.08.2021
+ * @version   21.08.2021
  * @author    Islam Abdymazhit
  */
 public class PlayerVimeInfo {
@@ -14,7 +14,7 @@ public class PlayerVimeInfo {
     private final int id;
 
     /** Ранг игрока */
-    private final PlayerRank rank;
+    private final Rank rank;
 
     /** Тег гильдии игрока */
     private final String guildTag;
@@ -29,7 +29,7 @@ public class PlayerVimeInfo {
      * @param guildTag Тег гильдии игрока
      * @param guildColor Цвет тега гильдии игрока
      */
-    public PlayerVimeInfo(int id, PlayerRank rank, String guildTag, String guildColor) {
+    public PlayerVimeInfo(int id, Rank rank, String guildTag, String guildColor) {
         this.id = id;
         this.rank = rank;
         this.guildTag = guildTag;
@@ -48,7 +48,7 @@ public class PlayerVimeInfo {
      * Получает ранг игрока
      * @return Ранг игрока
      */
-    public PlayerRank getRank() {
+    public Rank getRank() {
         return rank;
     }
 

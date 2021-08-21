@@ -1,4 +1,4 @@
-package net.Abdymazhit.SkyWarsRanked.game.items.menu;
+package net.Abdymazhit.SkyWarsRanked.game.menu;
 
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.kits.Kit;
@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Меню выбора набора
  *
- * @version   11.08.2021
+ * @version   21.08.2021
  * @author    Islam Abdymazhit
  */
 public class KitSelectMenu extends Menu {

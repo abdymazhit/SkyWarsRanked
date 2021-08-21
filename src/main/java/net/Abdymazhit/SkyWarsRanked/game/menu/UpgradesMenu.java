@@ -1,4 +1,4 @@
-package net.Abdymazhit.SkyWarsRanked.game.items.menu;
+package net.Abdymazhit.SkyWarsRanked.game.menu;
 
 import net.Abdymazhit.SkyWarsRanked.upgrades.Upgrade;
 import org.bukkit.Bukkit;
@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Меню прокачек игрока
  *
- * @version   11.08.2021
+ * @version   21.08.2021
  * @author    Islam Abdymazhit
  */
 public class UpgradesMenu extends Menu {

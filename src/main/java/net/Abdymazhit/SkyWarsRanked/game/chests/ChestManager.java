@@ -6,6 +6,7 @@ import net.Abdymazhit.SkyWarsRanked.customs.Island;
 import net.Abdymazhit.SkyWarsRanked.game.chests.loot.LootGenerator;
 import net.Abdymazhit.SkyWarsRanked.game.chests.loot.StandardLootGenerator;
 import net.Abdymazhit.SkyWarsRanked.utils.Random;
+import net.Abdymazhit.SkyWarsRanked.utils.TimerUtils;
 import org.bukkit.Location;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
@@ -21,7 +22,7 @@ import java.util.Map;
 /**
  * Менеджер сундуков, отвечает за работу сундуков
  *
- * @version   20.08.2021
+ * @version   21.08.2021
  * @author    Islam Abdymazhit
  */
 public class ChestManager {
@@ -184,14 +185,14 @@ public class ChestManager {
      */
     public void addOpenedChestHologram(Chest chest) {
         if(!openedChestsHolograms.containsKey(chest)) {
-            if(SkyWarsRanked.getGameManager().getGameStateManager().getTimeBeforeRefillingChests() != 0) {
+            if(SkyWarsRanked.getGameManager().getGameEventsManager().getTimeBeforeRefillingChests() != 0) {
                 Location location = chest.getLocation().add(0.5, -0.5, 0.5);
 
                 ArmorStand armorStand = (ArmorStand) location.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
 
                 armorStand.setGravity(false);
                 armorStand.setCanPickupItems(false);
-                armorStand.setCustomName("§a" + timeToString(SkyWarsRanked.getGameManager().getGameStateManager().getTimeBeforeRefillingChests()));
+                armorStand.setCustomName("§a" + TimerUtils.timeToString(SkyWarsRanked.getGameManager().getGameEventsManager().getTimeBeforeRefillingChests()));
                 armorStand.setCustomNameVisible(true);
                 armorStand.setVisible(false);
 
@@ -206,7 +207,7 @@ public class ChestManager {
      */
     public void updateOpenedChestsHologramsTimer(int time) {
         for(ArmorStand armorStand : openedChestsHolograms.values()) {
-            armorStand.setCustomName("§a" + timeToString(time));
+            armorStand.setCustomName("§a" + TimerUtils.timeToString(time));
         }
     }
 
@@ -260,17 +261,5 @@ public class ChestManager {
             armorStand.remove();
         }
         emptyChestsHolograms.clear();
-    }
-
-    /**
-     * Конвертировать время типа Integer в тип String
-     * @param time Время типа Integer
-     * @return Время в типе String
-     */
-    public String timeToString(int time) {
-        int min = time / 60 % 60;
-        int sec = time % 60;
-
-        return String.format("%02d:%02d", min, sec);
     }
 }

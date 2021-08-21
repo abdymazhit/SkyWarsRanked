@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 /**
  * Отвечает за событие выхода игрока из сервера
  *
- * @version   20.08.2021
+ * @version   21.08.2021
  * @author    Islam Abdymazhit
  */
 public class PlayerQuitListener implements Listener {
@@ -42,7 +42,7 @@ public class PlayerQuitListener implements Listener {
                 SkyWarsRanked.getGameManager().getLobbyBoard().updatePlayersCount();
 
                 // Обновляем меню выбора острова
-                SkyWarsRanked.getGameManager().getGameItems().getIslandSelectMenu().update();
+                SkyWarsRanked.getGameManager().getGameItemsManager().getIslandSelectMenu().update();
 
                 // Отправить сообщение о выходе игрока
                 event.setQuitMessage("[" + SkyWarsRanked.getGameManager().getPlayers().size() + "/" + Config.islands.size() * Config.islandPlayers + "] " +
@@ -64,6 +64,12 @@ public class PlayerQuitListener implements Listener {
                 // Выполнить действия убийства игрока
                 SkyWarsRanked.getGameManager().performKillEvent(player);
 
+                // Удалить игрока из списка зрителей игры
+                SkyWarsRanked.getGameManager().removeSpectator(player);
+
+                // Обновить количество зрителей в scoreboard'е игры
+                SkyWarsRanked.getGameManager().getGameBoard().updateSpectatorsCount();
+
                 // Не отображать сообщение о выходе
                 event.setQuitMessage(null);
             }
@@ -84,6 +90,9 @@ public class PlayerQuitListener implements Listener {
             // Удалить игрока из списка игроков и зрителей игры
             SkyWarsRanked.getGameManager().removePlayer(player);
             SkyWarsRanked.getGameManager().removeSpectator(player);
+
+            // Обновить количество зрителей в scoreboard'е игры
+            SkyWarsRanked.getGameManager().getGameBoard().updateSpectatorsCount();
 
             // Не отображать сообщение о выходе, так как стадия игры ENDING
             event.setQuitMessage(null);

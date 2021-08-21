@@ -2,7 +2,7 @@ package net.Abdymazhit.SkyWarsRanked.game.events;
 
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.customs.PlayerInfo;
-import net.Abdymazhit.SkyWarsRanked.enums.PlayerRank;
+import net.Abdymazhit.SkyWarsRanked.enums.Rank;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerLoginEvent;
 /**
  * Отвечает за событие попытки входа игрока в сервер
  *
- * @version   11.08.2021
+ * @version   21.08.2021
  * @author    Islam Abdymazhit
  */
 public class PlayerLoginListener implements Listener {
@@ -43,7 +43,7 @@ public class PlayerLoginListener implements Listener {
      * @return Имя игрока с префиксом
      */
     private String getPrefixedName(PlayerInfo playerInfo, String playerName) {
-        PlayerRank rank = playerInfo.getPlayerVimeInfo().getRank();
+        Rank rank = playerInfo.getPlayerVimeInfo().getRank();
         String prefix = rank.getPrefix();
 
         if (!prefix.isEmpty()) {
@@ -59,7 +59,7 @@ public class PlayerLoginListener implements Listener {
      * @return Имя игрока с цветом
      */
     private String getColoredName(PlayerInfo playerInfo, String playerName) {
-        PlayerRank rank = playerInfo.getPlayerVimeInfo().getRank();
+        Rank rank = playerInfo.getPlayerVimeInfo().getRank();
         return rank.getColor() + playerName;
     }
 }

@@ -1,4 +1,4 @@
-package net.Abdymazhit.SkyWarsRanked.game.items.menu;
+package net.Abdymazhit.SkyWarsRanked.game.menu;
 
 import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * Меню телепортации к игрокам
  *
- * @version   20.08.2021
+ * @version   21.08.2021
  * @author    Islam Abdymazhit
  */
 public class TeleportMenu extends Menu {

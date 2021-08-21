@@ -1,11 +1,11 @@
-package net.Abdymazhit.SkyWarsRanked.game.items;
+package net.Abdymazhit.SkyWarsRanked.interfaces;
 
 import org.bukkit.entity.Player;
 
 /**
  * Отвечает за использование предмета
  *
- * @version   11.08.2021
+ * @version   21.08.2021
  * @author    Islam Abdymazhit
  */
 @FunctionalInterface

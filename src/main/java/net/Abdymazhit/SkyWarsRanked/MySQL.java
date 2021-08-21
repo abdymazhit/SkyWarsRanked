@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Отвечает за работу с базой данных
  *
- * @version   14.08.2021
+ * @version   21.08.2021
  * @author    Islam Abdymazhit
  */
 public class MySQL {
@@ -32,7 +32,7 @@ public class MySQL {
         playerKits.put(Kit.ENCHANTER, 10);
 
         SkyWarsRanked.getGameManager().getPlayerInfo(player).setKits(playerKits);
-        SkyWarsRanked.getGameManager().getGameItems().addPlayerKitSelectMenu(player);
+        SkyWarsRanked.getGameManager().getGameItemsManager().addPlayerKitSelectMenu(player);
     }
 
     /**
@@ -63,7 +63,7 @@ public class MySQL {
         playerUpgrades.put(Upgrade.JUGGERNAUT, 10);
 
         SkyWarsRanked.getGameManager().getPlayerInfo(player).setUpgrades(playerUpgrades);
-        SkyWarsRanked.getGameManager().getGameItems().addPlayerUpgradesMenu(player);
+        SkyWarsRanked.getGameManager().getGameItemsManager().addPlayerUpgradesMenu(player);
     }
 
     /**

@@ -14,7 +14,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 /**
  * Отвечает за событие взаимодействия игрока с объектом
  *
- * @version   20.08.2021
+ * @version   21.08.2021
  * @author    Islam Abdymazhit
  */
 public class PlayerInteractListener implements Listener {
@@ -43,7 +43,7 @@ public class PlayerInteractListener implements Listener {
             }
 
             // Использовать предмет игроку
-            SkyWarsRanked.getGameManager().getGameItems().useItem(player, event.getItem());
+            SkyWarsRanked.getGameManager().getGameItemsManager().useItem(player, event.getItem());
         }
         // Проверка стадии игры на GAME
         else if(SkyWarsRanked.getGameManager().getGameState().equals(GameState.GAME)) {

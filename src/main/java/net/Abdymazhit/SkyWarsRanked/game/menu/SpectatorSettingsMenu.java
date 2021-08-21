@@ -1,4 +1,4 @@
-package net.Abdymazhit.SkyWarsRanked.game.items.menu;
+package net.Abdymazhit.SkyWarsRanked.game.menu;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Меню настроек зрителя
  *
- * @version   11.08.2021
+ * @version   21.08.2021
  * @author    Islam Abdymazhit
  */
 public class SpectatorSettingsMenu extends Menu {

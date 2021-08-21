@@ -2,7 +2,7 @@ package net.Abdymazhit.SkyWarsRanked.game.events;
 
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
 import net.Abdymazhit.SkyWarsRanked.customs.PlayerVimeInfo;
-import net.Abdymazhit.SkyWarsRanked.enums.PlayerRank;
+import net.Abdymazhit.SkyWarsRanked.enums.Rank;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,7 +12,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 /**
  * Отвечает за событие отправки сообщения в чат
  *
- * @version   12.08.2021
+ * @version   21.08.2021
  * @author    Islam Abdymazhit
  */
 public class AsyncPlayerChatListener implements Listener {
@@ -26,10 +26,10 @@ public class AsyncPlayerChatListener implements Listener {
         PlayerVimeInfo playerVimeInfo = SkyWarsRanked.getGameManager().getPlayerInfo(player).getPlayerVimeInfo();
 
         String msgColor = "&f";
-        if(playerVimeInfo.getRank().equals(PlayerRank.CHIEF)) {
+        if(playerVimeInfo.getRank().equals(Rank.CHIEF)) {
             msgColor = "&a";
             event.setMessage(colored(event.getMessage()));
-        } else if(playerVimeInfo.getRank().equals(PlayerRank.IMMORTAL)) {
+        } else if(playerVimeInfo.getRank().equals(Rank.IMMORTAL)) {
             event.setMessage(colored(event.getMessage()));
         }
 

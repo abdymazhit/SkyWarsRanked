@@ -1,4 +1,4 @@
-package net.Abdymazhit.SkyWarsRanked.game.items.menu;
+package net.Abdymazhit.SkyWarsRanked.game.menu;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -6,7 +6,7 @@ import org.bukkit.inventory.Inventory;
 /**
  * Представляет собой меню
  *
- * @version   11.08.2021
+ * @version   21.08.2021
  * @author    Islam Abdymazhit
  */
 public class Menu {

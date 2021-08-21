@@ -9,7 +9,6 @@ import net.Abdymazhit.SkyWarsRanked.enums.Mode;
 import net.Abdymazhit.SkyWarsRanked.game.chests.ChestManager;
 import net.Abdymazhit.SkyWarsRanked.game.events.*;
 import net.Abdymazhit.SkyWarsRanked.game.events.cancelled.*;
-import net.Abdymazhit.SkyWarsRanked.game.items.GameItems;
 import net.Abdymazhit.SkyWarsRanked.game.scoreboards.GameBoard;
 import net.Abdymazhit.SkyWarsRanked.game.scoreboards.LobbyBoard;
 import net.Abdymazhit.SkyWarsRanked.upgrades.Upgrade;
@@ -30,13 +29,16 @@ import java.util.Map;
 /**
  * Менеджер игры, отвечает за работу игры
  *
- * @version   20.08.2021
+ * @version   21.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameManager {
 
     /** Менеджер стадии игры, отвечает за стадии игры */
-    private final GameStateManager gameStateManager;
+    private final GameEventsManager gameEventsManager;
+
+    /** Менеджер игровых предметов, отвечает за работу игровых предметов */
+    private final GameItemsManager gameItemsManager;
 
     /** Менеджер сундуков игры, отвечает за сундуки */
     private final ChestManager chestManager;
@@ -47,15 +49,6 @@ public class GameManager {
     /** Объект, отвечающий за scoreboard игры */
     private final GameBoard gameBoard;
 
-    /** Объект, отвечающий за игровые предметы */
-    private final GameItems gameItems;
-
-    /** Объект, отвечает за рейтинговую систему */
-    private RatingSystem ratingSystem;
-
-    /** {@link GameState Стадия игры} */
-    private GameState gameState;
-
     /** Список игроков игры */
     private final List<Player> players;
 
@@ -65,33 +58,36 @@ public class GameManager {
     /** Хранит {@link PlayerInfo информацию} о игроке */
     private final Map<Player, PlayerInfo> playersInfo;
 
+    /** Объект, отвечающий за работу GPS трекера */
+    private final PlayerTrackerCompass playerTrackerCompass;
+
+    /** {@link GameState Стадия игры} */
+    private GameState gameState;
+
     /** Отвечает за параметр включения PvP */
     private boolean isEnabledPvP;
 
-    /** Объект, отвечающий за работу GPS трекера */
-    private final PlayerTrackerCompass playerTrackerCompass;
+    /** Объект, отвечает за рейтинговую систему */
+    private RatingSystem ratingSystem;
 
     /**
      * Инициализирует нужные объекты
      */
     public GameManager() {
-        gameStateManager = new GameStateManager();
+        gameEventsManager = new GameEventsManager();
+        gameItemsManager = new GameItemsManager();
         chestManager = new ChestManager();
         lobbyBoard = new LobbyBoard();
         gameBoard = new GameBoard();
-        gameItems = new GameItems();
-
-        if(Config.mode.equals(Mode.RANKED)) {
-            ratingSystem = new RatingSystem();
-        }
-        
-        gameState = GameState.WAITING;
         players = new ArrayList<>();
         spectators = new ArrayList<>();
         playersInfo = new HashMap<>();
-        isEnabledPvP = false;
-
         playerTrackerCompass = new PlayerTrackerCompass();
+        gameState = GameState.WAITING;
+        isEnabledPvP = false;
+        if(Config.mode.equals(Mode.RANKED)) {
+            ratingSystem = new RatingSystem();
+        }
 
         SkyWarsRanked.getInstance().getServer().getPluginManager().registerEvents(new AsyncPlayerChatListener(), SkyWarsRanked.getInstance());
         SkyWarsRanked.getInstance().getServer().getPluginManager().registerEvents(new BlockBreakListener(), SkyWarsRanked.getInstance());
@@ -159,7 +155,7 @@ public class GameManager {
         player.closeInventory();
 
         // Выдать игроку предметы лобби
-        gameItems.giveLobbyItems(player);
+        gameItemsManager.giveLobbyItems(player);
 
         player.setGameMode(GameMode.ADVENTURE);
 
@@ -176,7 +172,7 @@ public class GameManager {
         players.add(player);
 
         // Попытаться начать игру
-        gameStateManager.tryStartStartingStage();
+        gameEventsManager.tryStartStartingState();
     }
 
     /**
@@ -187,7 +183,7 @@ public class GameManager {
         players.remove(player);
 
         // Обновить меню телепортации к игрокам
-        gameItems.getTeleportMenu().update();
+        gameItemsManager.getTeleportMenu().update();
     }
 
     /** Получает список игроков игры
@@ -212,7 +208,7 @@ public class GameManager {
         player.setExp(0);
 
         // Выдать зрителю предметы зрителя
-        gameItems.giveSpectatorItems(player);
+        gameItemsManager.giveSpectatorItems(player);
 
         player.setGameMode(GameMode.ADVENTURE);
 
@@ -224,7 +220,7 @@ public class GameManager {
         }
 
         // Добавить меню настроек зрителя для зрителя
-        gameItems.addSpectatorSettingsMenu(player);
+        gameItemsManager.addSpectatorSettingsMenu(player);
 
         players.remove(player);
         spectators.add(player);
@@ -400,7 +396,7 @@ public class GameManager {
             }
 
             // Начать стадию конца игры
-            gameStateManager.startEndingStage();
+            gameEventsManager.startEndingState();
         }
     }
 
@@ -408,8 +404,16 @@ public class GameManager {
      * Получает менеджер стадии игры
      * @return Менеджер стадии игры
      */
-    public GameStateManager getGameStateManager() {
-        return gameStateManager;
+    public GameEventsManager getGameEventsManager() {
+        return gameEventsManager;
+    }
+
+    /**
+     * Получает менеджер игровых предметов
+     * @return Менеджер игровых предметов
+     */
+    public GameItemsManager getGameItemsManager() {
+        return gameItemsManager;
     }
 
     /**
@@ -437,11 +441,11 @@ public class GameManager {
     }
 
     /**
-     * Получает объект, отвечающий за игровые предметы
-     * @return Объект, отвечающий за игровые предметы
+     * Получает объект, отвечающий за работу GPS трекера
+     * @return Объект, отвечающий за работу GPS трекера
      */
-    public GameItems getGameItems() {
-        return gameItems;
+    public PlayerTrackerCompass getPlayerTrackerCompass() {
+        return playerTrackerCompass;
     }
 
     /**
@@ -458,13 +462,5 @@ public class GameManager {
      */
     public boolean isDisabledPvP() {
         return !isEnabledPvP;
-    }
-
-    /**
-     * Получает объект, отвечающий за работу GPS трекера
-     * @return Объект, отвечающий за работу GPS трекера
-     */
-    public PlayerTrackerCompass getPlayerTrackerCompass() {
-        return playerTrackerCompass;
     }
 }

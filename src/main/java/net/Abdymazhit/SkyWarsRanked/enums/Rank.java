@@ -3,10 +3,10 @@ package net.Abdymazhit.SkyWarsRanked.enums;
 /**
  * Представляет собой ранг игрока
  *
- * @version   10.08.2021
+ * @version   21.08.2021
  * @author    Islam Abdymazhit
  */
-public enum PlayerRank {
+public enum Rank {
     PLAYER("", "Игрок", null),
     VIP("§a", "VIP", "V"),
     PREMIUM("§b", "Premium", "P"),
@@ -33,7 +33,7 @@ public enum PlayerRank {
      * @param name Название ранга
      * @param prefix Префикс ранга
      */
-    PlayerRank(String color, String name, String prefix) {
+    Rank(String color, String name, String prefix) {
         this.color = color;
         this.name = ((name == null) ? "" : name);
         this.prefix = ((prefix == null) ? "" : prefix);

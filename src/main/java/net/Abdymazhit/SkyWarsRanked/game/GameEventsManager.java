@@ -2,438 +2,222 @@ package net.Abdymazhit.SkyWarsRanked.game;
 
 import net.Abdymazhit.SkyWarsRanked.Config;
 import net.Abdymazhit.SkyWarsRanked.SkyWarsRanked;
-import net.Abdymazhit.SkyWarsRanked.utils.NMS;
+import net.Abdymazhit.SkyWarsRanked.customs.Island;
+import net.Abdymazhit.SkyWarsRanked.enums.GameState;
+import net.Abdymazhit.SkyWarsRanked.game.tasks.BattleStartTask;
+import net.Abdymazhit.SkyWarsRanked.game.tasks.GameEndTask;
+import net.Abdymazhit.SkyWarsRanked.game.tasks.GameStartTask;
+import net.Abdymazhit.SkyWarsRanked.kits.Kit;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
+import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
+import org.bukkit.GameMode;
 import org.bukkit.WorldBorder;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 /**
- * Менеджер игровых событий, отвечает за изменение игровых событий
+ * Менеджер {@link GameState стадии игры}, отвечает за изменение {@link GameState стадии игры}
  *
- * @version   13.08.2021
+ * @version   21.08.2021
  * @author    Islam Abdymazhit
  */
 public class GameEventsManager {
 
-    /** Время до начала битвы */
-    private static final int TIME_BEFORE_BATTLE_START = 10;
-
-    /** Время до начала сужения игровой зоны */
-    private static final int TIME_BEFORE_STARTING_NARROWING_GAME_ZONE = 50;
-
-    /** Время до открытия мистического сундука */
-    private static final int TIME_BEFORE_OPENING_MYSTERY_CHEST = 60;
-
-    /** Время до закрытия мистического сундука */
-    private static final int TIME_BEFORE_CLOSING_MYSTERY_CHEST = 30;
-
-    /** Время до перезаполнения сундуков */
-    private static final int TIME_BEFORE_REFILLING_CHESTS = 60;
-
-    /** Время до конца сужения игровой зоны */
-    private static final int TIME_BEFORE_ENDING_NARROWING_GAME_ZONE = 30;
-
-    /** Время до второго перезаполнения сундуков */
-    private static final int TIME_BEFORE_REFILLING_CHESTS2 = 60;
-
-    /** Время до начала детматча */
-    private static final int TIME_BEFORE_STARTING_DEATHMATCH = 60;
-
-    /** Время до начала снижения здоровья игроков */
-    private static final int TIME_BEFORE_DECREASING_PLAYERS_HEALTH = 60;
-
-    /** Таймер обратного отсчета */
-    public BukkitTask task;
+    /** Task игрового события */
+    public BukkitRunnable task;
 
     /** Время до заполнения сундуков */
     public int timeBeforeRefillingChests;
 
     /**
-     * Начать игровое событие начала битвы
+     * Начинает {@link GameState стадию игры} WAITING
      */
-    public void startBattleStartEvent() {
-        // Начать обратный отсчет
-        task = new BukkitRunnable() {
-            int time = TIME_BEFORE_BATTLE_START; // Время до начала битвы
+    public void startWaitingState() {
+        // Установить стадию игры на WAITING
+        SkyWarsRanked.getGameManager().setGameState(GameState.WAITING);
 
-            @Override
-            public void run() {
-                // Изменить таймер в scoreboard'е игры
-                SkyWarsRanked.getGameManager().getGameBoard().updateEvent("Начало битвы " + timeToString(time));
-
-                // Отправить сообщение в центр экрана о времени до начале битвы
-                if(time == 5) {
-                    for(Player player : Bukkit.getOnlinePlayers()) {
-                        NMS.sendTitle(player, "§f5", 4, 12, 4);
-                    }
-                } else if(time == 4) {
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        NMS.sendTitle(player, "§f4", 4, 12, 4);
-                    }
-                } else if(time == 3) {
-                    for(Player player : Bukkit.getOnlinePlayers()) {
-                        NMS.sendTitle(player, "§e3", 4, 12, 4);
-                    }
-                } else if(time == 2) {
-                    for(Player player : Bukkit.getOnlinePlayers()) {
-                        NMS.sendTitle(player, "§62", 4, 12, 4);
-                    }
-                } else if(time == 1) {
-                    for(Player player : Bukkit.getOnlinePlayers()) {
-                        NMS.sendTitle(player, "§6§c1", 4, 12, 4);
-                    }
-                }
-
-                // Обновить таймер голограмм открытых сундуков
-                timeBeforeRefillingChests = time +
-                        TIME_BEFORE_STARTING_NARROWING_GAME_ZONE +
-                        TIME_BEFORE_OPENING_MYSTERY_CHEST +
-                        TIME_BEFORE_CLOSING_MYSTERY_CHEST +
-                        TIME_BEFORE_REFILLING_CHESTS;
-                SkyWarsRanked.getGameManager().getChestManager().updateOpenedChestsHologramsTimer(timeBeforeRefillingChests);
-
-                if (time-- <= 0) {
-                    // Отправить сообщение в центр экрана о начале битвы
-                    for(Player player : Bukkit.getOnlinePlayers()) {
-                        NMS.sendTitle(player, "§6ИГРА НАЧАЛАСЬ!", 4, 12, 4);
-                    }
-
-                    // Разрешить PvP между игроками
-                    SkyWarsRanked.getGameManager().setEnabledPvP(true);
-
-                    // Начать следующее игровое событие
-                    startNarrowingGameZoneEvent();
-                    cancel();
-                }
-            }
-        }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L);
-    }
-
-    /** Начать игровое событие начала сужения зоны */
-    private void startNarrowingGameZoneEvent() {
-        // Начать обратный отсчет
-        task = new BukkitRunnable() {
-            int time = TIME_BEFORE_STARTING_NARROWING_GAME_ZONE; // Время до начала сужения зоны
-
-            @Override
-            public void run() {
-                // Изменить таймер в scoreboard'е игры
-                SkyWarsRanked.getGameManager().getGameBoard().updateEvent("Начало суж. зоны " + timeToString(time));
-
-                // Обновить таймер голограмм открытых сундуков
-                timeBeforeRefillingChests = time +
-                        TIME_BEFORE_OPENING_MYSTERY_CHEST +
-                        TIME_BEFORE_CLOSING_MYSTERY_CHEST +
-                        TIME_BEFORE_REFILLING_CHESTS;
-                SkyWarsRanked.getGameManager().getChestManager().updateOpenedChestsHologramsTimer(timeBeforeRefillingChests);
-
-                if (time-- <= 0) {
-                    // Отправить сообщение в центр экрана о начале сужения зоны
-                    for(Player player : Bukkit.getOnlinePlayers()) {
-                        NMS.sendTitle(player, "§fСужение зоны началось!", 4, 20, 4);
-                    }
-
-                    // Начать сужение зоны
-                    WorldBorder worldBorder = Config.world.getWorldBorder();
-                    worldBorder.setSize(40, 180);
-
-                    // Начать следующее игровое событие
-                    startMysteryChestOpenEvent();
-                    cancel();
-                }
-            }
-        }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L);
+        // Установить статус scoreboard'а лобби на WAITING
+        SkyWarsRanked.getGameManager().getLobbyBoard().setWaitingStatus();
     }
 
     /**
-     * Начать игровое событие открытия мистического сундука
+     * Попытается начать {@link GameState стадию игры} STARTING
      */
-    private void startMysteryChestOpenEvent() {
-        // Начать обратный отсчет
-        task = new BukkitRunnable() {
-            int time = TIME_BEFORE_OPENING_MYSTERY_CHEST; // Время до открытия мистического сундука
-
-            @Override
-            public void run() {
-                // Изменить таймер в scoreboard'е игры
-                SkyWarsRanked.getGameManager().getGameBoard().updateEvent("Отк. Мист. сундука " + timeToString(time));
-
-                // Обновить таймер голограмм открытых сундуков
-                timeBeforeRefillingChests = time +
-                        TIME_BEFORE_CLOSING_MYSTERY_CHEST +
-                        TIME_BEFORE_REFILLING_CHESTS;
-                SkyWarsRanked.getGameManager().getChestManager().updateOpenedChestsHologramsTimer(timeBeforeRefillingChests);
-
-                if (time-- <= 0) {
-                    // Отправить сообщение о открытии мистического сундука
-                    for(Player player : Bukkit.getOnlinePlayers()) {
-                        player.sendMessage("§dМистический сундук §aоткрыт§d! Поспешите забрать свои законные вещи!");
-                    }
-
-                    // Открыть мистический сундук
-                    SkyWarsRanked.getGameManager().getChestManager().getMysteryChest().open();
-
-                    // Начать следующее игровое событие
-                    startMysteryChestCloseEvent();
-                    cancel();
-                }
-            }
-        }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L);
+    public void tryStartStartingState() {
+        // Начать стадию STARTING, если набрано достаточное количество игроков
+        if (SkyWarsRanked.getGameManager().getPlayers().size() == 2) {
+            startStartingState();
+        }
     }
 
     /**
-     * Начать игровое событие закрытия мистического сундука
+     * Начинает {@link GameState стадию игры} STARTING
      */
-    private void startMysteryChestCloseEvent() {
-        // Начать обратный отсчет
-        task = new BukkitRunnable() {
-            int time = TIME_BEFORE_CLOSING_MYSTERY_CHEST; // Время до закрытия мистического сундука
+    private void startStartingState() {
+        // Установить стадию игры на STARTING
+        SkyWarsRanked.getGameManager().setGameState(GameState.STARTING);
 
-            @Override
-            public void run() {
-                // Изменить таймер в scoreboard'е игры
-                SkyWarsRanked.getGameManager().getGameBoard().updateEvent("Закр. Мист. сундука " + timeToString(time));
-
-                // Обновить таймер голограмм открытых сундуков
-                timeBeforeRefillingChests = time +
-                        TIME_BEFORE_REFILLING_CHESTS;
-                SkyWarsRanked.getGameManager().getChestManager().updateOpenedChestsHologramsTimer(timeBeforeRefillingChests);
-
-                if (time-- <= 0) {
-                    // Отправить сообщение о закрытии мистического сундука
-                    for(Player player : Bukkit.getOnlinePlayers()) {
-                        player.sendMessage("§dМистический сундук §cзакрылся§d!");
-                    }
-
-                    // Закрыть мистический сундук
-                    SkyWarsRanked.getGameManager().getChestManager().getMysteryChest().close();
-
-                    // Начать следующее игровое событие
-                    startRefillChestsEvent();
-                    cancel();
-                }
-            }
-        }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L);
+        // Начать обратный отсчет начала игры
+        task = new GameStartTask(this);
+        task.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L);
     }
 
     /**
-     * Начать игровое событие перезаполнения сундуков
+     * Начинает {@link GameState стадию игры} GAME
      */
-    private void startRefillChestsEvent() {
-        // Начать обратный отсчет
-        task = new BukkitRunnable() {
-            int time = TIME_BEFORE_REFILLING_CHESTS; // Время до перезаполнения сундуков
+    public void startGameState() {
+        // Установить стадию игры на GAME
+        SkyWarsRanked.getGameManager().setGameState(GameState.GAME);
 
-            @Override
-            public void run() {
-                // Изменить таймер в scoreboard'е игры
-                SkyWarsRanked.getGameManager().getGameBoard().updateEvent("Перезап. сундуков " + timeToString(time));
-                
-                // Обновить таймер голограмм открытых сундуков
-                timeBeforeRefillingChests = time;
-                SkyWarsRanked.getGameManager().getChestManager().updateOpenedChestsHologramsTimer(timeBeforeRefillingChests);
+        // Установить для игрока остров, если игрок не выбрал остров
+        for(Player player : SkyWarsRanked.getGameManager().getPlayers()) {
+            boolean hasIsland = false;
 
-                if (time-- <= 0) {
-                    // Удалить голограммы сундуков
-                    SkyWarsRanked.getGameManager().getChestManager().removeOpenedChestsHolograms();
-                    SkyWarsRanked.getGameManager().getChestManager().removeEmptyChestsHolograms();
-
-                    // Перезаполнить сундуки лутом
-                    SkyWarsRanked.getGameManager().getChestManager().refillIslandChests();
-                    SkyWarsRanked.getGameManager().getChestManager().refillBasicChests();
-                    SkyWarsRanked.getGameManager().getChestManager().refillMiddleChests();
-
-                    // Отправить звук о перезаполнении сундуков
-                    for(Player player : Bukkit.getOnlinePlayers()) {
-                        player.playSound(player.getLocation(), Sound.CHEST_OPEN, 1, 1);
+            for(Island island : Config.islands) {
+                if(!hasIsland) {
+                    if(island.getPlayers().contains(player)) {
+                        hasIsland = true;
                     }
-
-                    // Начать следующее игровое событие
-                    startEndNarrowingGameZoneEvent();
-                    cancel();
                 }
             }
-        }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L);
-    }
 
-    /** Начать игровое событие конца сужения зоны */
-    private void startEndNarrowingGameZoneEvent() {
-        // Начать обратный отсчет
-        task = new BukkitRunnable() {
-            int time = TIME_BEFORE_ENDING_NARROWING_GAME_ZONE; // Время до конца сужения зоны
+            if(!hasIsland) {
+                boolean islandSelected = false;
 
-            @Override
-            public void run() {
-                // Изменить таймер в scoreboard'е игры
-                SkyWarsRanked.getGameManager().getGameBoard().updateEvent("Конец суж. зоны " + timeToString(time));
-
-                // Обновить таймер голограмм открытых сундуков
-                timeBeforeRefillingChests = time +
-                        TIME_BEFORE_REFILLING_CHESTS2;
-                SkyWarsRanked.getGameManager().getChestManager().updateOpenedChestsHologramsTimer(timeBeforeRefillingChests);
-
-                if (time-- <= 0) {
-                    // Отправить сообщение в центр экрана о конце сужения зоны
-                    for(Player player : Bukkit.getOnlinePlayers()) {
-                        NMS.sendTitle(player, "§fСужение зоны закончилось!", 4, 20, 4);
-                    }
-
-                    // Начать следующее игровое событие
-                    startRefillChestsEventV2();
-                    cancel();
-                }
-            }
-        }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L);
-    }
-
-    /**
-     * Начать игровое событие перезаполнения сундуков
-     */
-    private void startRefillChestsEventV2() {
-        // Начать обратный отсчет
-        task = new BukkitRunnable() {
-            int time = TIME_BEFORE_REFILLING_CHESTS2; // Время до перезаполнения сундуков
-
-            @Override
-            public void run() {
-                // Изменить таймер в scoreboard'е игры
-                SkyWarsRanked.getGameManager().getGameBoard().updateEvent("Перезап. сундуков " + timeToString(time));
-
-                // Обновить таймер голограмм открытых сундуков
-                timeBeforeRefillingChests = time;
-                SkyWarsRanked.getGameManager().getChestManager().updateOpenedChestsHologramsTimer(timeBeforeRefillingChests);
-
-                if (time-- <= 0) {
-                    // Удалить голограммы сундуков
-                    SkyWarsRanked.getGameManager().getChestManager().removeOpenedChestsHolograms();
-                    SkyWarsRanked.getGameManager().getChestManager().removeEmptyChestsHolograms();
-
-                    // Перезаполнить сундуки лутом
-                    SkyWarsRanked.getGameManager().getChestManager().refillIslandChests();
-                    SkyWarsRanked.getGameManager().getChestManager().refillBasicChests();
-                    SkyWarsRanked.getGameManager().getChestManager().refillMiddleChests();
-
-                    // Отправить звук о перезаполнении сундуков
-                    for(Player player : Bukkit.getOnlinePlayers()) {
-                        player.playSound(player.getLocation(), Sound.CHEST_OPEN, 1, 1);
-                    }
-
-                    // Начать следующее игровое событие
-                    startDeathmatchEvent();
-                    cancel();
-                }
-            }
-        }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L);
-    }
-
-    /**
-     * Начать игровое событие детматча
-     */
-    private void startDeathmatchEvent() {
-        // Начать обратный отсчет
-        task = new BukkitRunnable() {
-            int time = TIME_BEFORE_STARTING_DEATHMATCH; // Время до детматча
-
-            @Override
-            public void run() {
-                // Изменить таймер в scoreboard'е игры
-                SkyWarsRanked.getGameManager().getGameBoard().updateEvent("Детматч " + timeToString(time));
-
-                // Отправить сообщения в центр экрана о времени до начала детматча
-                if(time == 5) {
-                    for(Player player : Bukkit.getOnlinePlayers()) {
-                        NMS.sendTitle(player, "§f5", 4, 12, 4);
-                    }
-                } else if(time == 4) {
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        NMS.sendTitle(player, "§f4", 4, 12, 4);
-                    }
-                } else if(time == 3) {
-                    for(Player player : Bukkit.getOnlinePlayers()) {
-                        NMS.sendTitle(player, "§e3", 4, 12, 4);
-                    }
-                } else if(time == 2) {
-                    for(Player player : Bukkit.getOnlinePlayers()) {
-                        NMS.sendTitle(player, "§62", 4, 12, 4);
-                    }
-                } else if(time == 1) {
-                    for(Player player : Bukkit.getOnlinePlayers()) {
-                        NMS.sendTitle(player, "§6§c1", 4, 12, 4);
-                    }
-                }
-
-                if (time-- <= 0) {
-                    // Отправить сообщения в центр экрана о начале детматча
-                    for(Player player : Bukkit.getOnlinePlayers()) {
-                        NMS.sendTitle(player, "§6§cДетматч!", 4, 12, 4);
-                    }
-
-                    // Телепортировать игроков в местоположение детматча
-                    for(int id = 0; id < SkyWarsRanked.getGameManager().getPlayers().size(); id++) {
-                        Player player = SkyWarsRanked.getGameManager().getPlayers().get(id);
-                        player.teleport(Config.deathmatchSpawns.get(id));
-                    }
-
-                    // Начать следующее игровое событие
-                    startPlayersDecreasingHealthEvent();
-                    cancel();
-                }
-            }
-        }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L);
-    }
-
-    /**
-     * Начать игровое событие снижения здоровья игроков
-     */
-    private void startPlayersDecreasingHealthEvent() {
-        // Начать обратный отсчет
-        task = new BukkitRunnable() {
-            int time = TIME_BEFORE_DECREASING_PLAYERS_HEALTH; // Время до начала снижения здоровья игроков
-
-            @Override
-            public void run() {
-                // Изменить таймер в scoreboard'е игры
-                SkyWarsRanked.getGameManager().getGameBoard().updateEvent("Сниж. здор. игроков " + timeToString(time));
-
-                if (time-- <= 0) {
-                    // Отправить сообщения в центр экрана о начале снижения здоровья игроков
-                    for(Player player : Bukkit.getOnlinePlayers()) {
-                        NMS.sendTitle(player, "§cСнижение здоровья игроков!", 4, 20, 4);
-                    }
-
-                    // Начать снижение здоровья игроков
-                    // Каждую секунду здоровье будет уменьшаться на 2 хп
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            for(Player player : SkyWarsRanked.getGameManager().getPlayers()) {
-                                player.damage(2);
-                            }
-
-                            if(SkyWarsRanked.getGameManager().getPlayers().size() == 1) {
-                                cancel();
-                            }
+                for (Island island : Config.islands) {
+                    if (!islandSelected) {
+                        if (island.getPlayers().size() < Config.islandPlayers) {
+                            island.addPlayer(player);
+                            islandSelected = true;
                         }
-                    }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L);
-
-                    cancel();
+                    }
                 }
             }
-        }.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L);
+        }
+
+        // Перекинуть игроков в игру
+        for(Island island : Config.islands) {
+            for(Player player : island.getPlayers()) {
+                player.setFireTicks(0);
+                player.setNoDamageTicks(200);
+                player.setMaxHealth(20.0);
+                player.setHealth(20.0);
+                player.setFoodLevel(20);
+                player.setSaturation(10);
+                player.setFlySpeed(0.1f);
+                player.setLevel(0);
+                player.setExp(0);
+
+                for(PotionEffect potionEffect : player.getActivePotionEffects()) {
+                    player.removePotionEffect(potionEffect.getType());
+                }
+
+                player.setItemOnCursor(null);
+                player.closeInventory();
+
+                // Очистить инвентарь игрока
+                player.getInventory().setHelmet(null);
+                player.getInventory().setChestplate(null);
+                player.getInventory().setLeggings(null);
+                player.getInventory().setBoots(null);
+                player.getInventory().clear();
+
+                // Установить игровой режим на выживание
+                player.setGameMode(GameMode.SURVIVAL);
+
+                // Установить игрокам scoreboard игры
+                SkyWarsRanked.getGameManager().getGameBoard().setScoreboard(player);
+
+                // Установить игроку количество его убийств в scoreboard'е игры
+                SkyWarsRanked.getGameManager().getGameBoard().updateKillsCount(player);
+
+                // Телепортировать игрока в спавн острова
+                player.teleport(island.getSpawn());
+
+                // Выдать игроку набор
+                Kit.equip(player);
+
+                // Установить игрокам теги
+                EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
+                for(Player p : Bukkit.getOnlinePlayers()) {
+                    if(p != player) {
+                        String replacement = "";
+
+                        if (Config.islandPlayers > 1) {
+                            replacement = "[" + island.getTag() + "] ";
+                        }
+
+                        if(island.getPlayers().contains(p)) {
+                            replacement = "§a" + replacement;
+                        } else {
+                            replacement = "§c" + replacement;
+                        }
+
+                        entityPlayer.setCustomName(replacement + entityPlayer.getName());
+                        entityPlayer.setCustomNameVisible(true);
+
+                        PacketPlayOutPlayerInfo packet = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.UPDATE_DISPLAY_NAME, entityPlayer);
+                        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
+                    }
+                }
+            }
+        }
+
+        // Перекинуть зрителей в игру
+        for(Player player : SkyWarsRanked.getGameManager().getSpectators()) {
+            // Установить зрителям scoreboard игры
+            SkyWarsRanked.getGameManager().getGameBoard().setScoreboard(player);
+
+            // Установить зрителям количество их убийств в scoreboard'е игры
+            SkyWarsRanked.getGameManager().getGameBoard().updateKillsCount(player);
+        }
+
+        // Обновить меню телепортации к игрокам
+        SkyWarsRanked.getGameManager().getGameItemsManager().getTeleportMenu().update();
+
+        // Обновить количество живых игроков в scoreboard'е игры
+        SkyWarsRanked.getGameManager().getGameBoard().updateLivePlayersCount();
+
+        // Обновить количество зрителей в scoreboard'е игры
+        SkyWarsRanked.getGameManager().getGameBoard().updateSpectatorsCount();
+
+        // Установить зону
+        WorldBorder worldBorder = Config.world.getWorldBorder();
+        worldBorder.setCenter(Config.mysteryChest);
+        worldBorder.setSize(300);
+
+        // Заполнить сундуки лутом
+        SkyWarsRanked.getGameManager().getChestManager().refillIslandChests();
+        SkyWarsRanked.getGameManager().getChestManager().refillBasicChests();
+        SkyWarsRanked.getGameManager().getChestManager().refillMiddleChests();
+
+        // Начать игровое событие начала битвы
+        task = new BattleStartTask(this);
+        task.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L);
     }
 
     /**
-     * Конвертировать время типа Integer в тип String
-     * @param time Время типа Integer
-     * @return Время в типе String
+     * Начинает {@link GameState стадию игры} ENDING
      */
-    public String timeToString(int time) {
-        int min = time / 60 % 60;
-        int sec = time % 60;
+    public void startEndingState() {
+        // Отменить таймер предыдущего события
+        task.cancel();
 
-        return String.format("%02d:%02d", min, sec);
+        // Установить стадию игры на ENDING
+        SkyWarsRanked.getGameManager().setGameState(GameState.ENDING);
+
+        task = new GameEndTask();
+        task.runTaskTimer(SkyWarsRanked.getInstance(), 0L, 20L);
+    }
+
+    /**
+     * Получает время до заполнения сундуков
+     * @return Время до заполнения сундуков
+     */
+    public int getTimeBeforeRefillingChests() {
+        return timeBeforeRefillingChests;
     }
 }
