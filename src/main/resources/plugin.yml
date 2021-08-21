@@ -4,3 +4,6 @@ version: 1.0.0
 description: Мини-игра рейтинговые игры SkyWars проекта VimeWorld
 author: Abdymazhit
 prefix: SkyWarsRanked
+commands:
+  stats:
+    description: Статистика

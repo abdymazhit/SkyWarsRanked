@@ -7,6 +7,7 @@ import net.Abdymazhit.SkyWarsRanked.customs.PlayerInfo;
 import net.Abdymazhit.SkyWarsRanked.enums.GameState;
 import net.Abdymazhit.SkyWarsRanked.enums.Mode;
 import net.Abdymazhit.SkyWarsRanked.game.chests.ChestManager;
+import net.Abdymazhit.SkyWarsRanked.game.commands.StatsCommand;
 import net.Abdymazhit.SkyWarsRanked.game.events.*;
 import net.Abdymazhit.SkyWarsRanked.game.events.cancelled.*;
 import net.Abdymazhit.SkyWarsRanked.game.scoreboards.GameBoard;
@@ -111,6 +112,8 @@ public class GameManager {
         SkyWarsRanked.getInstance().getServer().getPluginManager().registerEvents(new PlayerEventsListener(), SkyWarsRanked.getInstance());
         SkyWarsRanked.getInstance().getServer().getPluginManager().registerEvents(new WeatherEventsListener(), SkyWarsRanked.getInstance());
         SkyWarsRanked.getInstance().getServer().getPluginManager().registerEvents(new WorldEventsListener(), SkyWarsRanked.getInstance());
+
+        SkyWarsRanked.getInstance().getCommand("stats").setExecutor(new StatsCommand());
 
         // Сбросить зону
         WorldBorder worldBorder = Config.world.getWorldBorder();
